@@ -52,7 +52,7 @@ if (isset($_GET['logout'])) {
         <div class="modal-dialog col" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel"> Edit User information </h5>
+                    <h5 class="modal-title textpop" id="exampleModalLabel"> Edit User information </h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -61,36 +61,36 @@ if (isset($_GET['logout'])) {
                     <div class="modal-body">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group">
-                            <label> Username </label>
+                            <label class="textpop"> Username </label>
                             <input type="text" name="username" id="username" class="form-control"
                                 placeholder="Enter Username">
                         </div>
                         <div class="form-group">
-                            <label> Password </label>
+                            <label class="textpop"> Password </label>
                             <input type="text" name="password" id="password" class="form-control"
                                 placeholder="Enter Password">
                         </div>
                         <div class="form-group">
-                            <label> First Name </label>
+                            <label class="textpop"> First Name </label>
                             <input type="text" name="first_name" id="first_name" class="form-control"
                                 placeholder="Enter First Name">
                         </div>
                         <div class="form-group">
-                            <label> Last Name </label>
+                            <label class="textpop"> Last Name </label>
                             <input type="text" name="last_name" id="last_name" class="form-control"
                                 placeholder="Enter Last Name">
                         </div>
                         <div class="form-group">
-                            <label> Email</label>
+                            <label class="textpop"> Email</label>
                             <input type="text" name="email" id="email" class="form-control" placeholder="Enter email">
                         </div>
                         <div class="form-group">
-                            <label> Phone Number </label>
+                            <label class="textpop"> Phone Number </label>
                             <input type="text" name="phone" id="phone" class="form-control"
                                 placeholder="Enter Phone Number">
                         </div>
                         <div class="form-group">
-                            <label> Birthday </label>
+                            <label class="textpop"> Birthday </label>
                             <input type="date" name="bd" id="bd" class="form-control" placeholder="Enter Birthday">
                         </div>
                         <!-- <div class="form-group">
@@ -98,7 +98,7 @@ if (isset($_GET['logout'])) {
                             <input type="text" name="role" id="role" class="form-control" placeholder="Enter Role">
                         </div> -->
                         <div class="form-group">
-                        <label> Role </label>
+                        <label class="textpop"> Role </label>
                             <select name="role" class="form-control">
                                 <option value="admin">Admin
                                 </option>
@@ -114,7 +114,6 @@ if (isset($_GET['logout'])) {
                         <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
