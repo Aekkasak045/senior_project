@@ -1,0 +1,60 @@
+
+<?php
+$api_key = $_GET['api_key']; 
+$valid_api_key = "HEEEEEEEEEEEEEEÉ"; 
+
+if ($api_key === $valid_api_key) {
+
+$servername = "localhost"; 
+$username = "root"; 
+$password = "kuse@fse2018"; 
+$dbname = "smartlift"; 
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// คำสั่ง SQL เพื่อดึงข้อมูล org_name จากตาราง organizations
+$sqlOrganizations = "SELECT org_name FROM organizations";
+$resultOrganizations = $conn->query($sqlOrganizations);
+
+// คำสั่ง SQL เพื่อดึงข้อมูล lift_name จากตาราง lifts
+$sqlLifts = "SELECT lift_name FROM lifts";
+$resultLifts = $conn->query($sqlLifts);
+
+// สร้างอาเรย์เพื่อเก็บข้อมูล
+$data = array();
+
+// เพิ่มข้อมูลจากตาราง organizations เข้าในอาเรย์
+if ($resultOrganizations->num_rows > 0) {
+    while ($row = $resultOrganizations->fetch_assoc()) {
+        $data['org_name'][] = $row['org_name'];
+    }
+}
+
+// เพิ่มข้อมูลจากตาราง lifts เข้าในอาเรย์
+if ($resultLifts->num_rows > 0) {
+    while ($row = $resultLifts->fetch_assoc()) {
+        $data['lift_name'][] = $row['lift_name'];
+    }
+}
+
+// ปิดการเชื่อมต่อฐานข้อมูล
+$conn->close();
+
+// แปลงข้อมูลเป็น JSON
+$jsonData = json_encode($data);
+
+// ตั้งค่า HTTP header เพื่อระบุว่าเป็น JSON
+header('Content-Type: application/json');
+
+// ส่งข้อมูล JSON กลับไปยังผู้ใช้
+echo $jsonData;
+
+}
+
+
+$conn->close();
+?> 
+ 
