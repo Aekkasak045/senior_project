@@ -57,7 +57,7 @@ if (isset($_GET['logout'])) {
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
-                <form action="saveuser.php" method="POST">
+                <form action="saveuser.php" method="POST" class="popup_form">
                     <div class="modal-body">
                         <input type="hidden" name="id" id="id">
                         <div class="form-group form__group ">

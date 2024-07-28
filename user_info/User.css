@@ -270,12 +270,13 @@ button:hover {
 --gray: #9b9b9b;
 }
 
+
 .form__group {
   position: relative;
   padding: 15px 0 0;
   margin-top: 10px;
   width: 50%;
-  
+
 }
 
 .form__field {
