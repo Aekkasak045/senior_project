@@ -60,46 +60,46 @@ if (isset($_GET['logout'])) {
                 <form action="saveuser.php" method="POST">
                     <div class="modal-body">
                         <input type="hidden" name="id" id="id">
-                        <div class="form-group">
-                            <label class="textpop"> Username </label>
-                            <input type="text" name="username" id="username" class="form-control"
+                        <div class="form-group form__group ">
+                            <label class="textpop form__label "> Username </label>
+                            <input type="text" name="username" id="username" class="form-control form__field"
                                 placeholder="Enter Username">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> Password </label>
-                            <input type="text" name="password" id="password" class="form-control"
+                        <div class="form-group form__group ">
+                            <label class="textpop form__label"> Password </label>
+                            <input type="text" name="password" id="password" class="form-control form__field"
                                 placeholder="Enter Password">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> First Name </label>
-                            <input type="text" name="first_name" id="first_name" class="form-control"
+                        <div class="form-group form__group ">
+                            <label class="textpop form__label "> First Name </label>
+                            <input type="text" name="first_name" id="first_name" class="form-control form__field"
                                 placeholder="Enter First Name">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> Last Name </label>
-                            <input type="text" name="last_name" id="last_name" class="form-control"
+                        <div class="form-group form__group">
+                            <label class="textpop form__label "> Last Name </label>
+                            <input type="text" name="last_name" id="last_name" class="form-control form__field"
                                 placeholder="Enter Last Name">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> Email</label>
-                            <input type="text" name="email" id="email" class="form-control" placeholder="Enter email">
+                        <div class="form-group form__group">
+                            <label class="textpop form__label "> Email</label>
+                            <input type="text" name="email" id="email" class="form-control form__field" placeholder="Enter email">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> Phone Number </label>
-                            <input type="text" name="phone" id="phone" class="form-control"
+                        <div class="form-group form__group">
+                            <label class="textpop form__label"> Phone Number </label>
+                            <input type="text" name="phone" id="phone" class="form-control form__field"
                                 placeholder="Enter Phone Number">
                         </div>
-                        <div class="form-group">
-                            <label class="textpop"> Birthday </label>
-                            <input type="date" name="bd" id="bd" class="form-control" placeholder="Enter Birthday">
+                        <div class="form-group form__group">
+                            <label class="textpop form__label"> Birthday </label>
+                            <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday">
                         </div>
                         <!-- <div class="form-group">
                             <label> Role </label>
                             <input type="text" name="role" id="role" class="form-control" placeholder="Enter Role">
                         </div> -->
-                        <div class="form-group">
-                        <label class="textpop"> Role </label>
-                            <select name="role" class="form-control">
+                        <div class="form-group form__group">
+                        <label class="textpop form__label"> Role </label>
+                            <select name="role" class="form-control form__field">
                                 <option value="admin">Admin
                                 </option>
                                 <option value="mainten">Mainten
