@@ -93,9 +93,9 @@ if (isset($_GET['logout'])) {
                                             <div class="row">
                                                 <div class="col-12">
                                                     Detail:
-                                                    <form action="" method="">
+                                                    <form action="" method="POST">
                                                         <input class="form-control" type="text" name="productline"  value="<?php echo htmlspecialchars($row["detail"]); ?>" style=" text-overflow: ellipsis; white-space: nowrap; ">
-                                                        
+
                                                     อุปกรณ์ที่ใช้:
                                                         <div id="input-container">
                                                             <input type="text" name="devices[]" placeholder="ชื่ออุปกรณ์">
