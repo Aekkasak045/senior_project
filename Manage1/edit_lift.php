@@ -62,16 +62,6 @@ if (isset($_GET['logout'])) {
                         <li><?php if (isset($_SESSION['username'])): ?>
                             <p><a href="edit_lift.php?logout='1'" style="color: red;">Logout</a></p>
                         <?php endif ?></li>
-                        <!-- <div class="dropdown">
-                        <button class="dropbtn">ORGANIZATION &nbsp;
-                            <i class="fa fa-caret-down"></i>
-                        </button>
-                        <div class="dropdown-content">
-                            <a href="../orgs.php">HOME ORGANIZATION</a>
-                            <a href="../add_org.php">ADD_ORGANIZATION</a>
-                            <a href="../edit_org.php">EDIT_ORGANIZATION</a>
-                        </div>
-                    </div> -->
                 </ul>
                 <div class="wrap">
                     <form action="" autocomplete="on">

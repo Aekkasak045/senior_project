@@ -6,6 +6,7 @@ if (isset($_GET["org_id"])) {
 } else {
     $org_id = $_GET["org_id"];
 }
+
 $sql = "SELECT L.id, O.org_name, L.lift_name, L.mac_address, L.max_level, L.floor_name";
 $sql .= " FROM lifts L";
 $sql .= " INNER JOIN organizations O ON L.org_id=O.id";
@@ -133,3 +134,18 @@ if (isset($_GET['logout'])) {
 </body>
 
 </html>
+
+<script>
+        function addInput() {
+            const container = document.getElementById("input-container");
+            const inputCount = container.getElementsByTagName("input").length;
+            
+            // Create a new input element
+            const newInput = document.createElement("input");
+            newInput.type = "text";
+            newInput.name = "devices[]"; // Name as an array
+            
+            // Append the new input element to the container
+            container.appendChild(newInput);
+        }
+    </script>

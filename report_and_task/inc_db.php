@@ -2,7 +2,7 @@
 $host = "localhost";
 $user = "root";
 $passwd = "";
-$db = "smartlift";
+$db = "test";
 $conn = mysqli_connect($host, $user, $passwd, $db);
 
 ?>

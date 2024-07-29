@@ -54,7 +54,7 @@
                         </button>
                         <div class="my-dropdown-content">
                             <a href="../user_info/user_information.php">USER INFO</a>
-                            <a href="../report/report_info.php">REPORT</a>
+                            <a href="../report_and_task/report_list.php">REPORT</a>
                             <a href="">TASK</a>
                         </div>
                     </div>

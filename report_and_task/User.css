@@ -188,9 +188,9 @@ td, th{
 .row-Role{
     width:45px;
 }
-.row-phone{
-    
-    width: 80px;
+.row-Action{
+    text-align: center;
+    width: 60px;
 }
 
 
