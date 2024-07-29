@@ -95,23 +95,13 @@ if (isset($_GET['logout'])) {
                                                     Detail:
                                                     <form action="" method="">
                                                         <input class="form-control" type="text" name="productline"  value="<?php echo htmlspecialchars($row["detail"]); ?>" style=" text-overflow: ellipsis; white-space: nowrap; ">
+                                                        
                                                     อุปกรณ์ที่ใช้:
                                                         <div id="input-container">
                                                             <input type="text" name="devices[]" placeholder="ชื่ออุปกรณ์">
                                                         </div>
                                                             <button type="button" onclick="addInput()">เพิ่มอุปกรณ์</button>
                                                         </div>
-                                                    เลือกช่างที่จะรับงาน:
-                                                    <select name="org_id" id="select">
-                                                        <?php
-                                                        while ($row = mysqli_fetch_assoc($rs_u)) {
-                                                            ?>
-                                                                <?php print ($row["first_name"]); ?>
-                                                            </option>
-                                                            <?php
-                                                        }
-                                                        ?>
-                                                    </select><br>
                                                 </div>
                                             <div class="col-12 d-flex justify-content-end">
                                             <input class="btn btn-primary" type="submit" name="edit" value="สร้างงาน">
