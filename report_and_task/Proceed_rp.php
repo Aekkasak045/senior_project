@@ -128,6 +128,10 @@ if (isset($_GET['logout'])) {
                                             </div>
                                         </div>
                                     </form>
+                                    <form action="delete_report.php" method="post" onsubmit="return confirm('คุณแน่ใจหรือว่าต้องการลบรายงานนี้?');">
+                                    <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row['rp_id']); ?>">
+                                    <button class="btn btn-danger" type="submit">ลบรายงาน</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>
