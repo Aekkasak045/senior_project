@@ -13,8 +13,8 @@ if ($result->num_rows > 0) {
     echo "No engineers found";
 }
 
-$sql = "SELECT report.rp_id,report.detail,report.date_rp,
-users.username,users.first_name,users.last_name,users.email,users.phone,users.role,
+$sql = "SELECT report.rp_id,report.detail,report.date_rp,report.user_id
+,users.username,users.first_name,users.last_name,users.email,users.phone,users.role,
 organizations.org_name,
 building.building_name,
 lifts.lift_name FROM report 
@@ -79,6 +79,7 @@ if (isset($_GET['logout'])) {
                     <form action="save_task.php" method="post">
                         <div class="card" style="width: 80%; margin-left: auto; ">
                             <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row["rp_id"]); ?>">
+                            <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row["user_id"]); ?>">
                             <input type="hidden" name="username" value="<?php echo htmlspecialchars($row["username"]); ?>">
                             <input type="hidden" name="org_name" value="<?php echo htmlspecialchars($row["org_name"]); ?>">
                             <input type="hidden" name="building_name" value="<?php echo htmlspecialchars($row["building_name"]); ?>">
