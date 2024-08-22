@@ -1,46 +1,57 @@
 <?php
-// require ("inc_db.php");;
+require ("inc_db.php");;
 
-$connection = mysqli_connect("localhost","root","kuse@fse2018");
-$db = mysqli_select_db($connection, 'smartlift');
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
 
-// $id=$_POST["id"];
-// $username=$_POST["username"];
-// $fname=$_POST["first_name"];
-// $lname=$_POST["last_name"];
-// $email=$_POST["email"];
-// $phone=$_POST["phone"];
-// $bd =$_POST["bd"];
-// $role=$_POST["role"];
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // รับข้อมูลจากฟอร์ม
+    $report_id=$_POST['rp_id'];
+    $user_rp=$_POST['username'];
+    $org_name=$_POST['org_name'];
+    $building_name=$_POST['building_name'];
+    $lift_name=$_POST['lift_name'];
+    $task_detail = $_POST['detail'];
+    $engineer_id = $_POST['engineer_id'];
+    $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
+    $work_detail = "รายละเอียดงาน";  // สามารถปรับให้รับค่าจากฟอร์มได้
+    $work_image = "path_to_image";  // สามารถปรับให้รับค่าจากฟอร์มได้
 
-// echo "id:$id first_name:$fname last_name:$lname email:$email phone:$phone role:$role";
-// $sql="UPDATE users set first_name='$fname',last_name='$lname',email='$email',phone='$phone',role='$role' WHERE id=$id";
-// $conn->query($sql);
-// header( "location: User.php" );
+    // แปลงข้อมูล tools เป็น JSON
+    $tools_json = json_encode($tools);
 
-if(isset($_POST['updatedata']))
-    {   
-        $id=$_POST["id"];
-        $username=$_POST["username"];
-        $password=$_POST["password"];
-        $fname=$_POST["first_name"];
-        $lname=$_POST["last_name"];
-        $email=$_POST["email"];
-        $phone=$_POST["phone"];
-        $bd =$_POST["bd"];
-        $role=$_POST["role"];
+    // บันทึกข้อมูลลงในตาราง task
+    // $insert_task = "INSERT INTO task ( tk_data,rp_id,user,mainten_id,org_name,building_name,lift_id,tools) VALUES ('Pending', ?, ?, ?, ?, ?, ?, ?, ?)";
+    // $stmt_task = $conn->prepare($insert_task);
+    // $stmt_task->bind_param("sisissss", $task_detail, $report_id,$user_rp,$engineer_id,$org_name , $building_name,$lift_name ,$tools_json);
+    $insert_task = "INSERT INTO task (tk_data, rp_id, user, mainten_id, org_name, building_name, lift_id, tools) 
+                VALUES ('Pending', ?, ?, ?, ?, ?, ?, ?)";
+    $stmt_task = $conn->prepare($insert_task);
+    $stmt_task->bind_param("sisisss", $report_id, $user_rp, $engineer_id, $org_name, $building_name, $lift_name, $tools_json);
 
-        $query = "UPDATE users set username='$username', password='$password',first_name='$fname',last_name='$lname',email='$email',phone='$phone',bd='$bd', role='$role' WHERE id=$id ";
-        $query_run = mysqli_query($connection, $query);
+    if ($stmt_task->execute()) {
+        $task_id = $stmt_task->insert_id; // รับค่า tk_id ของงานที่ถูกสร้างใหม่
 
-        if($query_run)
-        {
-            echo '<script> alert("Data Updated"); </script>';
-            header("Location:user_information.php");
+        // บันทึกข้อมูลลงในตาราง work
+        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail, wk_img) VALUES ('Assigned', ?, ?, ?)";
+        $stmt_work = $conn->prepare($insert_work);
+        $stmt_work->bind_param("iss", $task_id, $work_detail, $work_image);
+
+        if ($stmt_work->execute()) {
+            echo "<script>
+            alert('สร้างงานเสร็จสิ้น');
+            window.location.href = 'report_list.php';
+        </script>";
+        exit();
+        } else {
+            echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลในตาราง work: " . $stmt_work->error;
         }
-        else
-        {
-            echo '<script> alert("Data Not Updated"); </script>';
-        }
+        $stmt_work->close();
+    } else {
+        echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลในตาราง task: " . $stmt_task->error;
     }
+
+    $stmt_task->close();
+}
 ?>
