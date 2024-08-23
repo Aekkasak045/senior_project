@@ -23,7 +23,7 @@ INNER JOIN organizations ON report.org_id = organizations.id
 INNER JOIN building ON report.building_id = building.id
 INNER JOIN lifts ON report.lift_id = lifts.id";
 $rs = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($rs)
+$row = mysqli_fetch_assoc($rs);
 
 ?>
 

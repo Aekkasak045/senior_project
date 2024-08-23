@@ -260,3 +260,18 @@ button:hover {
 .textpop{
     color: #ffffff;
 }
+
+.pro_bar{
+    background-color: #ffffff;
+    margin-top:50px;
+    align-items: center;
+}
+
+.status_box{
+    background-color: #ffffff;
+    padding: 10px;
+    margin-top: 50px;
+    height: 400px;
+    align-items: center;
+    border-radius: 10px;
+}

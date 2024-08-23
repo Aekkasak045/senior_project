@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task_detail = $_POST['detail'];
     $engineer_id = $_POST['engineer_id'];
     $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
-    $work_detail = "รายละเอียดงาน";  // สามารถปรับให้รับค่าจากฟอร์มได้
+    $work_detail = $_POST['detail'];;  // สามารถปรับให้รับค่าจากฟอร์มได้
     $work_image = "path_to_image";  // สามารถปรับให้รับค่าจากฟอร์มได้
 
     // แปลงข้อมูล tools เป็น JSON
