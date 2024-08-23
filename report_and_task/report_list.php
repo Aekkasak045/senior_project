@@ -11,7 +11,7 @@ $rs = mysqli_query($conn, $sql);
 
 <!-- ####################################################################### -->
 <!-- เช็ค session ว่ามีหรือเปล่า -->
-<?php
+<!-- <?php
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -24,7 +24,7 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['username']);
     header('location:../login/login.php');
 }
-?>
+?> -->
 <!-- ####################################################################### -->
 
 <!DOCTYPE html>
@@ -68,7 +68,6 @@ if (isset($_GET['logout'])) {
                 <table class="table1" id="table-data">
                     <thead>
                         <tr class="table-lift">
-                            <!-- <th class="row-1 row-status"></th> -->
                             <th class="row-1 row-ID">ID</th>
                             <th class="row-2 row-Username">Date</th>
                             <th class="row-3 row-Username">User</th>

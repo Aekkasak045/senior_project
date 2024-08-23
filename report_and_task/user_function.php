@@ -19,4 +19,13 @@
         else
             return "<td>User</td>";
     }
+
+    function show_task_status($row) {
+        if ($row["tk_status"] == 0)
+            return "<td>รอดำเนินการ</td>";
+        elseif ($row["tk_status"] == 1)
+            return "<td>กำลังดำเดินการ</td>";
+        else
+            return "<td>ดำเดินการเสร็จสิ้น</td>";
+    }
 ?>

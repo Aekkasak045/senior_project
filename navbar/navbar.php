@@ -55,7 +55,7 @@
                         <div class="my-dropdown-content">
                             <a href="../user_info/user_information.php">USER INFO</a>
                             <a href="../report_and_task/report_list.php">REPORT</a>
-                            <a href="">TASK</a>
+                            <a href="../report_and_task/task_list.php">TASK</a>
                         </div>
                     </div>
                 </ul>
