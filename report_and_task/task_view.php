@@ -13,7 +13,8 @@ INNER JOIN users AS reporter ON task.user_id = reporter.id
 INNER JOIN users AS mainten ON task.mainten_id = mainten.id
 INNER JOIN organizations ON task.org_name = organizations.org_name
 INNER JOIN building ON task.building_name = building.building_name
-INNER JOIN lifts ON task.lift_id = lifts.lift_name";
+INNER JOIN lifts ON task.lift_id = lifts.lift_name
+WHERE task.tk_id=$task_id";
 $rs = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($rs);
 ?>
