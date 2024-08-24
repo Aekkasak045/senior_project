@@ -3,21 +3,50 @@ require ("inc_db.php");
 include ("user_function.php");
 $task_id=$_GET["tk_id"];
 
+
 $sql = "SELECT task.tk_id,task.tk_status,task.tk_data,task.rp_id,task.user_id,task.user,task.mainten_id,task.org_name,task.building_name,task.lift_id,task.tools,
 reporter.username AS reporter_username, reporter.first_name AS reporter_first_name, reporter.last_name AS reporter_last_name, reporter.email AS reporter_email, reporter.phone AS reporter_phone, reporter.role AS reporter_role,
 mainten.username AS mainten_username, mainten.first_name AS mainten_first_name, mainten.last_name AS mainten_last_name, mainten.email AS mainten_email, mainten.phone AS mainten_phone, mainten.role AS mainten_role,
 organizations.org_name,
 building.building_name,
+task_status.status,task_status.time,task_status.detail,
 lifts.lift_name FROM task
 INNER JOIN users AS reporter ON task.user_id = reporter.id
 INNER JOIN users AS mainten ON task.mainten_id = mainten.id
 INNER JOIN organizations ON task.org_name = organizations.org_name
 INNER JOIN building ON task.building_name = building.building_name
 INNER JOIN lifts ON task.lift_id = lifts.lift_name
+INNER JOIN task_status ON task.tk_id = task_status.tk_id
 WHERE task.tk_id=$task_id";
 $rs = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($rs);
+
+
+$timeline = "SELECT tk_status_id, status, time, detail 
+        FROM task_status 
+        WHERE tk_id = ? 
+        ORDER BY time DESC";
+$stmt = $conn->prepare($timeline);
+$stmt->bind_param("i", $task_id);  // ใช้ $task_id แทน $tk_id
+$stmt->execute();
+$result = $stmt->get_result();
+
+$task_statuses = [];
+if ($result->num_rows > 0) {
+    while ($status_row = $result->fetch_assoc()) {  // ใช้ตัวแปรใหม่ $status_row เพื่อไม่ทับกับ $row ที่ใช้ด้านบน
+        $task_statuses[] = $status_row;
+    }
+} else {
+    echo "ไม่พบสถานะสำหรับงานนี้";
+}
+
+$stmt->close();
+//$conn->close(); // ปิดการเชื่อมต่อฐานข้อมูลหลังจากแสดงผลเสร็จสิ้น
 ?>
+
+
+?>
+
 
 <!DOCTYPE html>
 <html>
@@ -51,10 +80,25 @@ $row = mysqli_fetch_assoc($rs);
                 <div class="row" style=" height:90%;">
                     <div class="col-sm-5"  style="margin-left: 50px;">
                         <div class="pro_bar">
-                            pro_bar
+                            process_bar
                         </div>
-                        <div class="status_box">
-                            status_box
+                        <div class="status_box" >
+
+                            <ul class="timeline">
+                                <?php foreach ($task_statuses as $status): ?>
+                                    <li class="timeline-item">
+                                        <div class="timeline-left">
+                                            <span class="time"><?php echo date("d/m/y", strtotime($status['time'])); ?></span>
+                                        </div>
+                                        <div class="timeline-divider"></div>
+                                        <div class="timeline-right">
+                                            <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
+                                        </div>
+                                    </li>
+                                <?php endforeach; ?>
+                            </ul>
+
+
                         </div>
                     </div>
                     
