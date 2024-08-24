@@ -25,7 +25,7 @@ $row = mysqli_fetch_assoc($rs);
 $timeline = "SELECT tk_status_id, status, time, detail 
         FROM task_status 
         WHERE tk_id = ? 
-        ORDER BY time DESC";
+        ORDER BY tk_status_id DESC";
 $stmt = $conn->prepare($timeline);
 $stmt->bind_param("i", $task_id);  // ใช้ $task_id แทน $tk_id
 $stmt->execute();
@@ -45,7 +45,7 @@ $stmt->close();
 ?>
 
 
-?>
+
 
 
 <!DOCTYPE html>
