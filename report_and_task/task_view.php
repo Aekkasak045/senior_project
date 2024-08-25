@@ -21,7 +21,6 @@ WHERE task.tk_id=$task_id";
 $rs = mysqli_query($conn, $sql);
 $row = mysqli_fetch_assoc($rs);
 
-
 $timeline = "SELECT tk_status_id, status, time, detail 
         FROM task_status 
         WHERE tk_id = ? 
