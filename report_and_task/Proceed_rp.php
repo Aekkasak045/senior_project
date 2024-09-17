@@ -120,7 +120,6 @@ if (isset($_GET['logout'])) {
                                     </div>
                                 </div>
                             </div>
-                        </form>
                     </div>
 
                     <!-- Task Details -->
@@ -132,11 +131,16 @@ if (isset($_GET['logout'])) {
                                     <textarea name="detail" class="form-control" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
                                 </div>
 
+                                <!-- Tools Used Section -->
                                 <h6>Tools Used</h6>
                                 <div id="input-container" class="mb-3">
-                                    <input type="text" name="tools[]" class="form-control mb-2" placeholder="Tool name">
+                                    <div class="input-group mb-2">
+                                        <input type="text" name="tools[]" class="form-control" placeholder="Tool name">
+                                        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
+                                    </div>
                                 </div>
-                                <button class="btn btn-sm btn-secondary mb-3" type="button" onclick="addInput()">Add Tool</button>
+                                <button class="btn btn-sm btn-secondary mb-3" type="button" onclick="addToolInput()">Add Tool</button>
+
 
                                 <h6>Assign Engineer</h6>
                                 <div class="mb-3">
@@ -151,6 +155,7 @@ if (isset($_GET['logout'])) {
                                     <input class="btn btn-primary" type="submit" name="edit" value="Create Task">
                                 </div>
                             </div>
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -168,14 +173,35 @@ if (isset($_GET['logout'])) {
 </html>
 
 <script>
-    function addInput() {
+    function addToolInput() {
         const container = document.getElementById("input-container");
-        const newInput = document.createElement("input");
-        newInput.type = "text";
-        newInput.name = "tools[]";
-        newInput.placeholder = "Tool name";
-        newInput.className = "form-control mb-2";
-        container.appendChild(newInput);
+
+        // Create a new div for the input group
+        const inputGroup = document.createElement("div");
+        inputGroup.className = "input-group mb-2";
+
+        // Create input for tool name
+        const toolInput = document.createElement("input");
+        toolInput.type = "text";
+        toolInput.name = "tools[]";
+        toolInput.placeholder = "Tool name";
+        toolInput.className = "form-control";
+
+        // Create input for quantity
+        const quantityInput = document.createElement("input");
+        quantityInput.type = "number";
+        quantityInput.name = "quantities[]";
+        quantityInput.placeholder = "Quantity";
+        quantityInput.className = "form-control";
+        quantityInput.min = "1";
+
+        // Append inputs to the input group
+        inputGroup.appendChild(toolInput);
+        inputGroup.appendChild(quantityInput);
+
+        // Append the input group to the container
+        container.appendChild(inputGroup);
     }
 </script>
+
 <script src="scripts.js"></script>

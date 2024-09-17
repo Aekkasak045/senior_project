@@ -1,5 +1,5 @@
 <?php
-require ("inc_db.php");
+require("inc_db.php");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -16,12 +16,20 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task_detail = $_POST['detail'];
     $engineer_id = $_POST['engineer_id'];
     $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
+    $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $work_detail = $_POST['detail'];
-    $work_image = "path_to_image";
+    $work_image = "path_to_image"; // Placeholder for image path
     $time = date("Y-m-d H:i:s"); 
 
+    // Combine tools and quantities into an array of objects
+    $tools_data = [];
+    foreach ($tools as $index => $tool) {
+        $quantity = isset($quantities[$index]) ? $quantities[$index] : 1;
+        $tools_data[] = ['tool' => $tool, 'quantity' => $quantity];
+    }
+
     // แปลงข้อมูล tools เป็น JSON
-    $tools_json = json_encode($tools);
+    $tools_json = json_encode($tools_data);
 
     // บันทึกข้อมูลลงในตาราง task
     $insert_task = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
@@ -65,4 +73,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt_task->close();
 }
+?>
+
 ?>
