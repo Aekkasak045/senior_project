@@ -1,6 +1,6 @@
 <?php
-require ("inc_db.php");
-include ("user_function.php");
+require("inc_db.php");
+include("user_function.php");
 
 $sql = "SELECT * FROM users";
 $rs = mysqli_query($conn, $sql);
@@ -26,13 +26,12 @@ if (isset($_GET['logout'])) {
 
 <!DOCTYPE html>
 <html>
-
 <head>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="User.css" />
+    <link rel="stylesheet" href="user.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -42,70 +41,71 @@ if (isset($_GET['logout'])) {
 
 <body class="background1">
     <!-- navbar -->
-    <?php require ('../navbar/navbar.php') ?>
-
+    <?php require('../navbar/navbar.php') ?>
 
     <!-- ####################################################################### -->
-    <!-- EDIT POP UP FORM ( Bootstrap MODAL) -->
-    <div class="modal fade row" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
-        aria-hidden="true">
-        <div class="modal-dialog col" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title textpop" id="exampleModalLabel"> Edit User information </h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <form action="saveuser.php" method="POST" class="popup_form">
-                    <div class="modal-body">
-                        <input type="hidden" name="id" id="id">
-                        <div class="form-group form__group ">
-                            <label class="textpop form__label "> Username </label>
-                            <input type="text" name="username" id="username" class="form-control form__field"
-                                placeholder="Enter Username">
-                        </div>
-                        <div class="form-group form__group ">
-                            <label class="textpop form__label"> Password </label>
-                            <input type="text" name="password" id="password" class="form-control form__field"
-                                placeholder="Enter Password">
-                        </div>
-                        <div class="form-group form__group ">
-                            <label class="textpop form__label "> First Name </label>
-                            <input type="text" name="first_name" id="first_name" class="form-control form__field"
-                                placeholder="Enter First Name">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="textpop form__label "> Last Name </label>
-                            <input type="text" name="last_name" id="last_name" class="form-control form__field"
-                                placeholder="Enter Last Name">
+
+<!-- EDIT POP UP FORM (Bootstrap MODAL) -->
+<div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Edit User Information</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <!-- Add enctype to support file uploads -->
+            <form action="saveuser.php" method="POST" class="popup_form" enctype="multipart/form-data">
+                <div class="modal-body">
+                    <input type="hidden" name="id" id="id">
+                    
+                    <!-- Display User Image -->
+                    <div class="form-group text-center">
+                        <img id="userImage" src="" alt="User Image" class="img-fluid" style="max-width: 150px; max-height: 150px; border-radius: 10px;">
+                    </div>
+
+                    <!-- Image Upload Field -->
+                    <div class="form-group form__group mt-3">
+                        <label class="form__label">Change Profile Picture</label>
+                        <input type="file" name="user_img" id="user_img" class="form-control form__field">
+                    </div>
+
+                    <!-- Other Fields -->
+                    <div class="form-group form__group mt-3">
+                            <label class="form__label">Username</label>
+                            <input type="text" name="username" id="username" class="form-control form__field" placeholder="Enter Username">
                         </div>
                         <div class="form-group form__group">
-                            <label class="textpop form__label "> Email</label>
+                            <label class="form__label">Password</label>
+                            <input type="text" name="password" id="password" class="form-control form__field" placeholder="Enter Password">
+                        </div>
+                        <div class="form-group form__group">
+                            <label class="form__label">First Name</label>
+                            <input type="text" name="first_name" id="first_name" class="form-control form__field" placeholder="Enter First Name">
+                        </div>
+                        <div class="form-group form__group">
+                            <label class="form__label">Last Name</label>
+                            <input type="text" name="last_name" id="last_name" class="form-control form__field" placeholder="Enter Last Name">
+                        </div>
+                        <div class="form-group form__group">
+                            <label class="form__label">Email</label>
                             <input type="text" name="email" id="email" class="form-control form__field" placeholder="Enter email">
                         </div>
                         <div class="form-group form__group">
-                            <label class="textpop form__label"> Phone Number </label>
-                            <input type="text" name="phone" id="phone" class="form-control form__field"
-                                placeholder="Enter Phone Number">
+                            <label class="form__label">Phone Number</label>
+                            <input type="text" name="phone" id="phone" class="form-control form__field" placeholder="Enter Phone Number">
                         </div>
                         <div class="form-group form__group">
-                            <label class="textpop form__label"> Birthday </label>
+                            <label class="form__label">Birthday</label>
                             <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday">
                         </div>
-                        <!-- <div class="form-group">
-                            <label> Role </label>
-                            <input type="text" name="role" id="role" class="form-control" placeholder="Enter Role">
-                        </div> -->
                         <div class="form-group form__group">
-                        <label class="textpop form__label"> Role </label>
-                            <select name="role" class="form-control form__field">
-                                <option value="admin">Admin
-                                </option>
-                                <option value="mainten">Mainten
-                                </option>
-                                <option value="user" >User
-                                </option>
+                            <label class="form__label">Role</label>
+                            <select name="role" id="role" class="form-control form__field">
+                                <option value="admin">Admin</option>
+                                <option value="mainten">Mainten</option>
+                                <option value="user">User</option>
                             </select>
                         </div>
                     </div>
@@ -117,6 +117,7 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
+
     <!-- ####################################################################### -->
 
     <div class="box-outer1">
@@ -128,36 +129,7 @@ if (isset($_GET['logout'])) {
                         <input class="search-input" type="text" name="search" id="search_text">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <button onclick="openPop()" class="text-popup "><i class="fa-solid fa-filter"></i></button>
-                    <!-- <div id="popupDialog">
-                        <p>Filter</p>
-                        <form action="user_filter" method="post"></form>
-                        <div class="role-filter-box">
-                            <p class="role-font">ID : <input type="number" name="id_nim">:<input type="number"
-                                    name="id_max"></p>
-                            <p class="role-font">Option ID : </p><input type="radio" name="id_ltoh" value="id_ltoh">
-                            Lowest to Highest <input type="radio" name="id_htol" value="id_htol"> Highest to Lowest
-                            <p class="role-font">Birthday : <input type="date" name="hbd_min" value="hbd_min">:<input
-                                    type="date" name="hbd_max" value="hbd_max"></p>
-                            <p class="role-font">Option Birthday : </p><input type="radio" name="hbd_ltoh"
-                                value="hbd_ltoh"> Lowest to Highest <input type="radio" name="hbd_htol"
-                                value="hbd_htol"> Highest to Lowest
-                            <p class="role-font">Role</p>
-                            <div class="role-filter">
-                                <label id="filter-style">Mainten</label><input type="checkbox" name="mainten"
-                                    value="mainten">
-                                <label id="filter-style">Admin</label><input type="checkbox" name="admin" value="admin">
-                                <label id="filter-style">User</label><input type="checkbox" name="user" value="user">
-                            </div>
-                        </div>
-                        </form>
-                        <button class="use-filter" onclick="()">
-                            Use
-                        </button>
-                        <button class="cencel-filter " onclick="openPop()">
-                            Close
-                        </button>
-                    </div> -->
+                    <button onclick="openPop()" class="text-popup"><i class="fa-solid fa-filter"></i></button>
                 </div>
             </section>
             <div class="sec1">
@@ -179,16 +151,16 @@ if (isset($_GET['logout'])) {
                     <div class="box-row">
                         <tbody id="showdata">
                             <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
-                                <tr class="table-lift   editbtn" onclick="">
+                                <tr class="table-lift editbtn" data-id="<?php echo $row['id']; ?>" onclick="openEditModal(this)">
                                     <?php echo role($row) ?>
-                                    <td><?php print ($row["id"]); ?></td>
-                                    <td><?php print ($row["username"]); ?></td>
-                                    <td><?php print ($row["password"]); ?></td>
-                                    <td><?php print ($row["first_name"]); ?></td>
-                                    <td><?php print ($row["last_name"]); ?></td>
-                                    <td><?php print ($row["email"]); ?></td>
-                                    <td><?php print ($row["phone"]); ?></td>
-                                    <td><?php print ($row["bd"]); ?></td>
+                                    <td><?php echo $row["id"]; ?></td>
+                                    <td><?php echo $row["username"]; ?></td>
+                                    <td><?php echo $row["password"]; ?></td>
+                                    <td><?php echo $row["first_name"]; ?></td>
+                                    <td><?php echo $row["last_name"]; ?></td>
+                                    <td><?php echo $row["email"]; ?></td>
+                                    <td><?php echo $row["phone"]; ?></td>
+                                    <td><?php echo $row["bd"]; ?></td>
                                     <?php echo show_role($row) ?>
                                 </tr>
                             <?php } ?>
@@ -198,29 +170,38 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
-</body>
 
-</html>
-<!-- script สำหรับการ search-input -->
-<script>
-    $(document).ready(function () {
-        $('#search_text').on("keyup", function () {
-            var search_text = $(this).val();
+    <script>
+        // Function to open the edit modal and show the user's image
+        function openEditModal(element) {
+            var userId = $(element).data('id');
+            // Call the AJAX request to get the user's data including the image
             $.ajax({
-                method: 'POST',
-                url: 'user_search.php',
-                data: { search: search_text },
-                success: function (response) {
-                    $("#showdata").html(response);
+                url: 'get_user_data.php', // URL of the PHP script to get user data
+                method: 'GET',
+                data: { id: userId },
+                success: function(response) {
+                    var data = JSON.parse(response);
+                    $('#id').val(data.id);
+                    $('#username').val(data.username);
+                    $('#password').val(data.password);
+                    $('#first_name').val(data.first_name);
+                    $('#last_name').val(data.last_name);
+                    $('#email').val(data.email);
+                    $('#phone').val(data.phone);
+                    $('#bd').val(data.bd);
+                    $('#role').val(data.role);
+                    // Set the image source to display the user's image
+                    $('#userImage').attr('src', 'data:image/jpeg;base64,' + data.user_img);
+                    $('#editmodal').modal('show'); // Show the modal
                 }
             });
-        });
-    });
-</script>
+        }
+    </script>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/jquery. dataTables.min.js"></script>
-<script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
-<script src="scripts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -2,17 +2,19 @@
 require ("inc_db.php");
 include ("user_function.php");
 
-$sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,lifts.lift_name FROM report 
-INNER JOIN users ON report.user_id = users.id 
-INNER JOIN organizations ON report.org_id = organizations.id
-INNER JOIN lifts ON report.lift_id = lifts.id
-ORDER BY rp_id ASC;";
+$sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
+     users.first_name AS engineer_first_name,
+    users.last_name AS engineer_last_name, 
+    task.org_name, task.building_name, task.lift_id, task.tools
+        FROM task
+        INNER JOIN users ON task.mainten_id = users.id
+        ORDER BY task.tk_id DESC";
 $rs = mysqli_query($conn, $sql);
 ?>
 
 <!-- ####################################################################### -->
 <!-- เช็ค session ว่ามีหรือเปล่า -->
-<?php
+<!-- <?php
 session_start();
 
 if (!isset($_SESSION['username'])) {
@@ -25,7 +27,7 @@ if (isset($_GET['logout'])) {
     unset($_SESSION['username']);
     header('location:../login/login.php');
 }
-?>
+?> -->
 <!-- ####################################################################### -->
 
 <!DOCTYPE html>
@@ -36,7 +38,7 @@ if (isset($_GET['logout'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="report.css" />
+    <link rel="stylesheet" href="User.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -54,40 +56,46 @@ if (isset($_GET['logout'])) {
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Report information</p>  
-                <!-- <div class="search_filter">
+                <p class="User_information">Task information</p>  
+                <div class="search_filter">
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_text">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <button onclick="openPop()" class="text-popup "><i class="fa-solid fa-filter"></i></button>
-                </div> -->
+                </div>
             </section>
+            <div>
+            </div>
             <div class="sec1">
                 <table class="table1" id="table-data">
                     <thead>
                         <tr class="table-lift">
                             <!-- <th class="row-1 row-status"></th> -->
                             <th class="row-1 row-ID">ID</th>
-                            <th class="row-2 row-Username">Date</th>
-                            <th class="row-3 row-Username">User</th>
-                            <th class="row-4 row-Name">Organization</th>
-                            <th class="row-5 row-Name">Lift</th>
-                            <th class="row-6 row-Username">Detail</th>
-                            <th class="row-7 row-Action">Action</th>
+                            <th class="row-2 row-Name">Status</th>
+                            <th class="row-3 row-Name">Task Detail</th>
+                            <th class="row-4 row-Name">Engineer</th>
+                            <th class="row-5 row-Name">Organization</th>
+                            <th class="row-6 row-Name">Building</th>
+                            <th class="row-7 row-Name">Lift</th>
+                            <th class="row-8 row-Username">Tools</th>
+                            <th class="row-9 row-Action">Action</th>
                         </tr>
                     </thead>
                     <div class="box-row">
                         <tbody id="showdata">
                             <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
                                 <tr class="table-lift" onclick="">
-                                    <td><?php print ($row["rp_id"]); ?></td>
-                                    <td><?php print ($row["date_rp"]); ?></td>
-                                    <td><?php print ($row["first_name"]); ?></td>
-                                    <td><?php print ($row["org_name"]); ?></td>
-                                    <td><?php print ($row["lift_name"]); ?></td>
-                                    <td><?php print ($row["detail"]); ?></td>
-                                    <td><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print ($row["rp_id"]); ?>" class="btn btn-success"> Proceed </a></td>
+                                <td><?php echo htmlspecialchars($row['tk_id']); ?></td>
+                                <?php echo show_task_status($row) ?>
+                                <td><?php echo htmlspecialchars($row['tk_data']); ?></td>
+                                <td><?php echo htmlspecialchars($row['engineer_first_name'] . ' ' . $row['engineer_last_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['org_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['building_name']); ?></td>
+                                <td><?php echo htmlspecialchars($row['lift_id']); ?></td>
+                                <td><?php echo htmlspecialchars(implode(", ", json_decode($row['tools'], true))); ?></td> 
+                                    <td><a id="edit-lift" href="task_view.php?tk_id=<?php print ($row["tk_id"]); ?>" class="btn btn-success">View</a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -100,7 +108,7 @@ if (isset($_GET['logout'])) {
 
 </html>
 <!-- script สำหรับการ search-input -->
-<!-- <script>
+<script>
     $(document).ready(function () {
         $('#search_text').on("keyup", function () {
             var search_text = $(this).val();
@@ -114,5 +122,5 @@ if (isset($_GET['logout'])) {
             });
         });
     });
-</script> -->
+</script>
 

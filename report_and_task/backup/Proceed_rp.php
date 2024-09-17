@@ -24,10 +24,12 @@ INNER JOIN building ON report.building_id = building.id
 INNER JOIN lifts ON report.lift_id = lifts.id
 WHERE report.rp_id=$report_id";
 $rs = mysqli_query($conn, $sql);
-$row = mysqli_fetch_assoc($rs)
+$row = mysqli_fetch_assoc($rs);
 
 ?>
 
+<!-- ####################################################################### -->
+<!-- เช็ค session ว่ามีหรือเปล่า -->
 <?php
 session_start();
 
@@ -42,6 +44,7 @@ if (isset($_GET['logout'])) {
     header('location:../login/login.php');
 }
 ?>
+<!-- ####################################################################### -->
 
 <!DOCTYPE html>
 <html>
@@ -51,7 +54,7 @@ if (isset($_GET['logout'])) {
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <link rel="stylesheet" href="proceed.css" />
+    <link rel="stylesheet" href="User.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
@@ -72,11 +75,10 @@ if (isset($_GET['logout'])) {
             <div>
             </div>
             <div class="sec1">
-                <div class="row">
-                <!-- <div class="row" style=" height:90%;"> -->
+                <div class="row" style=" height:90%;">
                     <div class="col-sm-6">
                     <form action="save_task.php" method="post">
-                        <div class="card_color">
+                        <div class="card" style="width: 80%; margin-left: auto; ">
                             <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row["rp_id"]); ?>">
                             <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row["user_id"]); ?>">
                             <input type="hidden" name="username" value="<?php echo htmlspecialchars($row["username"]); ?>">
@@ -84,66 +86,55 @@ if (isset($_GET['logout'])) {
                             <input type="hidden" name="building_name" value="<?php echo htmlspecialchars($row["building_name"]); ?>">
                             <input type="hidden" name="lift_name" value="<?php echo htmlspecialchars($row["lift_name"]); ?>">
                             <div class="card-body">
-                                <h6 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h6>
+                                <h5 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h5>
                                 Username: <?php print ($row["username"]); ?> <br>
                                 Name: <?php print ($row["first_name"]); ?> <?php print ($row["last_name"]); ?><br>
                                 Phone Number: <?php print ($row["phone"]); ?> <br>
                                 Email: <?php print ($row["email"]); ?> <br>
                             </div>
                         </div>
-                        <div style="height:15px"></div>
-                        <div class="card_color" id="sp">
-                            <div class="col-sm-3">
-                            <img src="https://cdn.icon-icons.com/icons2/1280/PNG/512/1497618988-16_85112.png" width="80%">
-                            </div>
+                        <div class="card" style="width: 80%; margin-left: auto; margin-top: 5rem; ">
                             <div class="card-body">
-                                <h6 class="card-title">สถานที่</h6>
-                                Organizations: <?php print ($row["org_name"]); ?> <br>
-                                Building: <?php print ($row["building_name"]); ?> <br>
-                                Lift: <?php print ($row["lift_name"]); ?> <br>
+                                <h5 class="card-title">สถานที่</h5>
+                                Organizations: <?php print ($row["org_name"]); ?> <br><br>
+                                Building: <?php print ($row["building_name"]); ?> <br><br>
+                                Lift: <?php print ($row["lift_name"]); ?> <br><br>
                             </div>
                         </div>
                     </div>
                     <div class="col-sm-6">
-                        <div class="card_color2">
-                            <div class="card-body1">
+                        <div class="card" style="width: 80%; height:100%; margin: auto; ">
+                            <div class="card-body">
                                         <div class="container" >
                                             <div class="row">
                                                 <div class="col-12">
-                                                    <h6>Detail :</h6>
-                                                    <div class="box1">
-                                                        <input type="text" name="detail"  value="<?php echo htmlspecialchars($row["detail"]); ?>" style=" text-overflow: ellipsis; white-space: nowrap; ">
-                                                    </div>
-                                                    <br>
-                                                    <h6>อุปกรณ์ที่ใช้ :</h6>
+                                                    Detail:
+                                                        <input class="form-control" type="text" name="detail"  value="<?php echo htmlspecialchars($row["detail"]); ?>" style=" text-overflow: ellipsis; white-space: nowrap; ">
+                                                    อุปกรณ์ที่ใช้:
                                                     <form action="" method="POST">
-                                                    <div id="input-container" class="box1_add">
-                                                        <input type="text" name="tools[]" placeholder="ชื่ออุปกรณ์"><br>
+                                                    <div id="input-container">
+                                                        <input type="text" name="tools[]" placeholder="ชื่ออุปกรณ์">
                                                     </div>
-                                                    <button class="b_addinput" type="button" onclick="addInput()">เพิ่มอุปกรณ์</button>
+                                                    <button type="button" onclick="addInput()">เพิ่มอุปกรณ์</button>
                                                     <br><br>
                                                 </div>
-                                                    <div class="s_box2">
-                                                        <label for="engineer"><h6>เลือกช่างที่จะรับงาน :</h6></label>
-                                                        <select class="box2" name="engineer_id" id="engineer" required>
-                                                            <?php foreach ($engineers as $engineer): ?>
-                                                                <option class="boxrole" value="<?= htmlspecialchars($engineer['id']) ?>" style=" text-overflow: ellipsis; white-space: nowrap;"><?= htmlspecialchars($engineer['first_name']) ?><?php echo " " ?><?= htmlspecialchars($engineer['last_name']) ?></option>
-                                                            <?php endforeach; ?>
-                                                        </select>
-                                                    </div>
-                                            <div class="col-12 d-flex justify-content-center">
-                                            <input class="btn btn-light btn-sm" style="width:200px; color:#23577D;" type="submit" name="edit" value="สร้างงาน">
+                                                    <label for="engineer">เลือกช่างที่จะรับงาน:</label>
+                                                    <select name="engineer_id" id="engineer" required>
+                                                        <?php foreach ($engineers as $engineer): ?>
+                                                            <option value="<?= htmlspecialchars($engineer['id']) ?>"><?= htmlspecialchars($engineer['first_name']) ?><?php echo " " ?><?= htmlspecialchars($engineer['last_name']) ?></option>
+                                                        <?php endforeach; ?>
+                                                    </select>
+                                            <div class=" d-flex justify-content-center">
+                                            <input class="btn btn-primary" type="submit" name="edit" value="สร้างงาน">
                                             </div>
                                         </div>
                                     </form>
+                                    <div class="d-flex justify-content-center">
                                     <form action="delete_report.php" method="post" onsubmit="return confirm('คุณแน่ใจหรือว่าต้องการลบรายงานนี้?');">
-                                    <div class="col-12 d-flex justify-content-center">
-                                        <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row['rp_id']); ?>">
-                                        <button class="btn btn-sm" style="width:200px; margin-top:10px; color:#fff; border:1px soil #fff">
-                                            ลบรายงาน
-                                        </button>
-                                    </div>
+                                    <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row['rp_id']); ?>">
+                                        <button class="btn btn-danger" type="submit">ลบรายงาน</button>
                                     </form>
+                                    </div>
                                 </div>
                             </div>
                         </div>
