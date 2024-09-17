@@ -179,3 +179,11 @@
 }
 
 
+.textinfo{
+    font-size: calc(7px + 0.5vw);
+    transition: 0.4s;
+    color: #000000;
+    text-decoration: none;
+    padding: 0 10px;
+    margin: 0 10px;
+}
