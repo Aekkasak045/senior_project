@@ -141,7 +141,6 @@ if (isset($_GET['logout'])) {
                                 </div>
                                 <button class="btn btn-sm btn-secondary mb-3" type="button" onclick="addToolInput()">Add Tool</button>
 
-
                                 <h6>Assign Engineer</h6>
                                 <div class="mb-3">
                                     <select class="form-select" name="engineer_id" id="engineer" required>
