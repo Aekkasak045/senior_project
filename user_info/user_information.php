@@ -46,6 +46,7 @@ if (isset($_GET['logout'])) {
     <!-- ####################################################################### -->
 
 <!-- EDIT POP UP FORM (Bootstrap MODAL) -->
+<!-- EDIT POP UP FORM (Bootstrap MODAL) -->
 <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
@@ -73,50 +74,56 @@ if (isset($_GET['logout'])) {
 
                     <!-- Other Fields -->
                     <div class="form-group form__group mt-3">
-                            <label class="form__label">Username</label>
-                            <input type="text" name="username" id="username" class="form-control form__field" placeholder="Enter Username">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Password</label>
-                            <input type="text" name="password" id="password" class="form-control form__field" placeholder="Enter Password">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">First Name</label>
-                            <input type="text" name="first_name" id="first_name" class="form-control form__field" placeholder="Enter First Name">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Last Name</label>
-                            <input type="text" name="last_name" id="last_name" class="form-control form__field" placeholder="Enter Last Name">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Email</label>
-                            <input type="text" name="email" id="email" class="form-control form__field" placeholder="Enter email">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Phone Number</label>
-                            <input type="text" name="phone" id="phone" class="form-control form__field" placeholder="Enter Phone Number">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Birthday</label>
-                            <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday">
-                        </div>
-                        <div class="form-group form__group">
-                            <label class="form__label">Role</label>
-                            <select name="role" id="role" class="form-control form__field">
-                                <option value="admin">Admin</option>
-                                <option value="mainten">Mainten</option>
-                                <option value="user">User</option>
-                            </select>
-                        </div>
+                        <label class="form__label">Username</label>
+                        <input type="text" name="username" id="username" class="form-control form__field" placeholder="Enter Username">
                     </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
+                    <div class="form-group form__group">
+                        <label class="form__label">Password</label>
+                        <input type="text" name="password" id="password" class="form-control form__field" placeholder="Enter Password">
                     </div>
-                </form>
-            </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">First Name</label>
+                        <input type="text" name="first_name" id="first_name" class="form-control form__field" placeholder="Enter First Name">
+                    </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">Last Name</label>
+                        <input type="text" name="last_name" id="last_name" class="form-control form__field" placeholder="Enter Last Name">
+                    </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">Email</label>
+                        <input type="text" name="email" id="email" class="form-control form__field" placeholder="Enter email">
+                    </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">Phone Number</label>
+                        <input type="text" name="phone" id="phone" class="form-control form__field" placeholder="Enter Phone Number">
+                    </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">Birthday</label>
+                        <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday">
+                    </div>
+                    <div class="form-group form__group">
+                        <label class="form__label">Role</label>
+                        <select name="role" id="role" class="form-control form__field">
+                            <option value="admin">Admin</option>
+                            <option value="mainten">Mainten</option>
+                            <option value="user">User</option>
+                        </select>
+                    </div>
+                    
+                    <!-- Button to View Tasks - Hidden by default -->
+                    <div id="viewTasksContainer" style="display: none;" class="mt-3">
+                        <button type="button" class="btn btn-info btn-sm" onclick="viewTasks()">ดูงาน</button>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
+                </div>
+            </form>
         </div>
     </div>
+</div>
 
     <!-- ####################################################################### -->
 
@@ -171,32 +178,82 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 
+<!-- Task List Modal -->
+<div class="modal fade" id="taskListModal" tabindex="-1" role="dialog" aria-labelledby="taskListModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <!-- Header with custom styling -->
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title" id="taskListModalLabel">รายการงาน</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <!-- Body with better layout and spacing -->
+            <div class="modal-body" id="taskListModalBody">
+                <!-- Content will be loaded via AJAX -->
+            </div>
+            <!-- Footer with action buttons (optional) -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
     <script>
         // Function to open the edit modal and show the user's image
-        function openEditModal(element) {
-            var userId = $(element).data('id');
-            // Call the AJAX request to get the user's data including the image
-            $.ajax({
-                url: 'get_user_data.php', // URL of the PHP script to get user data
-                method: 'GET',
-                data: { id: userId },
-                success: function(response) {
-                    var data = JSON.parse(response);
-                    $('#id').val(data.id);
-                    $('#username').val(data.username);
-                    $('#password').val(data.password);
-                    $('#first_name').val(data.first_name);
-                    $('#last_name').val(data.last_name);
-                    $('#email').val(data.email);
-                    $('#phone').val(data.phone);
-                    $('#bd').val(data.bd);
-                    $('#role').val(data.role);
-                    // Set the image source to display the user's image
-                    $('#userImage').attr('src', 'data:image/jpeg;base64,' + data.user_img);
-                    $('#editmodal').modal('show'); // Show the modal
-                }
-            });
+function openEditModal(element) {
+    var userId = $(element).data('id');
+    // Call the AJAX request to get the user's data including the image
+    $.ajax({
+        url: 'get_user_data.php', // URL of the PHP script to get user data
+        method: 'GET',
+        data: { id: userId },
+        success: function(response) {
+            var data = JSON.parse(response);
+            $('#id').val(data.id);
+            $('#username').val(data.username);
+            $('#password').val(data.password);
+            $('#first_name').val(data.first_name);
+            $('#last_name').val(data.last_name);
+            $('#email').val(data.email);
+            $('#phone').val(data.phone);
+            $('#bd').val(data.bd);
+            $('#role').val(data.role);
+            // Set the image source to display the user's image
+            $('#userImage').attr('src', 'data:image/jpeg;base64,' + data.user_img);
+
+            // Show the "View Tasks" button if the user's role is "mainten"
+            if (data.role === "mainten") {
+                $('#viewTasksContainer').show();
+                // Store userId in a global variable to use in the viewTasks function
+                window.currentUserId = data.id;
+            } else {
+                $('#viewTasksContainer').hide();
+            }
+
+            $('#editmodal').modal('show'); // Show the modal
         }
+    });
+}
+
+// Function to view tasks for the selected user
+function viewTasks() {
+    if (window.currentUserId) {
+        // AJAX request to get tasks for the selected user
+        $.ajax({
+            url: 'get_user_tasks.php', // URL of the PHP script to get tasks
+            method: 'GET',
+            data: { id: window.currentUserId },
+            success: function(response) {
+                // Parse and display tasks in the modal
+                $('#taskListModalBody').html(response);
+                $('#taskListModal').modal('show'); // Show the modal
+            }
+        });
+    }
+}
+
     </script>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
