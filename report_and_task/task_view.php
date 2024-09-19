@@ -7,8 +7,8 @@ $task_id = $_GET["tk_id"];
 
 // SQL Query เพื่อดึงข้อมูลทั้งหมด
 $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id, task.user_id, task.user, task.mainten_id, task.org_name, task.building_name, task.lift_id, task.tools,
-        reporter.username AS reporter_username, reporter.first_name AS reporter_first_name, reporter.last_name AS reporter_last_name, reporter.email AS reporter_email, reporter.phone AS reporter_phone, reporter.role AS reporter_role,
-        mainten.username AS mainten_username, mainten.first_name AS mainten_first_name, mainten.last_name AS mainten_last_name, mainten.email AS mainten_email, mainten.phone AS mainten_phone, mainten.role AS mainten_role,
+        reporter.username AS reporter_username, reporter.first_name AS reporter_first_name, reporter.last_name AS reporter_last_name, reporter.email AS reporter_email, reporter.phone AS reporter_phone, reporter.role AS reporter_role, reporter.user_img AS reporter_user_img,
+        mainten.username AS mainten_username, mainten.first_name AS mainten_first_name, mainten.last_name AS mainten_last_name, mainten.email AS mainten_email, mainten.phone AS mainten_phone, mainten.role AS mainten_role, mainten.user_img AS mainten_user_img,
         organizations.org_name,
         building.building_name,
         task_status.status, task_status.time, task_status.detail,
@@ -46,7 +46,6 @@ if ($result->num_rows > 0) {
 }
 
 $stmt->close();
-// $conn->close(); // ปิดการเชื่อมต่อฐานข้อมูลหลังจากแสดงผลเสร็จสิ้น
 ?>
 
 <!DOCTYPE html>
@@ -122,6 +121,11 @@ $stmt->close();
                         <div class="card" style="width: 80%; margin: auto;">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลช่างที่ปฏิบัติงาน</h5>
+                                <?php if (!empty($row["mainten_user_img"])): ?>
+                                    <div class="text-center mb-3">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["mainten_user_img"]); ?>" alt="Engineer Image" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                                    </div>
+                                <?php endif; ?>
                                 Username: <?php echo $row["mainten_username"]; ?> <br>
                                 Name: <?php echo $row["mainten_first_name"] . " " . $row["mainten_last_name"]; ?><br>
                                 Phone Number: <?php echo $row["mainten_phone"]; ?> <br>
@@ -132,6 +136,11 @@ $stmt->close();
                         <div class="card" style="width: 80%; margin: auto; margin-top: 1.5rem;">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h5>
+                                <?php if (!empty($row["reporter_user_img"])): ?>
+                                    <div class="text-center mb-3">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["reporter_user_img"]); ?>" alt="Reporter Image" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                                    </div>
+                                <?php endif; ?>
                                 Username: <?php echo $row["reporter_username"]; ?> <br>
                                 Name: <?php echo $row["reporter_first_name"] . " " . $row["reporter_last_name"]; ?><br>
                                 Phone Number: <?php echo $row["reporter_phone"]; ?> <br>

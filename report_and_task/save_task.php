@@ -25,25 +25,25 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tools_data = [];
     foreach ($tools as $index => $tool) {
         // Make sure both tool and quantity are not empty
-        if (!empty(trim($tool)) && isset($quantities[$index])) {
+        if (!empty(trim($tool)) && isset($quantities[$index]) && !empty(trim($quantities[$index]))) {
             $quantity = (int)$quantities[$index]; // Make sure the quantity is an integer
             $tools_data[] = ['tool' => $tool, 'quantity' => $quantity];
         }
     }
 
+    // Encode tools_data as JSON
+    $tools_json = json_encode($tools_data);
+
     // Debugging: ดูข้อมูลที่รับจากฟอร์ม
+    
     echo "<pre>";
     echo "Tools: ";
     print_r($tools);
     echo "Quantities: ";
     print_r($quantities);
-    echo "</pre>";
-
-    // Encode tools_data as JSON
-    $tools_json = json_encode($tools_data);
-
-    // Debugging: ดู JSON ที่จะบันทึกลงฐานข้อมูล
     echo "Tools JSON: " . $tools_json;
+    echo "</pre>";
+    
 
     // Insert into task table
     $insert_task = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
@@ -60,17 +60,26 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // Insert into work table
         $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail, wk_img) VALUES ('Assigned', ?, ?, ?)";
         $stmt_work = $conn->prepare($insert_work);
+        if (!$stmt_work) {
+            die('Prepare failed: ' . $conn->error);
+        }
         $stmt_work->bind_param("iss", $task_id, $work_detail, $work_image);
 
         // Insert into task_status table
         $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
         $stmt_status = $conn->prepare($insert_status);
+        if (!$stmt_status) {
+            die('Prepare failed: ' . $conn->error);
+        }
         $stmt_status->bind_param("is", $task_id, $time);
 
         if ($stmt_work->execute() && $stmt_status->execute()) {
             // Delete the report
             $del_rp = "DELETE FROM report WHERE rp_id = ?";
             $stmt_rp = $conn->prepare($del_rp);
+            if (!$stmt_rp) {
+                die('Prepare failed: ' . $conn->error);
+            }
             $stmt_rp->bind_param("i", $report_id);
             $stmt_rp->execute();
 

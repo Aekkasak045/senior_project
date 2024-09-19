@@ -154,10 +154,11 @@ if (isset($_GET['logout'])) {
                                     <input class="btn btn-primary" type="submit" name="edit" value="Create Task">
                                 </div>
                             </div>
-                            </form>
                         </div>
                     </div>
                 </div>
+                <!-- Close the form -->
+                </form>
                 
                 <!-- Delete Report Button -->
                 <form action="delete_report.php" method="post" onsubmit="return confirm('Are you sure you want to delete this report?');" class="text-center mt-3">
@@ -182,14 +183,14 @@ if (isset($_GET['logout'])) {
         // Create input for tool name
         const toolInput = document.createElement("input");
         toolInput.type = "text";
-        toolInput.name = "tools[]";
+        toolInput.name = "tools[]"; // ตั้งชื่อเป็น array
         toolInput.placeholder = "Tool name";
         toolInput.className = "form-control";
 
         // Create input for quantity
         const quantityInput = document.createElement("input");
         quantityInput.type = "number";
-        quantityInput.name = "quantities[]";
+        quantityInput.name = "quantities[]"; // ตั้งชื่อเป็น array
         quantityInput.placeholder = "Quantity";
         quantityInput.className = "form-control";
         quantityInput.min = "1";
