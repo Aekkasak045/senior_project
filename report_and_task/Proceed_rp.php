@@ -59,7 +59,6 @@ if (isset($_GET['logout'])) {
 ?>
 
 <!DOCTYPE html>
-<html lang="en">
 
 <head>
     <meta charset="UTF-8" />
