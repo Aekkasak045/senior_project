@@ -7,11 +7,13 @@
     font-family: 'Inter', sans-serif;
 }
 
+p {
+    color: black;
+}
 
 body {
-    height: 100vh;
+    min-height: 100vh;
     width: 100%;
-
 }
 
 body::before {
@@ -21,55 +23,21 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background: linear-gradient(180deg, #567287 , #C7D0D7 , #B9C5CD , #8FA2AF );
+    background: linear-gradient(180deg, #567287, #C7D0D7, #B9C5CD, #8FA2AF);
     background-repeat: no-repeat;
     background-size: cover;
-    /* filter: brightness(0.4); */
     z-index: -1;
 }
 
-/* HEADER */
-li {
-    list-style: none;
-    line-height: 50px
-}
-
-a,
-p {
-    font-size: calc(7px + 0.5vw);
-    transition: 0.4s;
-    color: #ffffff;
-    text-decoration: none;
-    padding: 0 10px;
-    margin: 0 10px;
-}
-
-.links a:hover {
-    background-color: #646464;
-    border-radius: 0.5rem;
-    color: #13171A;
-    padding: 24px 10px;
-}
-
-main {
-    position: relative;
-    padding: 0 2rem;
-}
-
+/* Header and Navbar */
 .navbar {
     width: 100%;
     height: 79px;
-    /* margin: 0 auto;
-    padding: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: space-between; */
     background: #1A405C;
 }
 
 .navbar-2 {
     width: 100%;
-    height: 79px;
     max-width: 1240px;
     margin: 0 auto;
     padding: 2.5rem;
@@ -80,18 +48,11 @@ main {
 
 .navbar-2>p {
     font-weight: 300;
-    /* margin-right: 1rem;
-    width: 130px; */
-}
-
-.navbar-2 .logo {
-    margin-right: 1rem;
 }
 
 .navbar-2 .links {
     display: flex;
     gap: 1.5rem;
-    margin-right: 11rem;
 }
 
 .navbar-2 .toggle_btn {
@@ -105,27 +66,13 @@ main {
     color: #fff;
 }
 
-/* DROPDOWN MENU */
-.dropdown {
-    float: left;
-    overflow: hidden;
-    display: flex;
-}
-
+/* Dropdown Menu */
 .dropdown .dropbtn {
     font-size: calc(7px + 0.5vw);
-    border: none;
-    outline: none;
     color: white;
     padding: 17px 16px;
     background-color: inherit;
-    font-family: inherit;
     margin: 0 auto;
-}
-
-.navbar a:hover,
-.dropdown:hover .dropbtn:hover {
-    background-color: red;
 }
 
 .dropdown-content {
@@ -133,43 +80,33 @@ main {
     position: absolute;
     background-color: #f9f9f9;
     min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
-    z-index: 2000;
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.2);
     border-radius: 5px;
     margin-top: 3rem;
 }
 
 .dropdown-content a {
-    float: none;
     color: black;
     padding: 12px 16px;
     text-decoration: none;
     display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
 }
 
 .dropdown:hover .dropdown-content {
     display: block;
 }
 
-/* SEARCH ICON */
+/* Search Icon */
 .wrap {
     display: inline-block;
     position: relative;
     height: 60px;
-    padding: 0;
     margin-left: 160px;
 }
 
 .search[type="text"] {
     height: 60px;
     font-size: calc(7px + 0.5vw);
-    display: inline-block;
-    font-weight: 100;
     border: none;
     outline: none;
     color: #fff;
@@ -185,10 +122,6 @@ main {
     cursor: pointer;
 }
 
-.search[type="text"]:focus:hover {
-    border-bottom: 1px solid #fff;
-}
-
 .search[type="text"]:focus {
     width: 200px;
     z-index: 1;
@@ -196,54 +129,17 @@ main {
     cursor: text;
 }
 
-.search[type="submit"] {
-    height: 62px;
-    width: 26px;
-    display: inline-block;
-    background: url(assets/images/icon/icon_search.svg) center center no-repeat;
-    text-indent: -10000px;
-    border: none;
-    position: absolute;
-    top: 0;
-    right: 0;
-    z-index: 2;
-    cursor: pointer;
-    transition: opacity .4s ease;
-}
-
-.search[type="submit"]:hover {
-    opacity: 0.8;
-}
-
-.content {
-    width: 100%;
-    height: 100vh;
-    color: #fff;
-    text-align: center;
-}
-
+/* Content Styling */
 .name_page>p {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
     text-align: center;
     font-size: calc(60px + 0.5vw);
     font-weight: 700;
     margin-top: 1rem;
-    align-items: center;
-    
-}
-
-.name_page>span {
-    font-size: calc(15px + 0.5vw);
-    font-weight: 700;
-    line-height: 2;
-    
 }
 
 .box_content {
     display: flex;
-    flex-flow: row wrap;
+    flex-wrap: wrap;
     justify-content: space-evenly;
     align-items: center;
     margin-top: 3rem;
@@ -255,31 +151,21 @@ main {
     height: 447px;
     background-color: #1A405C;
     border-radius: 15px;
-    box-shadow: 14px 15px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
+    box-shadow: 14px 15px 4px rgba(0, 0, 0, 0.25);
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    font-weight: 600;
     padding: 0.5rem;
-}
-
-.box_data>p {
-    font-size: calc(180px + 0.5vw);
-}
-
-.box_data>span {
-    font-size: calc(24px + 0.5vw);
-    line-height: 2;
+    transition: transform 0.3s ease;
 }
 
 .box_data:hover {
     transform: scale(1.03);
-    box-shadow: 14px 15px 4px 0px rgba(0, 0, 0, 0.25), 0px 4px 4px 0px rgba(0, 0, 0, 0.25);
 }
 
+/* Status Section */
 .status {
-    height: 1rem;
     display: grid;
     grid-template-columns: auto;
     color: #fff;
@@ -296,10 +182,74 @@ main {
 
 .icon>img {
     width: calc(17px + 0.5vw);
-    margin-right: 0.5rem;
     filter: invert(1);
 }
 
-.icon>h5 {
-    font-weight: 700;
+/* Progress Bar */
+.progress-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 0 20px;
+    width: 100%;
+}
+
+.step {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex: 1;
+}
+
+.circle {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    background-color: #c0c0c0;
+    text-align: center;
+    line-height: 30px;
+    font-size: 16px;
+    color: #fff;
+}
+
+.line {
+    width: 100%;
+    height: 5px;
+    background-color: #c0c0c0;
+    position: absolute;
+    top: 12px;
+    left: calc(50% + 15px);
+}
+
+.step:first-child .line {
+    display: none;
+}
+
+.active .circle {
+    background-color: #4CAF50;
+}
+
+.active .line {
+    background-color: #4CAF50;
+}
+
+.inactive {
+    color: #c0c0c0;
+}
+
+/* Media Queries for Responsive Design */
+@media (max-width: 768px) {
+    .navbar-2 {
+        flex-direction: column;
+    }
+
+    .box_content {
+        flex-direction: column;
+    }
+
+    .progress-container {
+        flex-direction: column;
+    }
 }
