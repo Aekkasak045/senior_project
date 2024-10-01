@@ -331,25 +331,24 @@ button:hover {
 
 .progress-container {
     display: flex;
-    align-items: center;
     justify-content: space-between;
-    margin: 30px 0;
+    align-items: center;
     position: relative;
-}
+    margin: 20px 0;
+    width: 100%;
+  }
+  
 
 /* Step circle */
 .circle {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
-    background-color: #e0e0e0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #fff;
+    background-color: lightgray;
+    line-height: 30px;
+    text-align: center;
     font-weight: bold;
-    z-index: 1; /* Make sure the circle is above the line */
-}
+  }
 
 /* Step circle active state */
 .circle.active {
@@ -358,13 +357,13 @@ button:hover {
 
 /* Line connecting the circles */
 .line {
+    display: flex;
     flex-grow: 1;
-    height: 4px;
-    background-color: #e0e0e0;
-    z-index: 0;
-    position: relative;
-    top: -20px; /* Adjust this value to align with the circles */
-}
+    height: 2px;
+    background-color: gray;
+    margin-top: -30px;
+    margin-left: -5px;
+  }
 
 .line:not(:last-child) {
     margin-right: -5px; /* Adjust the margin to connect the lines with circles */
@@ -377,11 +376,19 @@ button:hover {
 
 /* Step label */
 .step-label {
-    text-align: center;
     margin-top: 10px;
-    color: #28a745; /* สีของข้อความ */
-}
+    font-size: 14px;
+  }
 
 .step-label.inactive {
     color: #999;
 }
+
+.step {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    margin: 0px 5px;
+  }
+

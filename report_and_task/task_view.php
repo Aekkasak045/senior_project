@@ -1,6 +1,6 @@
-<?php 
-require ("inc_db.php");
-include ("user_function.php");
+<?php
+require("inc_db.php");
+include("user_function.php");
 
 // รับค่า tk_id จาก URL
 $task_id = $_GET["tk_id"];
@@ -44,12 +44,28 @@ if ($result->num_rows > 0) {
 } else {
     echo "ไม่พบสถานะสำหรับงานนี้";
 }
-
 $stmt->close();
+
+// SQL Query สำหรับดึงข้อมูลรูปภาพจากตาราง work
+$work_sql = "SELECT wk_img FROM work WHERE tk_id = ?";
+$stmt_work = $conn->prepare($work_sql);
+$stmt_work->bind_param("i", $task_id);
+$stmt_work->execute();
+$result_work = $stmt_work->get_result();
+$work_images = [];
+if ($result_work->num_rows > 0) {
+    while ($work_row = $result_work->fetch_assoc()) {
+        $work_images[] = $work_row['wk_img'];
+    }
+}
+$stmt_work->close();
+
+
 ?>
 
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="UTF-8">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
@@ -66,7 +82,7 @@ $stmt->close();
     <div class="box-outer1">
         <div class="box-outer2">
             <div class="topinfo_task" style="display: flex; align-items: center; padding: 5px;">
-                <p class="User_information">TASK : <?php echo $row["tk_id"]; ?></p> 
+                <p class="User_information">TASK : <?php echo $row["tk_id"]; ?></p>
                 <p>STATUS: <?php echo show_task_status($row); ?></p>
                 <a href="task_list.php">Back</a>
             </div>
@@ -78,19 +94,19 @@ $stmt->close();
                             <div class="progress-container">
                                 <div class="step">
                                     <div class="circle" id="step1">1</div>
-                                    <div class="line" id="line1"></div>
                                     <div class="step-label" id="label1">Step 1</div>
                                 </div>
+                                <div class="line" id="line1"></div>
                                 <div class="step">
                                     <div class="circle" id="step2">2</div>
-                                    <div class="line" id="line2"></div>
                                     <div class="step-label" id="label2">Step 2</div>
                                 </div>
+                                <div class="line" id="line2"></div>
                                 <div class="step">
                                     <div class="circle" id="step3">3</div>
-                                    <div class="line" id="line3"></div>
                                     <div class="step-label" id="label3">Step 3</div>
                                 </div>
+                                <div class="line" id="line3"></div>
                                 <div class="step">
                                     <div class="circle" id="step4">4</div>
                                     <div class="step-label" id="label4">Step 4</div>
@@ -99,9 +115,10 @@ $stmt->close();
                         </div>
 
                         <!-- Timeline -->
+                        <!-- Timeline -->
                         <div class="status_box">
                             <ul class="timeline">
-                                <?php foreach ($task_statuses as $status): ?>
+                                <?php foreach ($task_statuses as $index => $status): ?>
                                     <li class="timeline-item">
                                         <div class="timeline-left">
                                             <span class="time"><?php echo date("d/m/y", strtotime($status['time'])); ?></span>
@@ -109,13 +126,20 @@ $stmt->close();
                                         <div class="timeline-divider"></div>
                                         <div class="timeline-right">
                                             <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
+
+                                            <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
+                                            <?php if (!empty($work_images[$index])): ?>
+                                                <br>
+                                                <a href="#" class="view-image" data-image="<?php echo $work_images[$index]; ?>">ดูรูปภาพ</a>
+                                            <?php endif; ?>
                                         </div>
                                     </li>
                                 <?php endforeach; ?>
                             </ul>
                         </div>
+
                     </div>
-                    
+
                     <!-- ข้อมูลช่างและผู้ใช้งาน -->
                     <div class="col-sm-6">
                         <div class="card" style="width: 80%; margin: auto;">
@@ -132,7 +156,7 @@ $stmt->close();
                                 Email: <?php echo $row["mainten_email"]; ?> <br>
                             </div>
                         </div>
-                        
+
                         <div class="card" style="width: 80%; margin: auto; margin-top: 1.5rem;">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h5>
@@ -200,4 +224,27 @@ $stmt->close();
         }
     }
 </script>
+<!-- Pop-up container -->
+<div id="imageModal" class="modal" style="display:none;">
+    <span class="close">&times;</span>
+    <img class="modal-content" id="popupImage">
+</div>
+
+<script>
+    // ฟังก์ชันสำหรับเปิดป๊อปอัพแสดงรูปภาพ
+    document.querySelectorAll('.view-image').forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+            var imgSrc = this.getAttribute('data-image');
+            document.getElementById('popupImage').src = 'path_to_image_folder/' + imgSrc; // เปลี่ยนเป็น path ที่เก็บรูปภาพ
+            document.getElementById('imageModal').style.display = 'block';
+        });
+    });
+
+    // ฟังก์ชันสำหรับปิดป๊อปอัพ
+    document.querySelector('.close').onclick = function() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+</script>
+
 </html>

@@ -69,7 +69,7 @@ if (isset($_GET['logout'])) {
                     <!-- Image Upload Field -->
                     <div class="form-group form__group mt-3">
                         <label class="form__label">Change Profile Picture</label>
-                        <input type="file" name="user_img" id="user_img" class="form-control form__field">
+                        <input type="file" name="user_img" id="user_img" class="form-control form__field" onchange="validateImageSize()">
                     </div>
 
                     <!-- Other Fields -->
@@ -185,7 +185,6 @@ if (isset($_GET['logout'])) {
             <!-- Header with custom styling -->
             <div class="modal-header bg-primary text-white">
                 <h5 class="modal-title" id="taskListModalLabel">รายการงาน</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <!-- Body with better layout and spacing -->
             <div class="modal-body" id="taskListModalBody">
@@ -193,7 +192,7 @@ if (isset($_GET['logout'])) {
             </div>
             <!-- Footer with action buttons (optional) -->
             <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">ปิด</button>
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
@@ -255,7 +254,17 @@ function viewTasks() {
 }
 
     </script>
-
+<script>
+    function validateImageSize() {
+        const fileInput = document.getElementById('user_img');
+        const file = fileInput.files[0];
+        
+        if (file.size > 2400000) {  // ขนาดไฟล์ 2.4MB = 2,400,000 bytes
+            alert("The file is too large. Maximum size allowed is 2.4MB.");
+            fileInput.value = '';  // รีเซ็ต input file ถ้าขนาดเกิน
+        }
+    }
+</script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js"></script>
