@@ -255,7 +255,7 @@ button:hover {
 /* ###################################### */
 
 .modal-content{
-    background-color: #1A405C;
+    background-color: #1a415c00;
 }
 .textpop{
     color: #ffffff;
@@ -280,7 +280,7 @@ button:hover {
 .timeline {
     list-style: none;
     padding: 0;
-    margin: 0; /* Remove default margin */
+    margin: 0; 
 }
 
 .timeline-item {
@@ -291,14 +291,18 @@ button:hover {
 }
 
 .timeline-left {
-    flex: 1; /* The left side where the time is displayed */
+    flex: 1; 
     text-align: left;
+    
 }
 
+
 .timeline-right {
-    flex: 3; /* The right side where the details are displayed */
+    flex: 3; 
     text-align: left;
-    padding-left: 20px; /* Add some padding to the right section */
+    padding-left: 20px; 
+    word-wrap: break-word;
+    white-space: normal;
 }
 
 .timeline-divider {
@@ -378,6 +382,7 @@ button:hover {
 .step-label {
     margin-top: 10px;
     font-size: 14px;
+    color: white;
   }
 
 .step-label.inactive {
@@ -392,3 +397,55 @@ button:hover {
     margin: 0px 5px;
   }
 
+/* ปรับขนาดรูปใน pop-up ให้เหมาะสม */
+#popupImage {
+    max-width: 100%;
+    max-height: 80vh; /* ทำให้ภาพสูงไม่เกิน 80% ของความสูงหน้าจอ */
+    object-fit: contain;
+}
+
+/* ปรับการแสดงผลของ modal */
+.modal {
+    display: none; 
+    position: fixed;
+    z-index: 1000; 
+    left: 0;
+    top: 0;
+    width: 100%; 
+    height: 100%; 
+    overflow: auto; 
+    background-color: rgba(0, 0, 0, 0.8); /* สีพื้นหลังแบบโปร่งใส */
+}
+
+.modal-content {
+    margin: 15% auto; 
+    display: block;
+    max-width: 90%; 
+    max-height: 80%;
+}
+
+.close {
+    position: absolute;
+    top: 10px;
+    right: 25px;
+    color: white;
+    font-size: 30px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.close:hover, .close:focus {
+    color: #999;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+.view-image{
+    color: rgb(60, 0, 255);
+    padding: 0;
+    margin: 0;
+}
+
+.task-link{
+     color: #000000 ;
+}

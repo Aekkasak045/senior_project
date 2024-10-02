@@ -15,12 +15,14 @@ if (isset($_GET['id'])) {
         echo '<ul class="list-group">';
         while ($task = $result->fetch_assoc()) {
             echo '<li class="list-group-item">';
-            echo 'งาน: ' . htmlspecialchars($task['tk_data']) . ' - สถานะ: ' . htmlspecialchars($task['tk_status']);
+            echo '<a style="color:black;" href="../report_and_task/task_view.php?tk_id=' . htmlspecialchars($task['tk_id']) . '" class="task-link">';
+            echo 'TaskID: '.htmlspecialchars($task['tk_id']).'<br>Task: ' . htmlspecialchars($task['tk_data']) . ' <br>Status: ' . htmlspecialchars($task['tk_status']);
+            echo '</a>';
             echo '</li>';
         }
         echo '</ul>';
     } else {
-        echo 'ไม่พบงานสำหรับผู้ใช้นี้';
+        echo 'No tasks found for this user.';
     }
 
     $stmt->close();

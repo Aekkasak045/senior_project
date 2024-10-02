@@ -46,19 +46,25 @@ if ($result->num_rows > 0) {
 }
 $stmt->close();
 
-// SQL Query สำหรับดึงข้อมูลรูปภาพจากตาราง work
-$work_sql = "SELECT wk_img FROM work WHERE tk_id = ?";
+// SQL Query สำหรับดึงข้อมูลรูปภาพจากตาราง task_status โดยดึง tk_status_id มาด้วย
+$work_sql = "SELECT tk_status_id, tk_img FROM task_status WHERE tk_id = ?";
 $stmt_work = $conn->prepare($work_sql);
 $stmt_work->bind_param("i", $task_id);
 $stmt_work->execute();
 $result_work = $stmt_work->get_result();
 $work_images = [];
+
 if ($result_work->num_rows > 0) {
     while ($work_row = $result_work->fetch_assoc()) {
-        $work_images[] = $work_row['wk_img'];
+        // จับคู่รูปภาพกับ tk_status_id
+        if (!empty($work_row['tk_img'])) {
+            $work_images[$work_row['tk_status_id']] = base64_encode($work_row['tk_img']); // แปลงรูปภาพเป็น Base64
+        }
     }
 }
 $stmt_work->close();
+
+
 
 
 ?>
@@ -115,7 +121,6 @@ $stmt_work->close();
                         </div>
 
                         <!-- Timeline -->
-                        <!-- Timeline -->
                         <div class="status_box">
                             <ul class="timeline">
                                 <?php foreach ($task_statuses as $index => $status): ?>
@@ -127,14 +132,14 @@ $stmt_work->close();
                                         <div class="timeline-right">
                                             <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
 
-                                            <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
-                                            <?php if (!empty($work_images[$index])): ?>
-                                                <br>
-                                                <a href="#" class="view-image" data-image="<?php echo $work_images[$index]; ?>">ดูรูปภาพ</a>
-                                            <?php endif; ?>
+                                        <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
+                                        <?php if (!empty($work_images[$status['tk_status_id']])): ?>
+                                            <br>
+                                            <a href="#" class="view-image" data-image="data:image/jpeg;base64,<?php echo $work_images[$status['tk_status_id']]; ?>">ดูรูปภาพ</a>
+                                        <?php endif; ?>
                                         </div>
                                     </li>
-                                <?php endforeach; ?>
+                                <?php endforeach ; ?>
                             </ul>
                         </div>
 
@@ -232,19 +237,20 @@ $stmt_work->close();
 
 <script>
     // ฟังก์ชันสำหรับเปิดป๊อปอัพแสดงรูปภาพ
-    document.querySelectorAll('.view-image').forEach(item => {
-        item.addEventListener('click', function(event) {
-            event.preventDefault();
-            var imgSrc = this.getAttribute('data-image');
-            document.getElementById('popupImage').src = 'path_to_image_folder/' + imgSrc; // เปลี่ยนเป็น path ที่เก็บรูปภาพ
-            document.getElementById('imageModal').style.display = 'block';
-        });
+document.querySelectorAll('.view-image').forEach(item => {
+    item.addEventListener('click', function(event) {
+        event.preventDefault();
+        var imgSrc = this.getAttribute('data-image');
+        document.getElementById('popupImage').src = imgSrc; // ใช้ Base64 image string
+        document.getElementById('imageModal').style.display = 'block';
     });
+});
 
-    // ฟังก์ชันสำหรับปิดป๊อปอัพ
-    document.querySelector('.close').onclick = function() {
-        document.getElementById('imageModal').style.display = 'none';
-    }
+// ฟังก์ชันสำหรับปิดป๊อปอัพ
+document.querySelector('.close').onclick = function() {
+    document.getElementById('imageModal').style.display = 'none';
+}
+
 </script>
 
 </html>

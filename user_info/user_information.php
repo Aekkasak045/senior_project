@@ -114,7 +114,6 @@ if (isset($_GET['logout'])) {
                     <div id="viewTasksContainer" style="display: none;" class="mt-3">
                         <button type="button" class="btn btn-info btn-sm" onclick="viewTasks()">ดูงาน</button>
                     </div>
-
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -183,11 +182,11 @@ if (isset($_GET['logout'])) {
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <!-- Header with custom styling -->
-            <div class="modal-header bg-primary text-white">
-                <h5 class="modal-title" id="taskListModalLabel">รายการงาน</h5>
+            <div class="modal-header text-white">
+                <h5 class="modal-title" id="taskListModalLabel">Task List</h5>
             </div>
-            <!-- Body with better layout and spacing -->
-            <div class="modal-body" id="taskListModalBody">
+            <!-- Body where tasks are displayed -->
+            <div class="modal-body " id="taskListModalBody">
                 <!-- Content will be loaded via AJAX -->
             </div>
             <!-- Footer with action buttons (optional) -->
@@ -197,6 +196,7 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 </div>
+
 
 
     <script>
@@ -252,6 +252,7 @@ function viewTasks() {
         });
     }
 }
+
 
     </script>
 <script>

@@ -18,7 +18,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
     $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $work_detail = $_POST['detail'];
-    $work_image = "path_to_image"; // Placeholder for image path
     $time = date("Y-m-d H:i:s");
 
     // Combine tools and quantities into an array of objects
@@ -58,12 +57,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $task_id = $stmt_task->insert_id; // Get the new task's ID
 
         // Insert into work table
-        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail, wk_img) VALUES ('Assigned', ?, ?, ?)";
+        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail,) VALUES ('Assigned', ?, ?, )";
         $stmt_work = $conn->prepare($insert_work);
         if (!$stmt_work) {
             die('Prepare failed: ' . $conn->error);
         }
-        $stmt_work->bind_param("iss", $task_id, $work_detail, $work_image);
+        $stmt_work->bind_param("iss", $task_id, $work_detail, );
 
         // Insert into task_status table
         $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
