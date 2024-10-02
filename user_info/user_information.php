@@ -177,6 +177,7 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 
+<!-- หน้าtaskListเมื่อกดดูงาน NEWWWWWW -->
 <!-- Task List Modal -->
 <div class="modal fade" id="taskListModal" tabindex="-1" role="dialog" aria-labelledby="taskListModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
@@ -236,18 +237,16 @@ function openEditModal(element) {
     });
 }
 
-// Function to view tasks for the selected user
+// Functionเรียกtaskในหน้าuser NEWWWWWW
 function viewTasks() {
     if (window.currentUserId) {
-        // AJAX request to get tasks for the selected user
         $.ajax({
-            url: 'get_user_tasks.php', // URL of the PHP script to get tasks
+            url: 'get_user_tasks.php',
             method: 'GET',
             data: { id: window.currentUserId },
             success: function(response) {
-                // Parse and display tasks in the modal
                 $('#taskListModalBody').html(response);
-                $('#taskListModal').modal('show'); // Show the modal
+                $('#taskListModal').modal('show'); 
             }
         });
     }
