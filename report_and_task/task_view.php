@@ -68,7 +68,7 @@ $stmt_work->close();
 
 
 ?>
-
+ 
 <!DOCTYPE html>
 <html>
 
@@ -120,6 +120,17 @@ $stmt_work->close();
                             </div>
                         </div>
 
+                        <div >
+                            <div class="col-sm-12">
+                                <div class="card" style="width: 100%; margin: auto;">
+                                    <div class="card-body">
+                                        <h5 class="card-title">รายละเอียดงาน</h5>
+                                        <?php echo $row["tk_data"]; ?>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <!-- Timeline -->
                         <div class="status_box">
                             <ul class="timeline">

@@ -33,17 +33,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // Encode tools_data as JSON
     $tools_json = json_encode($tools_data);
 
-    // Debugging: ดูข้อมูลที่รับจากฟอร์ม
-    
-    echo "<pre>";
-    echo "Tools: ";
-    print_r($tools);
-    echo "Quantities: ";
-    print_r($quantities);
-    echo "Tools JSON: " . $tools_json;
-    echo "</pre>";
-    
-
     // Insert into task table
     $insert_task = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -57,12 +46,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $task_id = $stmt_task->insert_id; // Get the new task's ID
 
         // Insert into work table
-        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail,) VALUES ('Assigned', ?, ?, )";
+        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail) VALUES ('Assigned', ?, ?)";
         $stmt_work = $conn->prepare($insert_work);
         if (!$stmt_work) {
             die('Prepare failed: ' . $conn->error);
         }
-        $stmt_work->bind_param("iss", $task_id, $work_detail, );
+        $stmt_work->bind_param("is", $task_id, $work_detail);
 
         // Insert into task_status table
         $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
