@@ -34,8 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tools_json = json_encode($tools_data);
 
     // Insert into task table
-    $insert_task = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    $insert_task = "INSERT INTO task (tk_status,tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
+                    VALUES (1,?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt_task = $conn->prepare($insert_task);
     if (!$stmt_task) {
         die('Prepare failed: ' . $conn->error);
