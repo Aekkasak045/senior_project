@@ -42,20 +42,46 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $tools_json = json_encode($tools_data);
 
-    // Insert ข้อมูลลงในตาราง task
     $sql = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools, tk_status) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("siisissss", $task_detail, $rp_id, $user_id, $username, $mainten_id, $org_name, $building_name, $lift_name, $tools_json);
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("siisissss", $task_detail, $rp_id, $user_id, $username, $mainten_id, $org_name, $building_name, $lift_name, $tools_json);
 
-    if ($stmt->execute()) {
+if ($stmt->execute()) {
+    // ดึง task_id ของงานที่เพิ่งถูกสร้างขึ้น
+    $task_id = $stmt->insert_id; 
+
+    // Insert ข้อมูลลงในตาราง work
+    $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail) VALUES ('Assigned', ?, ?)";
+    $stmt_work = $conn->prepare($insert_work);
+    if (!$stmt_work) {
+        die('Prepare failed: ' . $conn->error);
+    }
+    $stmt_work->bind_param("is", $task_id, $task_detail);
+    
+    // Insert ข้อมูลลงในตาราง task_status
+    $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'มอบหมาย')";
+    $stmt_status = $conn->prepare($insert_status);
+    if (!$stmt_status) {
+        die('Prepare failed: ' . $conn->error);
+    }
+    $stmt_status->bind_param("is", $task_id, $time);
+
+    if ($stmt_work->execute() && $stmt_status->execute()) {
         echo "<script>alert('สร้างงานเสร็จสิ้น!'); window.location.href = 'task_list.php';</script>";
     } else {
-        echo "Error: " . $stmt->error;
+        echo "Error saving work or task status: " . $stmt_work->error . " / " . $stmt_status->error;
     }
 
-    $stmt->close();
-    exit();
+    // ปิดการเชื่อมต่อ statement
+    $stmt_work->close();
+    $stmt_status->close();
+} else {
+    echo "Error: " . $stmt->error;
+}
+
+$stmt->close();
+    
 }
 
 
@@ -104,7 +130,7 @@ if (isset($_GET['org_id'])) {
 
     <div class="container mt-5">
     <?php require('../navbar/navbar.php'); ?>
-    
+
     <h2>สร้างงาน (Create Task)</h2>
         <form action="" method="POST">
             <!-- Report ID (Auto fill เป็นค่าล่าสุด) -->
