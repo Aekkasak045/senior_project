@@ -35,6 +35,7 @@ $(document).ready(function () {
     });
 });
 
+
 function updateTaskStatus() {
     // ใช้ AJAX เพื่อเรียกไฟล์ PHP
     var xhr = new XMLHttpRequest();

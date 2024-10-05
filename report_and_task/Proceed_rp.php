@@ -75,16 +75,16 @@ if (isset($_GET['logout'])) {
     <!-- Navbar -->
     <?php require('../navbar/navbar.php'); ?>
 
-    <div class="container mt-4">
-        <div class="card shadow-sm">
-            <div class="card-header bg-primary text-white">
+    <div class="container box-outer1">
+        <div class="card box-outer2">
+            <div class="text-white">
                 <h5 class="mb-0">Create Task: <?php echo htmlspecialchars($row["rp_id"]); ?></h5>
             </div>
             <div class="card-body">
+            <form action="save_task.php" method="post" onsubmit="return validateForm()">
                 <div class="row">
                     <!-- User Information -->
                     <div class="col-md-6 mb-4">
-                        <form action="save_task.php" method="post">
                             <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row["rp_id"]); ?>">
                             <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row["user_id"]); ?>">
                             <input type="hidden" name="username" value="<?php echo htmlspecialchars($row["username"]); ?>">
@@ -96,23 +96,23 @@ if (isset($_GET['logout'])) {
                                     <h6 class="card-title">User Information</h6>
                                     <?php if (!empty($row["user_img"])): ?>
                                         <div class="text-center mb-3">
-                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row["user_img"]); ?>" alt="User Image" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row["user_img"]); ?>" alt="User Image" class="img-fluid">
                                         </div>
                                     <?php endif; ?>
                                     <p class="textinfo"><strong>Username:</strong> <?php echo htmlspecialchars($row["username"]); ?></p>
-                                    <p class="textinfo"><strong>Name:</strong> <?php echo htmlspecialchars($row["first_name"]) . ' ' . htmlspecialchars($row["last_name"]); ?></p>
+                                    <p class="textinfo"><strong >Name:</strong> <?php echo htmlspecialchars($row["first_name"]) . ' ' . htmlspecialchars($row["last_name"]); ?></p>
                                     <p class="textinfo"><strong>Phone:</strong> <?php echo htmlspecialchars($row["phone"]); ?></p>
                                     <p class="textinfo"><strong>Email:</strong> <?php echo htmlspecialchars($row["email"]); ?></p>
                                 </div>
                             </div>
                             <div class="card mb-3">
-                                <div class="row g-0">
-                                    <div class="col-md-4 d-flex align-items-center justify-content-center">
-                                        <img src="https://cdn.icon-icons.com/icons2/1280/PNG/512/1497618988-16_85112.png" class="img-fluid p-3" alt="location-icon">
+                                <div class="card-body ">
+                                    <h6 class="card-title">Location</h6>
+                                    <div class="body_location">
+                                    <div class="img_location">
+                                        <img src="img/building.png" class="img_fluid_location" alt="location-icon">
                                     </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h6 class="card-title">Location</h6>
+                                        <div class="card-body" style="padding: 0;">
                                             <p class="textinfo"><strong>Organization:</strong> <?php echo htmlspecialchars($row["org_name"]); ?></p>
                                             <p class="textinfo"><strong>Building:</strong> <?php echo htmlspecialchars($row["building_name"]); ?></p>
                                             <p class="textinfo"><strong>Lift:</strong> <?php echo htmlspecialchars($row["lift_name"]); ?></p>
@@ -123,35 +123,41 @@ if (isset($_GET['logout'])) {
                     </div>
 
                     <!-- Task Details -->
-                    <div class="col-md-6">
+                    <div class="col-md-6 mb-4">
                         <div class="card mb-3">
                             <div class="card-body">
-                                <h6>Details</h6>
+                            <form action="save_task.php" method="post"></form>
+                                <h6 class="card-title">Details</h6>
                                 <div class="mb-3">
-                                    <textarea name="detail" class="form-control" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
+                                    <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
                                 </div>
+                                
 
                                 <!-- Tools Used Section -->
-                                <h6>Tools Used</h6>
+                                <h6 class="card-title">Tools Used</h6>
                                 <div id="input-container" class="mb-3">
                                     <div class="input-group mb-2">
-                                        <input type="text" name="tools[]" class="form-control" placeholder="Tool name">
-                                        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
-                                    </div>
+                                        <input type="text" name="tools[]" class="form-control" placeholder="Tool name" >
+                                        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1" >
+                                        <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>                                 
                                 </div>
-                                <button class="btn btn-sm btn-secondary mb-3" type="button" onclick="addToolInput()">Add Tool</button>
+                                
+                                <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
 
-                                <h6>Assign Engineer</h6>
-                                <div class="mb-3">
-                                    <select class="form-select" name="engineer_id" id="engineer" required>
+                                <h6 class="card-title">Assign Engineer</h6>
+                                <div class="mb-3 box3">
+                                    <select class="boxrole" name="engineer_id" id="engineer" required>
                                         <?php foreach ($engineers as $engineer): ?>
                                             <option value="<?php echo htmlspecialchars($engineer['id']); ?>"><?php echo htmlspecialchars($engineer['first_name'] . ' ' . $engineer['last_name']); ?></option>
-                                        <?php endforeach; ?>
+                                        <?php endforeach; ?>]
                                     </select>
                                 </div>
                                 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                    <input class="btn btn-primary" type="submit" name="edit" value="Create Task">
+                                    <input class="btn btn-primary create" type="submit" name="edit" value="Create Task">
                                 </div>
                             </div>
                         </div>
@@ -161,9 +167,9 @@ if (isset($_GET['logout'])) {
                 </form>
                 
                 <!-- Delete Report Button -->
-                <form action="delete_report.php" method="post" onsubmit="return confirm('Are you sure you want to delete this report?');" class="text-center mt-3">
+                <form action="delete_report.php" method="post" onsubmit="return confirm('Are you sure you want to delete this report?');" class="text-center mt-3 delete_task">
                     <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row['rp_id']); ?>">
-                    <button class="btn btn-danger" type="submit">Delete Report</button>
+                    <button class="btn btn-danger delete" type="submit">Delete Report</button>
                 </form>
             </div>
         </div>
@@ -174,35 +180,91 @@ if (isset($_GET['logout'])) {
 
 <script>
     function addToolInput() {
-        const container = document.getElementById("input-container");
+        var inputContainer = document.getElementById("input-container");
 
-        // Create a new div for the input group
-        const inputGroup = document.createElement("div");
-        inputGroup.className = "input-group mb-2";
+        // สร้าง div ใหม่สำหรับ input group ใหม่
+        var newInputGroup = document.createElement("div");
+        newInputGroup.classList.add("input-group", "mb-2");
 
-        // Create input for tool name
-        const toolInput = document.createElement("input");
-        toolInput.type = "text";
-        toolInput.name = "tools[]"; // ตั้งชื่อเป็น array
-        toolInput.placeholder = "Tool name";
-        toolInput.className = "form-control";
+        // สร้าง input สำหรับชื่อเครื่องมือ
+        var newToolInput = document.createElement("input");
+        newToolInput.setAttribute("type", "text");
+        newToolInput.setAttribute("name", "tools[]");
+        newToolInput.setAttribute("class", "form-control");
+        newToolInput.setAttribute("placeholder", "Tool name");
 
-        // Create input for quantity
-        const quantityInput = document.createElement("input");
-        quantityInput.type = "number";
-        quantityInput.name = "quantities[]"; // ตั้งชื่อเป็น array
-        quantityInput.placeholder = "Quantity";
-        quantityInput.className = "form-control";
-        quantityInput.min = "1";
+        // สร้าง input สำหรับจำนวน
+        var newQuantityInput = document.createElement("input");
+        newQuantityInput.setAttribute("type", "number");
+        newQuantityInput.setAttribute("name", "quantities[]");
+        newQuantityInput.setAttribute("class", "form-control");
+        newQuantityInput.setAttribute("placeholder", "Quantity");
+        newQuantityInput.setAttribute("min", "1");
 
-        // Append inputs to the input group
-        inputGroup.appendChild(toolInput);
-        inputGroup.appendChild(quantityInput);
+        // สร้างปุ่มลบเป็นไอคอน
+        var removeButton = document.createElement("button");
+        removeButton.setAttribute("type", "button");
+        removeButton.classList.add("btn", "btn-danger");
+        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>'; // ไอคอนถังขยะ
+        removeButton.onclick = function() {
+            removeToolInput(removeButton);
+        };
 
-        // Append the input group to the container
-        container.appendChild(inputGroup);
+        // เพิ่ม input ที่สร้างใหม่และปุ่มลบเข้าใน div
+        newInputGroup.appendChild(newToolInput);
+        newInputGroup.appendChild(newQuantityInput);
+        newInputGroup.appendChild(removeButton);
+
+        // เพิ่ม input group ใหม่ลงใน container
+        inputContainer.appendChild(newInputGroup);
+
+        // เปิดปุ่มลบของทุก input group
+        enableRemoveButtons();
+    }
+
+    function removeToolInput(button) {
+        // ลบ input group ที่ปุ่มลบนั้นอยู่
+        button.parentElement.remove();
+
+        // ตรวจสอบจำนวน input group
+        enableRemoveButtons();
+    }
+
+    function enableRemoveButtons() {
+        // ตรวจสอบจำนวนของ input group
+        var inputGroups = document.querySelectorAll("#input-container .input-group");
+        
+        // ถ้ามีมากกว่า 1 input group ให้เปิดการใช้งานปุ่มลบ
+        inputGroups.forEach(function(group) {
+            var removeButton = group.querySelector("button");
+            if (inputGroups.length > 1) {
+                removeButton.disabled = false;
+            } else {
+                removeButton.disabled = true;
+            }
+        });
+    }
+
+    // เรียกใช้ฟังก์ชันนี้เมื่อเริ่มต้นเพื่อปิดปุ่มลบถ้ามี input group เดียว
+    enableRemoveButtons();
+
+
+    function validateForm() {
+        var tools = document.querySelectorAll("input[name='tools[]']");
+        var quantities = document.querySelectorAll("input[name='quantities[]']");
+        
+        for (var i = 0; i < tools.length; i++) {
+            var tool = tools[i].value.trim();
+            var quantity = quantities[i].value.trim();
+
+            // ตรวจสอบว่าช่อง tool หรือ quantity ว่างหรือไม่
+            if (tool === "" || quantity === "") {
+                alert("Please fill out both Tool name and Quantity for all inputs.");
+                return false; // หยุดการส่งฟอร์ม
+            }
+        }
+        return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
     }
 </script>
 
 <script src="scripts.js"></script>
-

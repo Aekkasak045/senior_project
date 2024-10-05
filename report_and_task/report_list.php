@@ -7,7 +7,7 @@ $sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organi
 INNER JOIN users ON report.user_id = users.id 
 INNER JOIN organizations ON report.org_id = organizations.id
 INNER JOIN lifts ON report.lift_id = lifts.id
-ORDER BY rp_id ASC;";
+ORDER BY rp_id DESC;";
 $rs = mysqli_query($conn, $sql);
 ?>
 
@@ -56,13 +56,49 @@ if (isset($_GET['logout'])) {
         <div class="box-outer2">
             <section class="header_Table">
                 <p class="User_information">Report information</p>  
-                <!-- <div class="search_filter">
+                <!-- ########################### Search & Filter ########################### -->
+                <div class="search_filter">
                     <div class="search">
-                        <input class="search-input" type="text" name="search" id="search_text">
+                        <input class="search-input" type="text" name="search" id="search_report">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
-                    <button onclick="openPop()" class="text-popup "><i class="fa-solid fa-filter"></i></button>
-                </div> -->
+                    <button onclick="openPop()" class="text-popup"><i class="fa-solid fa-filter"></i></button>
+                    <div id="popupDialog">
+                            <p class="filter">Filter</p>
+                            <form action="" method="POST">
+                                <div class="role-filter-box">
+                                    <label class="role-font">ID : &nbsp;</label>
+                                        <input class="idm" type="number" id="number" name="id_min" placeholder="Min ID">
+                                        To
+                                        <input class="idm" type="number" id="number" name="id_max" placeholder="Max ID">
+                                    <br>
+                                    <br>
+                                    <label class="role-font">Option ID : </label>
+                                    <div class="idc">
+                                        <input type="radio" name="id" value="Lowest_to_Highest"> Lowest to Highest
+                                        <br>
+                                        <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
+                                        </div>
+                                    <br>
+                                    <label class="role-font">Birthday : 
+                                    <br>
+                                        <input class="bd" type="date" name="bd_min">
+                                        To
+                                        <input class="bd" type="date" name="bd_max">   
+                                </div>
+                                <br>
+                            <button type="submit" name="used_filter" class="used-filter" id="filter_text">Used</button>
+                            <label class="cencel-filter" onclick="openPop()">Close</label>
+                            </form>
+                        </div>
+                        <?php if(isset($_POST['used_filter']))
+                {   
+                    $sql = filter_report();
+                    $rs = mysqli_query($conn, $sql);
+                }                    
+                ?>
+                </div>
+                <!-- ####################################################################### -->
             </section>
             <div class="sec1">
                 <table class="table1" id="table-data">
@@ -70,11 +106,11 @@ if (isset($_GET['logout'])) {
                         <tr class="table-lift">
                             <!-- <th class="row-1 row-status"></th> -->
                             <th class="row-1 row-ID">ID</th>
-                            <th class="row-2 row-Username">Date</th>
+                            <th class="row-2 row-Date">Date</th>
                             <th class="row-3 row-Username">User</th>
-                            <th class="row-4 row-Name">Organization</th>
-                            <th class="row-5 row-Name">Lift</th>
-                            <th class="row-6 row-Username">Detail</th>
+                            <th class="row-4 row-Organization">Organization</th>
+                            <th class="row-5 row-Lift">Lift</th>
+                            <th class="row-6 row-Detail">Detail</th>
                             <th class="row-7 row-Action">Action</th>
                         </tr>
                     </thead>
@@ -88,7 +124,7 @@ if (isset($_GET['logout'])) {
                                     <td><?php print ($row["org_name"]); ?></td>
                                     <td><?php print ($row["lift_name"]); ?></td>
                                     <td><?php print ($row["detail"]); ?></td>
-                                    <td><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print ($row["rp_id"]); ?>" class="btn btn-success"> Proceed </a></td>
+                                    <td class="parent-container"><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print ($row["rp_id"]); ?>" class="btn btn-success button-style"> Proceed </a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -98,8 +134,8 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 </body>
-
+<script src="scripts.js"></script>
 </html>
 
-<script src="scripts.js"></script>
+
 

@@ -11,7 +11,6 @@
 /* ฉากหลัง */
 .background1 {
     width: 100%;
-    /* height: 100vh; */
     background-image: linear-gradient(180deg, #567287 , #C7D0D7 , #B9C5CD , #8FA2AF );   
     background-attachment: fixed;
     display: flex;
@@ -19,9 +18,12 @@
     flex-direction: column;
     align-items: center;
 }
+
+
+/* ###############################   ภาพรวม   ############################### */
 .box-outer1{
     height: 85vh;
-    width: 50%;
+    max-width: 900px;
     background-color: #ffffff;
     border-radius: 5px;
     overflow: hidden;
@@ -46,144 +48,156 @@
     height: 80vh;
     margin-bottom: 15px;
 }
-/* หัวข้อ */
-.User_information {
-    color: white;
-    margin-left: -10px;
-    /* margin-top: 20px; */
-    margin-bottom: 20px;
-    font-size: 25px;
-    font-weight: bold;
+.row{
+    margin-bottom: -45px;
+}
+.textinfo{
+    font-size: 13px;
+    transition: 0.4s;
+    color: #000000;
+    text-decoration: none;
+    padding: 0 10px;
+    margin: 0 10px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis; 
 }
 
 /* ###############################   กล่องซ้าย   ############################### */
-
-.row{/* ตัวหนังสือ */
-    font-size: 13px;
+.img-fluid {/* ขนาดภาพ */
+    max-width: 100px; 
+    max-height: 100px;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+.img_fluid_location{/* ขนาดไอคอนตึก */
+    max-width: 50px; 
+    max-height: 50px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+}
+.body_location{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.img_location{
+    padding-left: 15px;
 }
 .card-body{
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    padding: 15px 5px 15px 5px;
+    margin: 0;
+}
+.card-title{
+    text-align: center;
+}
+/* responsive จอ */
+.card-body{
+    height:90%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.card-body::-webkit-scrollbar{
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.card-body::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: #23577D;
+    visibility: visible;
+}
+.card-body:hover::-webkit-scrollbar-thumb{
+    visibility: visible;
 }
 .card_color{/* กล่องข้อมูลผู้ใช้และสถานที่ */
     color: rgb(255, 255, 255);
     background-color: #23577D;
     border-radius: 7px;
-    padding: 15px;
+    /* padding: 5px; */
     display: flex;
     flex-direction: row;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-#sp{/*โลโก้สถานที่อยู่ตรงกลาง*/
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
 
 /* ###############################   กล่องขวา   ############################### */
-
-.card_color2{/* กล่องรายละเอียด */
-    color: #ffffff;
-    background-color: #1A405C;
-    border-radius: 7px;
-    border: 1px solid #ffffff;
+.card-body{
+    margin-left: 10px;
+}
+/* กล่องรายละเอียด */
+.card_color2{
+    color: #1A405C;
+    border: 2px solid #23577D;
     padding: 15px;
-}
-/* เลือกช่าง */
-.box2{
-    height: 20px;
-    max-width: 130px;
-    margin: -20px 0 20px 0;
-    border-bottom: 1px solid #ffffff;
-    position: relative;
-    background-color: transparent;
-    color: #fff;
-}
-.boxrole{
-    background-color: #1A405C;
-    width: 10px;
-    font-weight: 400;
-    font-size: 13px;
-    color: white;
-}
-.boxrole select{
-    color: #fff;
-}
-/* ที่ใส่ข้อความ */
-.box1{
-    max-width: 280px;
-    border-bottom: 1px solid #ffffff;
-    position: relative;
-}
-.box1_add{
-    max-width: 150px;
-    border-bottom: 1px solid #ffffff;
-    position: relative;
-    margin-bottom: 0;
-}
-.box1 input, .box1_add input{
-    background: transparent;
-    border: none;
-    outline: none;
-    width: 100%;
-    height: 20px;
-    font-weight: 400;
-    font-size: 13px;
-    color: #fff;
-}
-/* สีของตัวหนังสือตอนไม่ใส่ข้อความ */
-::placeholder {
-    color: #3c6f93;
-    opacity: 1;
-  }
-::-ms-input-placeholder { 
-    color: #3c6f93;
-}
-/* ปุ่มเพิ่มอุปกรณ์ */
-.b_addinput{
-    height: 20px;
-    border-radius: 5px;
-    padding: 0 10px 0 10px;
-    margin-top: 10px;
-}
-
-.btn_delete{
-    width: auto;
-    height: 30px;
-    margin-top: 10px;
-}
-.btn_add{
-    width: 100px;
-    height: 30px;
-}
-
-.sec1{
-    height:90%;
+    height:80px;
+    border-radius: 0;
     overflow-y: scroll;
     overflow-x: hidden;
 }
-.sec1::-webkit-scrollbar{
+.card_color2::-webkit-scrollbar{
     width: 0.5rem;
     height: 0.5rem;
 }
-.sec1::-webkit-scrollbar-thumb{
+.card_color2::-webkit-scrollbar-track {
+    background-color: transparent;
+}
+.card_color2::-webkit-scrollbar-thumb{
     border-radius: .5rem;
     background-color: #23577D;
     visibility: visible;
 }
-.sec1:hover::-webkit-scrollbar-thumb{
+.card_color2:hover::-webkit-scrollbar-thumb{
     visibility: visible;
 }
+/* เลือกช่าง */
+.boxrole{
+    background-color: transparent;
+    width: 100%;
+    font-size: 15px;
+    color: #1A405C;
+}
+.boxrole select{
+    color: #1A405C;
+}
+.box3 input{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0;
+    color: #1A405C;
+}
+.box3{
+    width: 99%;
+    border-bottom: 3px solid #1A405C;
+    position: relative;
+    background-color: transparent;
+}
 
-
-.textinfo{
-    font-size: calc(7px + 0.5vw);
-    transition: 0.4s;
-    color: #000000;
-    text-decoration: none;
-    padding: 0 10px;
-    margin: 0 10px;
+/* ###############################  ปุ่ม  ############################### */
+.add_tool{
+    background-color: #6c6b6b;
+    color: #ffffff;
+    border: 0;
+}
+.create{
+    background-color: #1A405C;
+    color: #ffffff;
+}
+.delete{
+    background-color: red;
+    color: #ffffff;
+}
+.create:hover{
+    background-color: #002fff;
+    color: #ffffff;
+}
+.delete:hover{
+    background-color: rgb(171, 4, 4);
+    color: #ffffff;
 }

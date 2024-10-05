@@ -9,7 +9,7 @@ $rs = mysqli_query($conn, $sql);
 $data = '';
 
 while ($row = mysqli_fetch_assoc($rs)) {
-    $data .= "<tr class=\"table-lift\">" 
+    $data .= "<tr class=\"table-lift editbtn\" data-id=\"" . $row["id"] . "\" onclick=\"openEditModal(this)\">"
                 . role($row) .
                 "<td>" . $row["id"] . "</td>
                 <td>" . $row["username"] . "</td>

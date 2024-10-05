@@ -51,12 +51,7 @@ if (isset($_GET['logout'])) {
 <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
                 <h5 class="modal-title" id="exampleModalLabel">Edit User Information</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
             <!-- Add enctype to support file uploads -->
             <form action="saveuser.php" method="POST" class="popup_form" enctype="multipart/form-data">
                 <div class="modal-body">
@@ -64,61 +59,62 @@ if (isset($_GET['logout'])) {
                     
                     <!-- Display User Image -->
                     <div class="form-group text-center">
-                        <img id="userImage" src="" alt="User Image" class="img-fluid" style="max-width: 150px; max-height: 150px; border-radius: 10px;">
+                        <img id="userImage" src="" alt="User Image" class="img-fluid">
                     </div>
 
                     <!-- Image Upload Field -->
-                    <div class="form-group form__group mt-3">
-                        <label class="form__label">Change Profile Picture</label>
-                        <input type="file" name="user_img" id="user_img" class="form-control form__field" onchange="validateImageSize()">
+                    <div class="form-group form__group mt-3 change_img">
+                        <label class="form__label text_img">Change Profile Picture</label>
+                        <input type="file" name="user_img" id="user_img" class="form-control form__field block_img" onchange="validateImageSize()">
                     </div>
 
                     <!-- Other Fields -->
-                    <div class="form-group form__group mt-3">
-                        <label class="form__label">Username</label>
-                        <input type="text" name="username" id="username" class="form-control form__field" placeholder="Enter Username">
+                    <div class="form-group form__group mt-3 box1">
+                        <input type="text" name="username" id="username" placeholder="Enter Username" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>Username</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Password</label>
-                        <input type="text" name="password" id="password" class="form-control form__field" placeholder="Enter Password">
+                    <div class="form-group form__group box1">
+                        <input type="text" name="password" id="password" placeholder="Enter Password" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>Password</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">First Name</label>
-                        <input type="text" name="first_name" id="first_name" class="form-control form__field" placeholder="Enter First Name">
+                    <div class="form-group form__group box1">
+                        <input type="text" name="first_name" id="first_name" placeholder="Enter First Name" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>First Name</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Last Name</label>
-                        <input type="text" name="last_name" id="last_name" class="form-control form__field" placeholder="Enter Last Name">
+                    <div class="form-group form__group box1">
+                        <input type="text" name="last_name" id="last_name" placeholder="Enter Last Name" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>Last Name</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Email</label>
-                        <input type="text" name="email" id="email" class="form-control form__field" placeholder="Enter email">
+                    <div class="form-group form__group box1">
+                        <input type="text" name="email" id="email" placeholder="Enter email" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>Email</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Phone Number</label>
-                        <input type="text" name="phone" id="phone" class="form-control form__field" placeholder="Enter Phone Number">
+                    <div class="form-group form__group box1">
+                        <input type="text" name="phone" id="phone" placeholder="Enter Phone Number" style=" text-overflow: ellipsis; white-space: nowrap; " required>
+                        <label>Phone Number</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Birthday</label>
-                        <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday">
+                    <div class="box0">
+                    <div class="form-group form__group box2">
+                        <input type="date" name="bd" id="bd" class="form-control form__field" placeholder="Enter Birthday" required>
+                        <label>Birthday</label>
                     </div>
-                    <div class="form-group form__group">
-                        <label class="form__label">Role</label>
-                        <select name="role" id="role" class="form-control form__field">
+                    <div class="form-group form__group box3">
+                        <select name="role" id="role" class="boxrole" required>
                             <option value="admin">Admin</option>
                             <option value="mainten">Mainten</option>
                             <option value="user">User</option>
                         </select>
+                        <label>Role</label>
                     </div>
-                    
+                    </div>
                     <!-- Button to View Tasks - Hidden by default -->
-                    <div id="viewTasksContainer" style="display: none;" class="mt-3">
-                        <button type="button" class="btn btn-info btn-sm" onclick="viewTasks()">ดูงาน</button>
+                    <div id="viewTasksContainer" style="display: none;" class="mt-3 footer_view_task">
+                        <button type="button" class="btn btn-info btn-sm view_task" onclick="viewTasks()">ดูงาน</button>
                     </div>
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="submit" name="updatedata" class="btn btn-primary">Update Data</button>
+                <div class="footer">
+                    <button type="submit" name="updatedata" class="btn btn-primary edit">Save</button>
+                    <button type="button" class="btn btn-secondary close" data-dismiss="modal">Close</button>
                 </div>
             </form>
         </div>
@@ -131,13 +127,57 @@ if (isset($_GET['logout'])) {
         <div class="box-outer2">
             <section class="header_Table">
                 <p class="User_information">User Information</p>
+                <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_text">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <button onclick="openPop()" class="text-popup"><i class="fa-solid fa-filter"></i></button>
+                    <div id="popupDialog">
+                            <p class="filter">Filter</p>
+                            <form action="" method="POST">
+                                <div class="role-filter-box">
+                                    <label class="role-font">ID : &nbsp;</label>
+                                        <input class="idm" type="number" id="number" name="id_min" placeholder="Min ID">
+                                        To
+                                        <input class="idm" type="number" id="number" name="id_max" placeholder="Max ID">
+                                    <br>
+                                    <br>
+                                    <label class="role-font">Option ID : </label>
+                                    <div class="idc">
+                                        <input type="radio" name="id" value="Lowest_to_Highest"> Lowest to Highest
+                                        <br>
+                                        <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
+                                        </div>
+                                    <br>
+                                    <label class="role-font">Birthday : 
+                                    <br>
+                                        <input class="bd" type="date" name="bd_min">
+                                        To
+                                        <input class="bd" type="date" name="bd_max">
+                                    <br>
+                                    <br>
+                                    <label class="role-font">Role : </label>
+                                    <div class="role-filter">
+                                        <input type="radio" name="role" value="mainten"> Mainten
+                                        <input type="radio" name="role" value="admin"> Admin
+                                        <input type="radio" name="role" value="user"> User
+                                    </div>
+                                </div>
+                                <br>
+                            <button type="submit" name="used_filter" class="used-filter" id="filter_text">Used</button>
+                            <label class="cencel-filter" onclick="openPop()">Close</label>
+                            </form>
+                        </div>
+                        <?php if(isset($_POST['used_filter']))
+                {   
+                    $sql = filter_user();
+                    $rs = mysqli_query($conn, $sql);
+                }                    
+                ?>
                 </div>
+                <!-- ####################################################################### -->
             </section>
             <div class="sec1">
                 <table class="table1" id="table-data">
@@ -178,29 +218,28 @@ if (isset($_GET['logout'])) {
         </div>
     </div>
 
+
+
 <!-- หน้าtaskListเมื่อกดดูงาน NEWWWWWW -->
 <!-- Task List Modal -->
 <div class="modal fade" id="taskListModal" tabindex="-1" role="dialog" aria-labelledby="taskListModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog custom-modal-width" role="document">
         <div class="modal-content">
             <!-- Header with custom styling -->
-            <div class="modal-header text-white">
                 <h5 class="modal-title" id="taskListModalLabel">Task List</h5>
-            </div>
             <!-- Body where tasks are displayed -->
-            <div class="modal-body " id="taskListModalBody">
+                <div class="data_task">
+                    <div class="modal-body model_task" id="taskListModalBody">
+                </div>
                 <!-- Content will be loaded via AJAX -->
             </div>
             <!-- Footer with action buttons (optional) -->
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <div class="footer_task">
+                <button type="button" class="btn btn-secondary close_task" data-dismiss="modal">Close</button>
             </div>
         </div>
     </div>
 </div>
-
-
-
     <script>
         // Function to open the edit modal and show the user's image
 function openEditModal(element) {
@@ -252,7 +291,6 @@ function viewTasks() {
         });
     }
 }
-
 
     </script>
 <script>

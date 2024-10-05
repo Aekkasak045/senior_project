@@ -42,5 +42,5 @@ if ($result_task_ids->num_rows > 0) {
     }
 }
 
-$conn->close();
+// $conn->close();
 ?>

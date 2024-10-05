@@ -40,6 +40,7 @@
         });
        });
 
+
        function updateTaskStatus() {
         // ใช้ AJAX เพื่อเรียกไฟล์ PHP
         var xhr = new XMLHttpRequest();
@@ -51,9 +52,9 @@
         };
         xhr.send();
     }
-
+    
     // เรียกใช้ฟังก์ชัน updateTaskStatus ทุก 10 วินาที (10000 มิลลิวินาที)
     setInterval(updateTaskStatus, 10000);
-
+    
     // เรียกใช้ครั้งแรกทันทีเมื่อโหลดหน้าเว็บ
     updateTaskStatus();

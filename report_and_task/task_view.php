@@ -78,7 +78,7 @@ $stmt_work->close();
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="User.css">
+    <link rel="stylesheet" href="task_view.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Lift RMS</title>
 </head>
@@ -88,15 +88,15 @@ $stmt_work->close();
     <?php require('../navbar/navbar.php'); ?>
     <div class="box-outer1">
         <div class="box-outer2">
-            <div class="topinfo_task" style="display: flex; align-items: center; padding: 5px;">
-                <p class="User_information">TASK : <?php echo $row["tk_id"]; ?></p>
+            <div class="topinfo_task">
+                <h5 class="topic">TASK : <?php echo $row["tk_id"]; ?></h5>
                 <p>STATUS: <?php echo show_task_status($row); ?></p>
-                <a href="task_list.php">Back</a>
+                <a href="task_list.php" class="back">Back</a>
             </div>
             <div class="sec1">
-                <div class="row" style="height: 90%;">
+                <div class="row">
                     <!-- Progress Bar -->
-                    <div class="col-sm-5" style="margin-left: 50px;">
+                    <div class="col-sm-6">
                         <div class="pro_bar">
                             <div class="progress-container">
                                 <div class="step">
@@ -123,7 +123,7 @@ $stmt_work->close();
 
                         <div >
                             <div class="col-sm-12">
-                                <div class="card" style="width: 100%; margin: auto;">
+                                <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">รายละเอียดงาน</h5>
                                         <?php echo $row["tk_data"]; ?>
@@ -159,55 +159,70 @@ $stmt_work->close();
 
                     <!-- ข้อมูลช่างและผู้ใช้งาน -->
                     <div class="col-sm-6">
-                        <div class="card" style="width: 80%; margin: auto;">
+                        <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลช่างที่ปฏิบัติงาน</h5>
+                                <div class="img">
                                 <?php if (!empty($row["mainten_user_img"])): ?>
                                     <div class="text-center mb-3">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["mainten_user_img"]); ?>" alt="Engineer Image" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["mainten_user_img"]); ?>" alt="Engineer Image" class="img-fluid" >
                                     </div>
                                 <?php endif; ?>
+                                <div class="img_text">
                                 Username: <?php echo $row["mainten_username"]; ?> <br>
                                 Name: <?php echo $row["mainten_first_name"] . " " . $row["mainten_last_name"]; ?><br>
                                 Phone Number: <?php echo $row["mainten_phone"]; ?> <br>
                                 Email: <?php echo $row["mainten_email"]; ?> <br>
+                                </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card" style="width: 80%; margin: auto; margin-top: 1.5rem;">
+                        <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h5>
+                                <div class="img">
                                 <?php if (!empty($row["reporter_user_img"])): ?>
                                     <div class="text-center mb-3">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["reporter_user_img"]); ?>" alt="Reporter Image" class="img-fluid rounded" style="max-width: 150px; max-height: 150px;">
+                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["reporter_user_img"]); ?>" alt="Reporter Image" class="img-fluid">
                                     </div>
                                 <?php endif; ?>
+                                <div class="img_text">
                                 Username: <?php echo $row["reporter_username"]; ?> <br>
                                 Name: <?php echo $row["reporter_first_name"] . " " . $row["reporter_last_name"]; ?><br>
                                 Phone Number: <?php echo $row["reporter_phone"]; ?> <br>
                                 Email: <?php echo $row["reporter_email"]; ?> <br>
+                                </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card" style="width: 80%; margin: auto; margin-top: 1.5rem;">
+                        <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">สถานที่</h5>
+                                <div class="img">
+                                <div class="img_location">
+                                        <img src="img/building.png" class="img-fluid" style="width:60px; height: 60px; border-radius: 50%; margin: 0 15px 0 15px;" alt="location-icon">
+                                    </div>
+                                <div class="img_text">
                                 Organizations: <?php echo $row["org_name"]; ?> <br>
                                 Building: <?php echo $row["building_name"]; ?> <br>
                                 Lift: <?php echo $row["lift_name"]; ?> <br>
+                                </div>
+                                </div>
                             </div>
                         </div>
 
-                        <div class="card" style="width: 80%; margin: auto; margin-top: 1.5rem;">
+                        <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">เครื่องมือที่ใช้</h5>
-                                <ul>
+                                <ul class="text_tools">
                                     <?php
                                     $tools = json_decode($row['tools'], true);
                                     if (is_array($tools)) {
                                         foreach ($tools as $tool) {
                                             if (isset($tool['tool']) && isset($tool['quantity'])) {
-                                                echo '<li>' . htmlspecialchars($tool['tool']) . ' (จำนวน: ' . htmlspecialchars($tool['quantity']) . ')</li>';
+                                                echo '<li class="tools">' . htmlspecialchars($tool['tool']) . ' (จำนวน: ' . htmlspecialchars($tool['quantity']) . ')</li>';
                                             }
                                         }
                                     } else {
@@ -264,5 +279,5 @@ document.querySelector('.close').onclick = function() {
 }
 
 </script>
-<script src="scripts.js"></script>
+
 </html>

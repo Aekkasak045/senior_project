@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap');
 
-/* ทั่วไป */
+/*########################### ทั่วไป ###########################*/
 *{
     margin: 0;
     padding: 0;
@@ -10,7 +10,8 @@
 }
 
 
-/* พื้นหลัง */
+/* ############################################################# */
+/*########################### พื้นหลัง ###########################*/
 .background1 {
     width: 100%;
     height: 100vh;
@@ -47,7 +48,8 @@
 }
 
 
-/* topic search filter */
+/* ########################################################################## */
+/*########################### topic search filter ###########################*/
 .User_information {
     color: white;
     margin-left: 25px;
@@ -89,7 +91,8 @@
 }
 
 
-/* ตาราง */
+/* ########################################################### */
+/*########################### ตาราง ###########################*/
 th{
     font-size: 15px;
 }
@@ -107,13 +110,13 @@ th{
     white-space: nowrap;
 }
 .td-status-Mainten {/*สีแถบเมื่อมี status Mainten*/
-    background: linear-gradient(90deg,#3cf95b 50%,transparent 50%);
+    background: linear-gradient(90deg,#00ff2a 50%,transparent 50%);
 }
 .td-status-Admin {/*สีแถบเมื่อมี status Admin*/
-    background: linear-gradient(90deg,#f42f2f 50%,transparent 50%);
+    background: linear-gradient(90deg,#ff0000 50%,transparent 50%);
 }
 .td-status-User {/*สีแถบเมื่อมี status User*/
-    background: linear-gradient(90deg,#df6bf6 50%,transparent 50%);
+    background: linear-gradient(90deg,#ffdd00 50%,transparent 50%);
 }
 .sec1{
     height: 90%;
@@ -131,8 +134,6 @@ th{
 .sec1:hover::-webkit-scrollbar-thumb{
     visibility: visible;
 } 
-
-
 /* ทำตารางให้เป็นแถบ */
 .table-lift {
     position: relative;
@@ -153,13 +154,10 @@ th{
 .table-lift th,
 td {
     padding: 5px;
-    /* box-shadow: rgb(38, 57, 77) 0px 20px 30px -10px; */
 }
-
 .user-list {
     box-shadow: rgba(0, 0, 0, 0.4) 0px 2px 4px, rgba(0, 0, 0, 0.3) 0px 7px 13px -3px, rgba(0, 0, 0, 0.2) 0px -3px 0px inset;
 }
-
 /* ย่อแล้วเป็น... */
 td, th{
     white-space: nowrap;
@@ -179,7 +177,6 @@ td, th{
     width: 75px;
 }
 .row-Email {
-    text-align: center;
     width: 100px;
 }
 .row-Birthday {
@@ -196,8 +193,8 @@ td, th{
 
 
 
-
-/* กำหนด popup กดก่อนแล้วค่อยขึ้น */
+/* ################################################################################# */
+/*########################### กำหนด popup กดก่อนแล้วค่อยขึ้น ###########################*/
 #popupDialog {
     position: absolute;
     top: 50%;
@@ -227,6 +224,7 @@ td, th{
 }
 .used-filter:hover,.cencel-filter:hover{
     background-color: #ffe100;
+    color: #1A405C;
 }
 .idm {
     width: 90px;
@@ -249,8 +247,10 @@ td, th{
 .role-filter-box, .role-filter{
     font-size: 14px;
 }
-/* ###################################### */
 
+
+/* ########################################################################### */
+/* ################################# ส่วนของคิววี่ ############################### */
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;500&display=swap');
 
 * {
@@ -562,8 +562,9 @@ main {
 /* ######################################################### */
 /* ################## Edit user information ################ */
 .box1{
-    width: 250px;
-    margin: 30px 0;
+    width: 260px;
+    margin: 25px 0 25px 12px;
+    align-items: center;
     border-bottom: 1px solid #ffffff;
     position: relative;
 }
@@ -575,15 +576,27 @@ main {
     height: 20px;
     font-weight: 400;
     font-size: 13px;
+    padding: 0;
     color: #fff;
 }
-.box1 label, .box2 label{
+.box3 input, .box3 label{
+    background: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    height: 12px;
+    font-weight: 400;
+    font-size: 13px;
+    padding: 0;
+    color: #fff;
+}
+.box1 label, .box2 label, .box3 label{
     font-weight: 200;
-    font-size: 10px;
+    font-size: 9px;
     color: #fff;
     letter-spacing: .2px;
     position: absolute;
-    left:5px;
+    left:0px;
     top:50%;
     transform: translateY(-50%);
     transition: .5s ease;
@@ -592,12 +605,22 @@ main {
 .box1 input:valid ~ label,
 .box2 input:focus ~ label, 
 .box2 input:valid ~ label,
-.box2 select:valid ~ label{
+.box2 select:valid ~ label,
+.box3 input:focus ~ label, 
+.box3 input:valid ~ label,
+.box3 select:valid ~ label{
     top: -5px;
 }
 .box2{
-    width: 100px;
-    margin: 30px 0;
+    width: 120px;
+    margin: 25px 0 25px 12px;
+    border-bottom: 1px solid #ffffff;
+    position: relative;
+    background-color: transparent;
+}
+.box3{
+    width: 120px;
+    margin: 29px 0 33px 12px;
     border-bottom: 1px solid #ffffff;
     position: relative;
     background-color: transparent;
@@ -606,20 +629,19 @@ main {
     background-color: #1A405C;
     width: 120px;
     font-weight: 400;
-    font-size: 13px;
+    font-size: 12.5px;
     color: white;
 }
 .boxrole select{
     color: #fff;
 }
 .box0{    
-    margin-top: -30px;
+    margin-top: -25px;
     margin-right: 20px;
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
-
 /* #########################พื้นหลัง########################## */
 .modal-dialog{
     width: 310px;
@@ -627,32 +649,76 @@ main {
     border: 1px solid #fff;
 }
 .modal-content{
+    display: flex;
     align-items: center;
     background-color: transparent;
     border: 0;
 }
-/* #########################header######################### */
-.Topic-edit{
-    font-size: 20px;
-    padding: 10px 0 0 0;
+.modal-body{
+    margin-bottom: 0;
 }
-.close{
-    position: absolute;
-    right: 0;
-    top: 5px;
-    background-color: transparent;
+/* #########################header######################### */
+.modal-title{
+    font-size: 20px;
+    padding: 20px 0 0 0;
     color: #fff;
 }
+/* #########################user image######################### */
+.text_img{
+    font-size: 9px;
+    font-weight: lighter;
+    padding: 0;
+    color: #ffffff;
+}
+.img-fluid {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    object-fit: cover;
+    padding: 0;
+}
+.change_img{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.block_img{
+    width: 90%;
+    font-size: 13px;
+    border-radius: 0;
+    color: #ffffff;
+    background-color: #1A405C;
+}
 /* #########################footer######################### */
+.view_task{
+    color: #1A405C; 
+    background-color:#ffe100 ;
+    font-weight: bold;
+    border: 0;
+    width: 150px;
+    margin-top: -40px;
+}
+.view_task:hover{
+    background-color:#ffffff ;
+    color: #1A405C;
+}
+.footer_view_task{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
 .edit{
     color: #1A405C;
     border: 0;
+    font-weight: bold;
     border-radius: 5px;
     width: 65px;
     background-color: #fff;
     padding: 2px 10px 2px 10px;
 }
-.roleuser{
+.close{
     color: #ffffff;
     background-color: transparent;
     border: 1px solid #FFF;
@@ -661,8 +727,13 @@ main {
     margin-left: 20px;
     padding: 2px 10px 2px 10px;
 }
-.edit:hover, .roleuser:hover{
+.close:hover{
+    background-color:#1A405C ;
     color: #ffe100;
+}
+.edit:hover{
+    background-color:#ffe100 ;
+    color: #1A405C;
 }
 .footer{
     display: flex;
@@ -672,7 +743,167 @@ main {
     margin-bottom: 20px;
     margin-top: -10px;
 }
-/* ######################################################### */
 
 
+/* ########################################################################### */
+/* ################################## ดูรายงาน ################################## */
+.custom-modal-width{
+    width: 470px;
+    background-color: #1A405C;
+    border: 1px solid #fff;
+}
+.data_task{
+    width: 400px;
+    height: 550px;
+    background-color: #23577D;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+.model_task{
+    height: 30px;
+}
+.list-group-item{
+    padding: 5px 10px 5px 10px;
+    margin: 0;
+}
+.task-link{
+    font-size: 14px;
+    font-weight: bold;
+    color: #1A405C;
+    padding: 0;
+    margin: 0;
+    line-height: 1.5;
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.list-group-item:hover{
+    background-color: #c0e2fa;
+}
+.task_text{
+    color: #13171A;
+}
+.model_task{
+    height: 100%;
+    overflow: scroll;
+}
+.model_task::-webkit-scrollbar{
+    width: 0.5rem;
+    height: 0.5rem;
+}
+.model_task::-webkit-scrollbar-thumb{
+    border-radius: .5rem;
+    background-color: #ffffff;
+    visibility: visible;
+}
+.model_task:hover::-webkit-scrollbar-thumb{
+    visibility: visible;
+} 
+.footer_task{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+}
+.close_task{
+    color: #1A405C;
+    border: 0;
+    font-weight: bold;
+    border-radius: 5px;
+    width: 65px;
+    background-color: #ffe100;
+    padding: 2px 10px 2px 10px;
+}
+.close_task:hover{
+    background-color:red ;
+    color: #1A405C;
+}
 
+
+/* ########################################################################### */
+/* ################################## ย่อจอ ################################## */
+@media(max-width: 1021px){/*ย่อความกว้างของตารางในแต่ละคอลัมน์*/
+    .box-outer1{
+        width: 100%;
+        max-width: 140vh;    
+    }
+    .box-outer2{
+        width: 100%;
+        max-width: 134vh;
+    }
+}
+
+@media (max-width: 785px) {/*ทำตารางให้เป็นบล็อก*/
+    td:first-child{/*กำหนดขนาดของแถบสีที่บ่งบอกสถานะของ role*/
+        height: 10px;
+        padding: 0;
+        margin: 0;
+    }
+    td{/*ให้หัวข้อกับเนื้อหาในตารางแยกกัน*/
+        display: block;
+        gap: 0.5rem;
+        grid-template-columns: 10ch auto;
+        padding: 0.2rem 1rem 0.2rem 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }    
+    /* การแสดงผลหัวข้อของตาราง */
+    th{
+        display: none;
+    }
+    td::before{
+        text-transform: capitalize;
+        font-weight: bold;
+    }
+    td:nth-of-type(2)::before {
+        content: "ID : ";
+    }
+    td:nth-of-type(3)::before {
+        content: "Username : ";  
+    }
+    td:nth-of-type(4)::before {
+        content: "Password : ";
+    }
+    td:nth-of-type(5)::before {
+        content: "Firstname : ";
+    }
+    td:nth-of-type(6)::before {
+        content: "Lastname : ";
+    }
+    td:nth-of-type(7)::before {
+        content: "Email : ";
+    }
+    td:nth-of-type(8)::before {
+        content: "Phone : ";
+    }
+    td:nth-of-type(9)::before {
+        content: "Birthday : ";
+    }
+    td:nth-of-type(10)::before {
+        content: "Role : ";
+    }
+}
+
+@media(max-width: 570px){/* สำหรับ filter */
+    .idm {
+        max-width: 65px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap; 
+    }
+    .bd{
+        max-width: 80px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+}
+
+@media(max-width: 500px){/* สำหรับ Topic */
+    .User_information {
+        font-size: 20px;
+    }
+}

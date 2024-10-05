@@ -14,10 +14,15 @@ if (isset($_GET['id'])) {
     if ($result->num_rows > 0) {
         echo '<ul class="list-group">';
         while ($task = $result->fetch_assoc()) {
-            echo '<li class="list-group-item">';
-            echo '<a style="color:black;" href="../report_and_task/task_view.php?tk_id=' . htmlspecialchars($task['tk_id']) . '" class="task-link">';
-            echo 'TaskID: '.htmlspecialchars($task['tk_id']).'<br>Task: ' . htmlspecialchars($task['tk_data']) . ' <br>Status: ' . htmlspecialchars($task['tk_status']);
-            echo '</a>';
+            echo '<li class="list-group-item" href="../report_and_task/task_view.php?tk_id=' . htmlspecialchars($task['tk_id']) . '">';
+
+            echo '<div onclick="window.location=\'../report_and_task/task_view.php?tk_id=' . htmlspecialchars($task['tk_id']) . '\'" class="task-link">';
+
+            echo 'TaskID: '.htmlspecialchars($task['tk_id']). '<br>';
+            echo 'Task: ' . htmlspecialchars($task['tk_data']). '<br>' ;
+            echo ' Status: ' . htmlspecialchars($task['tk_status']);
+            // echo 'TaskID: '.htmlspecialchars($task['tk_id']).'Task: ' . htmlspecialchars($task['tk_data']) . ' Status: ' . htmlspecialchars($task['tk_status']);
+            echo '</div>';
             echo '</li>';
         }
         echo '</ul>';
