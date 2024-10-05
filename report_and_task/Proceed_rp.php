@@ -1,5 +1,6 @@
 <?php
 require("inc_db.php");
+include("update_task_status.php");
 $report_id = $_GET["rp_id"];
 
 // Ensure report ID is provided

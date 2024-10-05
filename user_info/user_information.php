@@ -1,6 +1,7 @@
 <?php
 require("inc_db.php");
 include("user_function.php");
+include("update_task_status.php");
 
 $sql = "SELECT * FROM users";
 $rs = mysqli_query($conn, $sql);

@@ -1,6 +1,7 @@
 <?php
 require("inc_db.php");
 include("user_function.php");
+include("update_task_status.php");
 
 $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
         users.first_name AS engineer_first_name,
@@ -97,3 +98,5 @@ $rs = mysqli_query($conn, $sql);
 </body>
 
 </html>
+
+<script src="scripts.js"></script>

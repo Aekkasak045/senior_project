@@ -1,6 +1,7 @@
 <?php
 require("inc_db.php");
 include("user_function.php");
+include("update_task_status.php");
 
 // รับค่า tk_id จาก URL
 $task_id = $_GET["tk_id"];
@@ -263,5 +264,5 @@ document.querySelector('.close').onclick = function() {
 }
 
 </script>
-
+<script src="scripts.js"></script>
 </html>

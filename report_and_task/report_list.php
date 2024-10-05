@@ -1,6 +1,7 @@
 <?php
 require ("inc_db.php");
 include ("user_function.php");
+include("update_task_status.php");
 
 $sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,lifts.lift_name FROM report 
 INNER JOIN users ON report.user_id = users.id 
@@ -99,20 +100,6 @@ if (isset($_GET['logout'])) {
 </body>
 
 </html>
-<!-- script สำหรับการ search-input -->
-<!-- <script>
-    $(document).ready(function () {
-        $('#search_text').on("keyup", function () {
-            var search_text = $(this).val();
-            $.ajax({
-                method: 'POST',
-                url: 'user_search.php',
-                data: { search: search_text },
-                success: function (response) {
-                    $("#showdata").html(response);
-                }
-            });
-        });
-    });
-</script> -->
+
+<script src="scripts.js"></script>
 
