@@ -1,0 +1,157 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Api-Data</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-gH2yIJqKdNHPEq0n4Mqa/HGKIhSkIHeL5AyhkYV8i59U5AR6csBvApHHNl/vI1Bx" crossorigin="anonymous">
+      <!-- nav-bar -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Thai&family=Syncopate&display=swap"
+    rel="stylesheet">
+
+</head>
+<style>
+  body {
+    font-family: "Lato", sans-serif;
+
+  }
+
+  .sidenav {
+    height: 100%;
+    width: 200px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+
+  .sidenav a {
+    padding: 6px 6px 6px 32px;
+    text-decoration: none;
+    font-size: 20px;
+    color: #818181;
+    display: block;
+    font-family: 'IBM Plex Sans Thai', sans-serif;
+
+  }
+
+  .sidenav a:hover {
+    color: #f1f1f1;
+  }
+
+
+  @media screen and (min-width: 768px) and (max-width: 991px) {
+    .container {
+      width: 600px;
+      margin-left: 200px;
+    }
+
+  }
+</style>
+<body onload="user_read_dataById()">
+
+    <div class="container">
+      <div class="mt-5 row">
+        <h1>แก้ไขข้อมูล</h1>
+      </div>
+      <form onsubmit="return false">
+        <div class="mb-3">
+          <label for="id" class="form-label">ลำดับ</label>
+          <input type="text" class="form-control" id="id" disabled>
+        </div>
+  
+        <div class="mb-3">
+          <label for="fname" class="form-label">ชื่อ</label>
+          <input type="text" class="form-control" id="fname">
+        </div>
+  
+        <div class="mb-3">
+          <label for="lname" class="form-label">นามสกุล</label>
+          <input type="text" class="form-control" id="lname">
+        </div>
+  
+        <div class="mb-3">
+          <label for="email" class="form-label">อีเมลล์</label>
+          <input type="text" class="form-control" id="email">
+        </div>
+  
+        <div class="mb-3">
+          <label for="addres" class="form-label">ที่อยู่</label>
+          <input type="text" class="form-control" id="address">
+        </div>
+  
+        <button type="button" onclick="user_update()" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-A3rJD856KowSb7dwlZdYEkO39Gagi7vIsF0jrRAoQmDKKtQBHUuLZ9AsSv4jD4Xa"
+    crossorigin="anonymous"></script>
+</body>
+
+</html>
+<script>
+  var user_read_dataById = function () {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    var requestOptions = {
+      method: 'GET',
+      redirect: 'follow'
+    };
+
+    fetch("http://52.221.67.113/smartlift/SUMMARY/API-TESTING/read_dataById.php?id=" + id, requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        var jsonObj = JSON.parse(result);
+        document.getElementById('id').value = jsonObj.id;
+        document.getElementById('fname').value = jsonObj.fname;
+        document.getElementById('lname').value = jsonObj.lname;
+        document.getElementById('email').value = jsonObj.email;
+        document.getElementById('address').value = jsonObj.address;
+      })
+      .catch(error => console.log('error', error));
+
+  }
+
+
+
+
+  var user_update = function () {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      "id": document.getElementById('id').value,
+      "fname": document.getElementById('fname').value,
+      "lname": document.getElementById('lname').value,
+      "email": document.getElementById('email').value,
+      "address": document.getElementById('address').value
+    });
+
+    var requestOptions = {
+      method: 'PATCH',
+      headers: myHeaders,
+      body: raw,
+      redirect: 'follow'
+    };
+
+    fetch("http://52.221.67.113/smartlift/SUMMARY/API-TESTING/update_data.php", requestOptions)
+      .then(response => response.text())
+      .then(result => {
+        var jsonObj = JSON.parse(result);
+        if (jsonObj.status == 'ok') {
+          alert('ok');
+          window.location.replace('index.html')
+        } else {
+          alert('error');
+        }
+      })
+      .catch(error => console.log('error', error));
+  }
+</script>

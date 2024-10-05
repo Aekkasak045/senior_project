@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <title>Lift RMS</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
+    <link rel="manifest" href="/site.webmanifest">
+
+
+    <style>
+        /* สร้าง Container โดยใช้ Flexbox และ Padding */
+        .container {
+            display: flex;
+            flex-flow: row wrap;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            /* ความสูงของ container ให้เต็มหน้าจอ */
+            padding: 20px;
+            gap: 20px;
+        }
+
+        /* สร้างสไลด์สำหรับเนื้อหาใน Container */
+        .content1 {
+            width: 50%;
+            height: 100px;
+            max-width: 332px;
+            /* ขนาดสูงสุดของ container */
+            /* width: 20%; */
+
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            background-color: #131A18;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+        }
+
+        a {
+            text-decoration: none;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container" id="mydata"></div>
+</body>
+<script src=script.js></script>
+
+</html>
