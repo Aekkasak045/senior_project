@@ -54,7 +54,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_work->bind_param("is", $task_id, $work_detail);
 
         // Insert into task_status table
-        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
+        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'มอบหมาย')";
         $stmt_status = $conn->prepare($insert_status);
         if (!$stmt_status) {
             die('Prepare failed: ' . $conn->error);

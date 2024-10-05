@@ -35,7 +35,7 @@ $rs = mysqli_query($conn, $sql);
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Task information</p>  
+                <p class="User_information">Task information</p> <a href="add_task_byAdmin.php">AddTask</a>
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
                     <div class="search">
