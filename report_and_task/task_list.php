@@ -61,11 +61,13 @@ $rs = mysqli_query($conn, $sql);
                                         </div>
                                     <label class="status-font">Status : </label>
                                     <div class="status-filter">
-                                        <input type="radio" name="status" value="0"> รอดำเนินการ
+                                        <input type="radio" name="status" value="1"> มอบหาย
                                         <br>
-                                        <input type="radio" name="status" value="1"> กำลังดำเนินการ
+                                        <input type="radio" name="status" value="2"> รอดำเนินการ
                                         <br>
-                                        <input type="radio" name="status" value="2"> ดำเนินการเสร็จสิ้น
+                                        <input type="radio" name="status" value="3"> กำลังดำเนินการ
+                                        <br>
+                                        <input type="radio" name="status" value="4"> ดำเนินการเสร็จสิ้น
                                         <br>
                                     </div>
                                 </div>

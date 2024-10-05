@@ -1,9 +1,11 @@
 <?php
     // การแสดงผล status ของ task
     function show_task_status($row) {
-        if ($row["tk_status"] == 0)
+        if ($row["tk_status"] == 1)
+            return "<td>มอบหมาย</td>";
+        elseif ($row["tk_status"] == 2)
             return "<td>รอดำเนินการ</td>";
-        elseif ($row["tk_status"] == 1)
+        elseif ($row["tk_status"] == 3)
             return "<td>กำลังดำเนินการ</td>";
         else
             return "<td>ดำเนินการเสร็จสิ้น</td>";

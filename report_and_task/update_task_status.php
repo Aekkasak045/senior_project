@@ -22,11 +22,11 @@ if ($result_task_ids->num_rows > 0) {
             $status = $status_row['status'];
 
             if ($status == "waiting") {
-                $new_status = 1;
-            } elseif ($status == "working") {
                 $new_status = 2;
-            } elseif ($status == "finish") {
+            } elseif ($status == "working") {
                 $new_status = 3;
+            } elseif ($status == "finish") {
+                $new_status = 4;
             } else {
                 continue; 
             }
