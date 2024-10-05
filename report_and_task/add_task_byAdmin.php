@@ -1,3 +1,4 @@
+<!-- ระบบฐานข้อมูล -->
 <?php
 require("inc_db.php"); // เรียกใช้ไฟล์ฐานข้อมูล
 
@@ -118,6 +119,9 @@ if (isset($_GET['org_id'])) {
 }
 ?>
 
+<!-- ------------------------------------------------------------------- -->
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -235,6 +239,7 @@ if (isset($_GET['org_id'])) {
         </form>
     </div>
 
+    <!-- ฟังก์ชั้นการเรียกตัวแปร -->
     <script>
         function fetchUserData(user_id) {
     if (user_id) {
@@ -315,5 +320,6 @@ if (isset($_GET['org_id'])) {
             container.appendChild(row);
         }
     </script>
+    <!-- --------------------------------------- -->
 </body>
 </html>
