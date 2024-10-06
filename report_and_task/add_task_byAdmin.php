@@ -131,10 +131,8 @@ if (isset($_GET['org_id'])) {
     <title>Create Task</title>
 </head>
 <body>
-
+<?php require('../navbar/navbar.php'); ?>
     <div class="container mt-5">
-    <?php require('../navbar/navbar.php'); ?>
-
     <h2>สร้างงาน (Create Task)</h2>
         <form action="" method="POST">
             <!-- Report ID (Auto fill เป็นค่าล่าสุด) -->
