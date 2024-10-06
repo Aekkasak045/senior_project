@@ -161,6 +161,7 @@ if (isset($_GET['org_id'])) {
         <p id="user_name"></p>
         <p id="user_username"></p>
         <p id="user_phone"></p>
+        <p id="user_email"></p> 
     </div>
 
 
@@ -215,6 +216,7 @@ if (isset($_GET['org_id'])) {
                 <p id="mainten_name"></p>
                 <p id="mainten_username"></p>
                 <p id="mainten_phone"></p>
+                <p id="mainten_email"></p> 
             </div>
 
             <!-- เครื่องมือที่ใช้ -->
@@ -240,28 +242,39 @@ if (isset($_GET['org_id'])) {
     <!-- ฟังก์ชั้นการเรียกตัวแปร -->
     <script>
         function fetchUserData(user_id) {
-    if (user_id) {
-        fetch(`get_user_info.php?user_id=${user_id}`)
-            .then(response => response.json())
-            .then(data => {
-                document.getElementById('user_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
-                document.getElementById('user_username').innerText = 'Username: ' + data.username;
-                document.getElementById('user_phone').innerText = 'เบอร์โทร: ' + data.phone;
-                document.getElementById('username').value = data.username;
-            });
-    }
-}
-
+            if (user_id) {
+                fetch(`get_user_info.php?user_id=${user_id}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.error) {
+                            console.error('Error fetching user data:', data.error);
+                        } else {
+                            document.getElementById('user_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
+                            document.getElementById('user_username').innerText = 'Username: ' + data.username;
+                            document.getElementById('user_phone').innerText = 'เบอร์โทร: ' + data.phone;
+                            document.getElementById('user_email').innerText = 'อีเมล: ' + data.email;
+                            document.getElementById('username').value = data.username;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
+            }
+        }
 
         function fetchMaintenData(mainten_id) {
             if (mainten_id) {
                 fetch(`get_mainten_info.php?mainten_id=${mainten_id}`)
                     .then(response => response.json())
                     .then(data => {
-                        document.getElementById('mainten_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
-                        document.getElementById('mainten_username').innerText = 'Username: ' + data.username;
-                        document.getElementById('mainten_phone').innerText = 'เบอร์โทร: ' + data.phone;
-                    });
+                        if (data.error) {
+                            console.error('Error fetching mainten data:', data.error);
+                        } else {
+                            document.getElementById('mainten_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
+                            document.getElementById('mainten_username').innerText = 'Username: ' + data.username;
+                            document.getElementById('mainten_phone').innerText = 'เบอร์โทร: ' + data.phone;
+                            document.getElementById('mainten_email').innerText = 'อีเมล: ' + data.email;
+                        }
+                    })
+                    .catch(error => console.error('Error:', error));
             }
         }
 
