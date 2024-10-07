@@ -3,7 +3,7 @@ require('inc_db.php'); // Include database connection
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
     // รับค่าจากฟอร์ม
-    $date_rp = $_POST['date_rp'];
+    $date_rp = date('Y-m-d H:i:s'); // Set the current date and time automatically
     $user_id = $_POST['user_id'];
     $org_id = $_POST['org_id'];
     $building_id = $_POST['building_id'];
@@ -19,7 +19,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         
         // ตรวจสอบว่าการดำเนินการสำเร็จหรือไม่
         if ($stmt->execute()) {
-            echo "report created successfully!";
+            echo "Report created successfully!";
         } else {
             echo "Error: " . $stmt->error;
         }

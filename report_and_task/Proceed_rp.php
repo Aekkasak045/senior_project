@@ -258,7 +258,7 @@ if (isset($_GET['logout'])) {
             var quantity = quantities[i].value.trim();
 
             // ตรวจสอบว่าช่อง tool หรือ quantity ว่างหรือไม่
-            if (tool === "" || quantity === "") {
+            if ((tool !== "" && quantity === "") || (tool === "" && quantity !== "")) {
                 alert("Please fill out both Tool name and Quantity for all inputs.");
                 return false; // หยุดการส่งฟอร์ม
             }

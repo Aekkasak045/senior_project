@@ -12,11 +12,11 @@ $sql_org = "SELECT id as org_id, org_name FROM organizations";
 $org_result = $conn->query($sql_org);
 
 // ดึงข้อมูลผู้ใช้
-$sql_users = "SELECT id,username, first_name, last_name,user_img FROM users";
+$sql_users = "SELECT id,username, first_name, last_name FROM users";
 $users_result = $conn->query($sql_users);
 
 // ดึงข้อมูลช่าง
-$sql_mainten = "SELECT id, first_name, last_name,user_img FROM users WHERE role = 'mainten'";
+$sql_mainten = "SELECT id, first_name, last_name FROM users WHERE role = 'mainten'";
 $mainten_result = $conn->query($sql_mainten);
 
 // ตรวจสอบว่าฟอร์มถูกส่งหรือไม่
@@ -143,140 +143,126 @@ if (isset($_GET['org_id'])) {
             <form action="" method="POST" onsubmit="return validateForm()">
                 <div class="row">
                 <div class="col-sm-6">
-                    <div class="card">
                     <div class="card-body">
+                    <div class="card">
                         <!-- Report ID (Auto fill เป็นค่าล่าสุด) -->
-                        <div class="box0">
-                        <label for="rp_id" class="form_text">Report ID : </label>
-                        <div class="mb-3 box3">
-                            <input type="text" class="boxrole" id="rp_id" name="rp_id" value="<?php echo $latest_report+1; ?>" >
-                        </div>
+                        <div class="mb-3">
+                            <label for="rp_id" class="form-label">Report ID</label>
+                            <input type="text" class="form-control" id="rp_id" name="rp_id" value="<?php echo $latest_report+1; ?>" >
                         </div>
 
                         <!-- เลือกผู้ใช้ -->
-                        <div class="box0">
-                        <label for="user_id" class="form_text">เลือกผู้ใช้ : </label>
-                        <div class="mb-3 box3">
-                            <select class="boxrole" id="user_id" name="user_id" onchange="fetchUserData(this.value)" required>
+                        <div class="mb-3">
+                            <label for="user_id" class="form-label">เลือกผู้ใช้</label>
+                            <select class="form-select" id="user_id" name="user_id" onchange="fetchUserData(this.value)" required>
                                 <option value="">เลือกผู้ใช้</option>
                                 <?php while ($user = $users_result->fetch_assoc()) { ?>
                                 <option value="<?php echo $user['id']; ?>"><?php echo $user['id'] . " - " . $user['first_name'] . " " . $user['last_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        </div>
-                        
 
                         <!-- Hidden field สำหรับเก็บ username -->
                         <input type="hidden" id="username" name="username" value="">
 
                         <!-- แสดงข้อมูลผู้ใช้ -->
                         <div id="user_info" class="mb-3">
-                            <h5 class="data_text">ข้อมูลผู้แจ้ง : </h5>
-                            <p id="user_name" class="data_body_text"></p>
-                            <p id="user_username" class="data_body_text"></p>
-                            <p id="user_phone" class="data_body_text"></p>
-                            <p id="user_email" class="data_body_text"></p> 
+                            <h5>ข้อมูลผู้แจ้ง:</h5>
+                            <p id="user_name"></p>
+                            <p id="user_username"></p>
+                            <p id="user_phone"></p>
+                            <p id="user_email"></p> 
                         </div>
 
 
                         <!-- เลือก Organization -->
-                        <div class="box0">
-                        <label for="org_id" class="form_text">Organization :</label>
-                        <div class="mb-3 box3">
-                            <select class="boxrole" id="org_id" name="org_id" onchange="fetchOrgData(this.value)" required>
+                        <div class="mb-3">
+                            <label for="org_id" class="form-label">Organization</label>
+                            <select class="form-select" id="org_id" name="org_id" onchange="fetchOrgData(this.value)" required>
                                 <option value="">เลือก Organization</option>
                                 <?php while ($org = $org_result->fetch_assoc()) { ?>
                                     <option value="<?php echo $org['org_id']; ?>"><?php echo $org['org_id'] . " - " . $org['org_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        </div>
-
                         <input type="hidden" id="org_name" name="org_name" value="">
 
                         <!-- เลือก Building (ขึ้นอยู่กับ Organization) -->
-                        <div class="box0">
-                        <label for="building_name" class="form_text">Building : </label>
-                        <div class="mb-3 box3">
-                            <select class="boxrole" id="building_name" name="building_name" required>
+                        <div class="mb-3">
+                            <label for="building_name" class="form-label">Building</label>
+                            <select class="form-select" id="building_name" name="building_name" required>
                                 <option value="">เลือก Building</option>
                             </select>
                         </div>
-                        </div>
 
                         <!-- เลือก Lift (ขึ้นอยู่กับ Organization) -->
-                        <div class="box0">
-                        <label for="lift_name" class="form_text">Lift : </label>
-                        <div class="mb-3 box3">
-                            <select class="boxrole" id="lift_name" name="lift_name" required>
+                        <div class="mb-3">
+                            <label for="lift_name" class="form-label">Lift</label>
+                            <select class="form-select" id="lift_name" name="lift_name" required>
                                 <option value="">เลือก Lift</option>
                             </select>
                         </div>
-                        </div>
-
-                        <!-- รายละเอียดงาน -->
-                        <label for="detail" class="data_text">รายละเอียดงาน : </label>
-                        <div class="mb-3">
-                            <textarea class="form-control card_color2" id="detail" name="detail" rows="3" required></textarea>
-                        </div>
-
                     </div>
                     </div>
                 </div>
 
                 <div class="col-sm-6">
-                    <div class="card">
                     <div class="card-body">
+                    <div class="card">
+
+                        <!-- รายละเอียดงาน -->
+                        <div class="mb-3">
+                            <label for="detail" class="form-label">รายละเอียดงาน</label>
+                            <textarea class="form-control" id="detail" name="detail" rows="3" required></textarea>
+                        </div>
 
                         <!-- เลือกช่าง -->
-                         <div class="box0">
-                        <label for="mainten_id" class="form_text">เลือกช่าง : </label>
-                        <div class="mb-3 box3">
-                            <select class="boxrole" id="mainten_id" name="mainten_id" onchange="fetchMaintenData(this.value)" required>
+                        <div class="mb-3">
+                            <label for="mainten_id" class="form-label">เลือกช่าง</label>
+                            <select class="form-select" id="mainten_id" name="mainten_id" onchange="fetchMaintenData(this.value)" required>
                                 <option value="">เลือกช่าง</option>
                                 <?php while ($mainten = $mainten_result->fetch_assoc()) { ?>
                                 <option value="<?php echo $mainten['id']; ?>"><?php echo $mainten['id'] . " - " . $mainten['first_name'] . " " . $mainten['last_name']; ?></option>
                                 <?php } ?>
                             </select>
                         </div>
-                        </div>
 
                         <!-- แสดงข้อมูลช่าง -->
                         <div id="mainten_info" class="mb-3">
-                            <h5 class="data_text">ข้อมูลช่าง : </h5>
-                            <p id="mainten_name" class="data_body_text"></p>
-                            <p id="mainten_username" class="data_body_text"></p>
-                            <p id="mainten_phone" class="data_body_text"></p>
-                            <p id="mainten_email" class="data_body_text"></p> 
+                            <h5>ข้อมูลช่าง:</h5>
+                            <p id="mainten_name"></p>
+                            <p id="mainten_username"></p>
+                            <p id="mainten_phone"></p>
+                            <p id="mainten_email"></p> 
                         </div>
 
                         <!-- เครื่องมือที่ใช้ -->
-                        <div class="mb-3">
-                            <label for="tools" class="form_text">เครื่องมือที่ใช้ : </label>
-                            <div id="input-container" class="mb-3">
-                                <div class="input-group mb-2">
-                                    <input type="text" name="tools[]" class="form-control" placeholder="Tool name" >
-                                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1" >
-                                    <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>                                 
-                            </div>
-                            <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
+                        <!-- เครื่องมือที่ใช้ -->
+            <div class="mb-3">
+                <label for="tools" class="form-label">เครื่องมือที่ใช้</label>
+                <div id="tools-container">
+                    <div class="row mb-2">
+                        <div class="col">
+                            <input type="text" class="form-control" name="tools[]" placeholder="ชื่อเครื่องมือ">
                         </div>
-
-                    <div class="button_create">
-                        <button type="submit" class="btn btn-primary create">Create</button></div>
-                    </div>
-
+                        <div class="col">
+                            <input type="number" class="form-control" name="quantities[]" placeholder="จำนวน">
+                        </div>
                     </div>
                 </div>
+                <button type="button" class="btn btn-outline-primary" onclick="addTool()">เพิ่มเครื่องมือ</button>
+            </div>
+
+                    </div>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">สร้างงาน</button>
             </form>
             </div>
         </div>
     </div>
-
+        <!-- </div>
+    </div> -->
     <!-- ฟังก์ชั้นการเรียกตัวแปร -->
     <script>
         function fetchUserData(user_id) {
@@ -287,10 +273,10 @@ if (isset($_GET['org_id'])) {
                         if (data.error) {
                             console.error('Error fetching user data:', data.error);
                         } else {
-                            document.getElementById('user_name').innerText = 'Name: ' + data.first_name + ' ' + data.last_name;
+                            document.getElementById('user_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
                             document.getElementById('user_username').innerText = 'Username: ' + data.username;
-                            document.getElementById('user_phone').innerText = 'Phone: ' + data.phone;
-                            document.getElementById('user_email').innerText = 'Email: ' + data.email;
+                            document.getElementById('user_phone').innerText = 'เบอร์โทร: ' + data.phone;
+                            document.getElementById('user_email').innerText = 'อีเมล: ' + data.email;
                             document.getElementById('username').value = data.username;
                         }
                     })
@@ -306,10 +292,10 @@ if (isset($_GET['org_id'])) {
                         if (data.error) {
                             console.error('Error fetching mainten data:', data.error);
                         } else {
-                            document.getElementById('mainten_name').innerText = '์Name: ' + data.first_name + ' ' + data.last_name;
+                            document.getElementById('mainten_name').innerText = 'ชื่อ: ' + data.first_name + ' ' + data.last_name;
                             document.getElementById('mainten_username').innerText = 'Username: ' + data.username;
-                            document.getElementById('mainten_phone').innerText = 'Phone: ' + data.phone;
-                            document.getElementById('mainten_email').innerText = 'Email: ' + data.email;
+                            document.getElementById('mainten_phone').innerText = 'เบอร์โทร: ' + data.phone;
+                            document.getElementById('mainten_email').innerText = 'อีเมล: ' + data.email;
                         }
                     })
                     .catch(error => console.error('Error:', error));
@@ -339,92 +325,33 @@ if (isset($_GET['org_id'])) {
             });
     }
 }
-function addToolInput() {
-        var inputContainer = document.getElementById("input-container");
+function addTool() {
+            const container = document.getElementById('tools-container');
+            const row = document.createElement('div');
+            row.className = 'row mb-2';
 
-        // สร้าง div ใหม่สำหรับ input group ใหม่
-        var newInputGroup = document.createElement("div");
-        newInputGroup.classList.add("input-group", "mb-2");
+            const toolCol = document.createElement('div');
+            toolCol.className = 'col';
+            const toolInput = document.createElement('input');
+            toolInput.type = 'text';
+            toolInput.className = 'form-control';
+            toolInput.name = 'tools[]';
+            toolInput.placeholder = 'ชื่อเครื่องมือ';
+            toolCol.appendChild(toolInput);
 
-        // สร้าง input สำหรับชื่อเครื่องมือ
-        var newToolInput = document.createElement("input");
-        newToolInput.setAttribute("type", "text");
-        newToolInput.setAttribute("name", "tools[]");
-        newToolInput.setAttribute("class", "form-control");
-        newToolInput.setAttribute("placeholder", "Tool name");
+            const quantityCol = document.createElement('div');
+            quantityCol.className = 'col';
+            const quantityInput = document.createElement('input');
+            quantityInput.type = 'number';
+            quantityInput.className = 'form-control';
+            quantityInput.name = 'quantities[]';
+            quantityInput.placeholder = 'จำนวน';
+            quantityCol.appendChild(quantityInput);
 
-        // สร้าง input สำหรับจำนวน
-        var newQuantityInput = document.createElement("input");
-        newQuantityInput.setAttribute("type", "number");
-        newQuantityInput.setAttribute("name", "quantities[]");
-        newQuantityInput.setAttribute("class", "form-control");
-        newQuantityInput.setAttribute("placeholder", "Quantity");
-        newQuantityInput.setAttribute("min", "1");
-
-        // สร้างปุ่มลบเป็นไอคอน
-        var removeButton = document.createElement("button");
-        removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn", "btn-danger");
-        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>'; // ไอคอนถังขยะ
-        removeButton.onclick = function() {
-            removeToolInput(removeButton);
-        };
-
-        // เพิ่ม input ที่สร้างใหม่และปุ่มลบเข้าใน div
-        newInputGroup.appendChild(newToolInput);
-        newInputGroup.appendChild(newQuantityInput);
-        newInputGroup.appendChild(removeButton);
-
-        // เพิ่ม input group ใหม่ลงใน container
-        inputContainer.appendChild(newInputGroup);
-
-        // เปิดปุ่มลบของทุก input group
-        enableRemoveButtons();
-    }
-
-    function removeToolInput(button) {
-        // ลบ input group ที่ปุ่มลบนั้นอยู่
-        button.parentElement.remove();
-
-        // ตรวจสอบจำนวน input group
-        enableRemoveButtons();
-    }
-
-    function enableRemoveButtons() {
-        // ตรวจสอบจำนวนของ input group
-        var inputGroups = document.querySelectorAll("#input-container .input-group");
-        
-        // ถ้ามีมากกว่า 1 input group ให้เปิดการใช้งานปุ่มลบ
-        inputGroups.forEach(function(group) {
-            var removeButton = group.querySelector("button");
-            if (inputGroups.length > 1) {
-                removeButton.disabled = false;
-            } else {
-                removeButton.disabled = true;
-            }
-        });
-    }
-
-    // เรียกใช้ฟังก์ชันนี้เมื่อเริ่มต้นเพื่อปิดปุ่มลบถ้ามี input group เดียว
-    enableRemoveButtons();
-
-
-    function validateForm() {
-        var tools = document.querySelectorAll("input[name='tools[]']");
-        var quantities = document.querySelectorAll("input[name='quantities[]']");
-        
-        for (var i = 0; i < tools.length; i++) {
-            var tool = tools[i].value.trim();
-            var quantity = quantities[i].value.trim();
-
-            // ตรวจสอบว่าช่อง tool หรือ quantity ว่างหรือไม่
-            if ((tool !== "" && quantity === "") || (tool === "" && quantity !== "")) {
-                alert("Please fill out both Tool name and Quantity for all inputs.");
-                return false; // หยุดการส่งฟอร์ม
-            }
+            row.appendChild(toolCol);
+            row.appendChild(quantityCol);
+            container.appendChild(row);
         }
-        return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
-    }
 
 
     </script>

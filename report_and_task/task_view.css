@@ -162,28 +162,32 @@
 .timeline-item {
     display: flex;
     align-items: center;
-    margin: 20px 0;
+    /* margin: 20px 0; */
     position: relative;
 }
 
 .timeline-left {
     flex: 1; 
-    text-align: left;
-    
+    text-align: left; 
 }
 
 
 .timeline-right {
-    flex: 3; 
+    flex: 4; 
     text-align: left;
-    padding-left: 20px; 
+    /* color: #1A405C; */
+    /* padding-left: 10px;  */
     word-wrap: break-word;
     white-space: normal;
+    line-height: 1.5;
 }
 
+.time{
+    color: #23577D;
+}
 .timeline-divider {
-    width: 2px;
-    background-color: #d4d9df;
+    width: 3px;
+    background-color: #1A405C;
     height: 40px;
     margin: 0 10px;
 }
@@ -194,7 +198,7 @@
 }
 
 .timeline-item .detail {
-    color: #6c757d;
+    color: #23577D;
 }
 
 .timeline-item:before {
@@ -225,6 +229,7 @@
     height: 30px;
     border-radius: 50%;
     background-color: lightgray;
+    color: #626265;
     line-height: 30px;
     text-align: center;
     font-weight: bold;
@@ -233,6 +238,7 @@
 /* Step circle active state */
 .circle.active {
     background-color: #28a745; /* สีของขั้นตอนที่เสร็จสิ้น */
+    color: #fff;
 }
 
 /* Line connecting the circles */
@@ -241,6 +247,7 @@
     flex-grow: 1;
     height: 2px;
     background-color: gray;
+    color: #626265;
     margin-top: -30px;
     margin-left: -5px;
   }
@@ -262,7 +269,7 @@
   }
 
 .step-label.inactive {
-    color: #999;
+    color: #626265;
 }
 
 .step {
@@ -279,10 +286,20 @@
     max-height: 80vh; /* ทำให้ภาพสูงไม่เกิน 80% ของความสูงหน้าจอ */
     object-fit: contain;
 }
-
+.modal-content {
+    /* margin: 5% auto;  */
+    margin-block-start: 75px;
+    /* margin: 5% 0; */
+    padding: 0;
+    display: block;
+    max-width: 90%; 
+    max-height: 80%;
+}
 /* ปรับการแสดงผลของ modal */
 .modal {
-    display: none; 
+    display: block; 
+    align-items: center;
+    justify-content: center;
     position: fixed;
     z-index: 1000; 
     left: 0;
@@ -291,13 +308,6 @@
     height: 100%; 
     overflow: auto; 
     background-color: rgba(0, 0, 0, 0.8); /* สีพื้นหลังแบบโปร่งใส */
-}
-
-.modal-content {
-    margin: 15% auto; 
-    display: block;
-    max-width: 90%; 
-    max-height: 80%;
 }
 
 .close {
@@ -317,9 +327,10 @@
 }
 
 .view-image{
-    color: rgb(60, 0, 255);
+    color: #28a745;
     padding: 0;
     margin: 0;
+    font-size: 12px;
 }
 
 .task-link{

@@ -368,37 +368,15 @@
             if ($_POST["id_min"] == "" && $_POST["id_max"] == "") { // ไม่ใส่ id
                 if (isset($_POST["id"]) && $_POST["id"] == "Lowest_to_Highest") { // เรียงจากน้อยไปมาก
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0
+                                WHERE task.tk_status = '".$_POST["status"]."'
                                 ORDER BY task.tk_id ASC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        }
                     } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
@@ -411,37 +389,15 @@
                     }
                 }else{//เรียงจากมากไปน้อย
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0
+                                WHERE task.tk_status = '".$_POST["status"]."'
                                 ORDER BY task.tk_id DESC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        }
                     } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
@@ -456,37 +412,15 @@
             }if ($_POST["id_min"] != "" && $_POST["id_max"] == "") { // ใส่ id น้อยไม่ใส่มาก
                 if (isset($_POST["id"]) && $_POST["id"] == "Lowest_to_Highest") { // เรียงจากน้อยไปมาก
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND (task.tk_id>='".$_POST["id_min"]."')
+                                WHERE task.tk_status = '".$_POST["status"]."' AND (task.tk_id>='".$_POST["id_min"]."')
                                 ORDER BY task.tk_id ASC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND (task.tk_id>='".$_POST["id_min"]."')
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND (task.tk_id>='".$_POST["id_min"]."')
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        }
                     } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
@@ -500,38 +434,16 @@
                     }
                 }else{//เรียงจากมากไปน้อย
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND (task.tk_id>='".$_POST["id_min"]."')
+                                WHERE task.tk_status = '".$_POST["status"]."' AND (task.tk_id>='".$_POST["id_min"]."')
                                 ORDER BY task.tk_id DESC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND (task.tk_id>='".$_POST["id_min"]."')
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND (task.tk_id>='".$_POST["id_min"]."')
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        }
-                    } else {// ไม่ได้ส่งค่า status มาเลย
+                        } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
                                    users.last_name AS engineer_last_name, 
@@ -546,38 +458,16 @@
             }if ($_POST["id_min"] == "" && $_POST["id_max"] != "") { // ใส่ id มากไม่ใส่น้อย
                 if (isset($_POST["id"]) && $_POST["id"] == "Lowest_to_Highest") { // เรียงจากน้อยไปมาก
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND (task.tk_id<='".$_POST["id_max"]."')
+                                WHERE task.tk_status = '".$_POST["status"]."' AND (task.tk_id<='".$_POST["id_max"]."')
                                 ORDER BY task.tk_id ASC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND (task.tk_id<='".$_POST["id_max"]."')
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND (task.tk_id<='".$_POST["id_max"]."')
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        }
-                    } else {// ไม่ได้ส่งค่า status มาเลย
+                        } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
                                    users.last_name AS engineer_last_name, 
@@ -590,38 +480,16 @@
                     }
                 }else{//เรียงจากมากไปน้อย
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND (task.tk_id<='".$_POST["id_max"]."')
+                                WHERE task.tk_status = '".$_POST["status"]."' AND (task.tk_id<='".$_POST["id_max"]."')
                                 ORDER BY task.tk_id DESC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND (task.tk_id<='".$_POST["id_max"]."')
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND (task.tk_id<='".$_POST["id_max"]."')
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        }
-                    } else {// ไม่ได้ส่งค่า status มาเลย
+                        } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
                                    users.last_name AS engineer_last_name, 
@@ -636,38 +504,16 @@
             }if ($_POST["id_min"] != "" && $_POST["id_max"] != "") { // ใส่ id ทั้งคู่
                 if (isset($_POST["id"]) && $_POST["id"] == "Lowest_to_Highest") { // เรียงจากน้อยไปมาก
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
+                                WHERE task.tk_status = '".$_POST["status"]."' AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
                                 ORDER BY task.tk_id ASC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
-                                ORDER BY task.tk_id ASC";
-                            return $sql;
-                        }
-                    } else {// ไม่ได้ส่งค่า status มาเลย
+                        } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
                                    users.last_name AS engineer_last_name, 
@@ -680,38 +526,16 @@
                     }
                 }else{//เรียงจากมากไปน้อย
                     if (isset($_POST["status"])) {
-                        if ($_POST["status"] == "0") { // รอดำเนินการ
                             $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                        users.first_name AS engineer_first_name,
                                        users.last_name AS engineer_last_name, 
                                        task.org_name, task.building_name, task.lift_id, task.tools
                                 FROM task
                                 INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 0 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
+                                WHERE task.tk_status = '".$_POST["status"]."' AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
                                 ORDER BY task.tk_id DESC";
                             return $sql;
-                        } else if ($_POST["status"] == "1") { // กำลังดำเนินการ
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 1 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        } else if ($_POST["status"] == "2") { // ดำเนินการเสร็จสิ้น
-                            $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
-                                       users.first_name AS engineer_first_name,
-                                       users.last_name AS engineer_last_name, 
-                                       task.org_name, task.building_name, task.lift_id, task.tools
-                                FROM task
-                                INNER JOIN users ON task.mainten_id = users.id
-                                WHERE task.tk_status = 2 AND ((task.tk_id BETWEEN '".$_POST['id_min']."' and '".$_POST['id_max']."') OR (task.tk_id BETWEEN '".$_POST['id_max']."' and '".$_POST['id_min']."')) 
-                                ORDER BY task.tk_id DESC";
-                            return $sql;
-                        }
-                    } else {// ไม่ได้ส่งค่า status มาเลย
+                        } else {// ไม่ได้ส่งค่า status มาเลย
                         $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
                                    users.first_name AS engineer_first_name,
                                    users.last_name AS engineer_last_name, 
@@ -726,4 +550,3 @@
             }
         }
     }
-?>

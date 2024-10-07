@@ -126,8 +126,7 @@ $stmt_work->close();
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">รายละเอียดงาน</h5>
-                                        <?php echo $row["tk_data"]; ?>
-                                        
+                                        <?php echo $row["tk_data"]; ?>                                   
                                     </div>
                                 </div>
                             </div>
@@ -257,7 +256,7 @@ $stmt_work->close();
     }
 </script>
 <!-- Pop-up container -->
-<div id="imageModal" class="modal" style="display:none;">
+<div id="imageModal" class="modal" style="display:none;" >
     <span class="close">&times;</span>
     <img class="modal-content" id="popupImage">
 </div>

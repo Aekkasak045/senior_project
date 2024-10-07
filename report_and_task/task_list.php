@@ -35,9 +35,10 @@ $rs = mysqli_query($conn, $sql);
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Task information</p> <a href="add_task_byAdmin.php">AddTask</a>
+                <p class="User_information">Task information</p>
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
+                <a href="add_task_byAdmin.php" class="addtask"><i class="fa-solid fa-plus fa-xl pluse"></i> Add Task </a>
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_task">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -61,7 +62,7 @@ $rs = mysqli_query($conn, $sql);
                                         </div>
                                     <label class="status-font">Status : </label>
                                     <div class="status-filter">
-                                        <input type="radio" name="status" value="1"> มอบหาย
+                                        <input type="radio" name="status" value="1"> มอบหมาย
                                         <br>
                                         <input type="radio" name="status" value="2"> รอดำเนินการ
                                         <br>

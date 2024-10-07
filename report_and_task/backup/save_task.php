@@ -1,5 +1,5 @@
 <?php
-require ("inc_db.php");
+require("inc_db.php");
 
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
@@ -16,36 +16,58 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $task_detail = $_POST['detail'];
     $engineer_id = $_POST['engineer_id'];
     $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
+    $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $work_detail = $_POST['detail'];
-    $work_image = "path_to_image";
-    $time = date("Y-m-d H:i:s"); 
+    $time = date("Y-m-d H:i:s");
 
-    // แปลงข้อมูล tools เป็น JSON
-    $tools_json = json_encode($tools);
+    // Combine tools and quantities into an array of objects
+    $tools_data = [];
+    foreach ($tools as $index => $tool) {
+        // Make sure both tool and quantity are not empty
+        if (!empty(trim($tool)) && isset($quantities[$index]) && !empty(trim($quantities[$index]))) {
+            $quantity = (int)$quantities[$index]; // Make sure the quantity is an integer
+            $tools_data[] = ['tool' => $tool, 'quantity' => $quantity];
+        }
+    }
 
-    // บันทึกข้อมูลลงในตาราง task
-    $insert_task = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    // Encode tools_data as JSON
+    $tools_json = json_encode($tools_data);
+
+    // Insert into task table
+    $insert_task = "INSERT INTO task (tk_status,tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools) 
+                    VALUES (1,?, ?, ?, ?, ?, ?, ?, ?, ?)";
     $stmt_task = $conn->prepare($insert_task);
+    if (!$stmt_task) {
+        die('Prepare failed: ' . $conn->error);
+    }
     $stmt_task->bind_param("siisissss", $task_detail, $report_id, $user_id, $user_rp, $engineer_id, $org_name, $building_name, $lift_name, $tools_json);
 
     if ($stmt_task->execute()) {
-        $task_id = $stmt_task->insert_id; // รับค่า tk_id ของงานที่ถูกสร้างใหม่
+        $task_id = $stmt_task->insert_id; // Get the new task's ID
 
-        // บันทึกข้อมูลลงในตาราง work
-        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail, wk_img) VALUES ('Assigned', ?, ?, ?)";
+        // Insert into work table
+        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail) VALUES ('Assigned', ?, ?)";
         $stmt_work = $conn->prepare($insert_work);
-        $stmt_work->bind_param("iss", $task_id, $work_detail, $work_image);
+        if (!$stmt_work) {
+            die('Prepare failed: ' . $conn->error);
+        }
+        $stmt_work->bind_param("is", $task_id, $work_detail);
 
-        // บันทึกข้อมูลลงในตาราง task_status
-        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
+        // Insert into task_status table
+        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'มอบหมาย')";
         $stmt_status = $conn->prepare($insert_status);
+        if (!$stmt_status) {
+            die('Prepare failed: ' . $conn->error);
+        }
         $stmt_status->bind_param("is", $task_id, $time);
 
         if ($stmt_work->execute() && $stmt_status->execute()) {
-            // ลบ report
+            // Delete the report
             $del_rp = "DELETE FROM report WHERE rp_id = ?";
             $stmt_rp = $conn->prepare($del_rp);
+            if (!$stmt_rp) {
+                die('Prepare failed: ' . $conn->error);
+            }
             $stmt_rp->bind_param("i", $report_id);
             $stmt_rp->execute();
 
@@ -55,12 +77,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             </script>";
             exit();
         } else {
-            echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลในตาราง work หรือ task_status: " . $stmt_work->error . " / " . $stmt_status->error;
+            echo "Error saving work or task status: " . $stmt_work->error . " / " . $stmt_status->error;
         }
         $stmt_work->close();
         $stmt_status->close();
     } else {
-        echo "เกิดข้อผิดพลาดในการบันทึกข้อมูลในตาราง task: " . $stmt_task->error;
+        echo "Error saving task: " . $stmt_task->error;
     }
 
     $stmt_task->close();

@@ -11,10 +11,6 @@
         <h2>Create New Report</h2>
         <form action="save_report.php" method="post">
             <div class="mb-3">
-                <label for="date_rp" class="form-label">Date</label>
-                <input type="date" class="form-control" id="date_rp" name="date_rp" required>
-            </div>
-            <div class="mb-3">
                 <label for="user_id" class="form-label">User ID</label>
                 <input type="text" class="form-control" id="user_id" name="user_id" required>
             </div>
