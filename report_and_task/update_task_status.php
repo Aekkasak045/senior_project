@@ -23,10 +23,13 @@ if ($result_task_ids->num_rows > 0) {
 
             if ($status == "waiting") {
                 $new_status = 2;
+                $new_work_status = 2 ;
             } elseif ($status == "working") {
                 $new_status = 3;
+                $new_work_status = 3 ;
             } elseif ($status == "finish") {
                 $new_status = 4;
+                $new_work_status = 4 ;
             } else {
                 continue; 
             }
@@ -36,6 +39,12 @@ if ($result_task_ids->num_rows > 0) {
             $stmt_update->bind_param("ii", $new_status, $tk_id);
             $stmt_update->execute();
             $stmt_update->close();
+
+            $update_work = "UPDATE work SET wk_status = ? WHERE tk_id = ?";
+            $stmt_update_work = $conn->prepare($update_work);
+            $stmt_update_work->bind_param("ii", $new_work_status, $tk_id);
+            $stmt_update_work->execute();
+            $stmt_update_work->close();
         }
 
         $stmt->close();

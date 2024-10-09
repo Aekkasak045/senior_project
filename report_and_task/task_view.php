@@ -101,22 +101,22 @@ $stmt_work->close();
                             <div class="progress-container">
                                 <div class="step">
                                     <div class="circle" id="step1">1</div>
-                                    <div class="step-label" id="label1">Step 1</div>
+                                    <div class="step-label" id="label1">assign</div>
                                 </div>
                                 <div class="line" id="line1"></div>
                                 <div class="step">
                                     <div class="circle" id="step2">2</div>
-                                    <div class="step-label" id="label2">Step 2</div>
+                                    <div class="step-label" id="label2">waitting</div>
                                 </div>
                                 <div class="line" id="line2"></div>
                                 <div class="step">
                                     <div class="circle" id="step3">3</div>
-                                    <div class="step-label" id="label3">Step 3</div>
+                                    <div class="step-label" id="label3">working</div>
                                 </div>
                                 <div class="line" id="line3"></div>
                                 <div class="step">
                                     <div class="circle" id="step4">4</div>
-                                    <div class="step-label" id="label4">Step 4</div>
+                                    <div class="step-label" id="label4">complete</div>
                                 </div>
                             </div>
                         </div>
