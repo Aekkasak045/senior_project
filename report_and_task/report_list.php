@@ -3,11 +3,12 @@ require ("inc_db.php");
 include ("user_function.php");
 include("update_task_status.php");
 
-$sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,lifts.lift_name,building.building_name FROM report 
+$sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,building.building_name,lifts.lift_name 
+FROM report 
 INNER JOIN users ON report.user_id = users.id 
-INNER JOIN organizations ON report.org_id = organizations.id
-INNER JOIN building on report.building_id =building.id
-INNER JOIN lifts ON report.lift_id = lifts.id
+INNER JOIN organizations ON report.org_id = organizations.id 
+INNER JOIN building ON organizations.id = building.id 
+INNER JOIN lifts ON report.lift_id = lifts.id 
 ORDER BY rp_id DESC;";
 $rs = mysqli_query($conn, $sql);
 ?>
@@ -110,7 +111,7 @@ if (isset($_GET['logout'])) {
                             <th class="row-2 row-Date">Date</th>
                             <th class="row-3 row-Username">User</th>
                             <th class="row-4 row-Organization">Organization</th>
-                            <th class="row-4 row-Organization">Building</th>
+                            <th class="row-4 row-building">Building</th>
                             <th class="row-5 row-Lift">Lift</th>
                             <th class="row-6 row-Detail">Detail</th>
                             <th class="row-7 row-Action">Action</th>

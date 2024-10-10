@@ -21,15 +21,18 @@ if ($result_task_ids->num_rows > 0) {
             $status_row = $result_status->fetch_assoc();
             $status = $status_row['status'];
 
-            if ($status == "waiting") {
+            if ($status == "preparing") {
                 $new_status = 2;
                 $new_work_status = 2 ;
-            } elseif ($status == "working") {
+            }elseif ($status == "working") {
                 $new_status = 3;
                 $new_work_status = 3 ;
-            } elseif ($status == "finish") {
+            } elseif ($status == "working") {
                 $new_status = 4;
                 $new_work_status = 4 ;
+            } elseif ($status == "finish") {
+                $new_status == 5;
+                $new_work_status = 6 ;
             } else {
                 continue; 
             }

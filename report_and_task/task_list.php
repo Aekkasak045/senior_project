@@ -13,10 +13,29 @@ $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
 $rs = mysqli_query($conn, $sql);
 ?>
 
+<!-- ####################################################################### -->
+<!-- เช็ค session ว่ามีหรือเปล่า -->
+<?php
+session_start();
+
+if (!isset($_SESSION['username'])) {
+    $_SESSION['msg'] = "You must log in first";
+    header('location:../login/login.php');
+}
+
+if (isset($_GET['logout'])) {
+    session_destroy();
+    unset($_SESSION['username']);
+    header('location:../login/login.php');
+}
+?>
+<!-- ####################################################################### -->
+
 <!DOCTYPE html>
 <html>
 
 <head>
+
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />

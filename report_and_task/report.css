@@ -171,12 +171,15 @@ td, th{
 .row-Organization {
     width: 60px;
 }
+.row-building{
+    width: 50px;
+}
 .row-Lift {
     width: 50px;
 }
 .row-Detail {
     text-align: center;
-    width: 200px;
+    width: 150px;
 }
 .row-Action{
     text-align: center;
@@ -280,7 +283,7 @@ td, th{
     }
 }
 
-@media (max-width: 765px) {/*ทำตารางให้เป็นบล็อก*/
+@media (max-width: 895px) {/*ทำตารางให้เป็นบล็อก*/
     td:first-child{
         padding-top: 15px;
     }

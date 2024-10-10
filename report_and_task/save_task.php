@@ -54,14 +54,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt_work->bind_param("is", $task_id, $work_detail);
 
         // Insert into task_status table
-        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'มอบหมาย')";
+        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, 'มอบหมาย')";
         $stmt_status = $conn->prepare($insert_status);
         if (!$stmt_status) {
             die('Prepare failed: ' . $conn->error);
         }
         $stmt_status->bind_param("is", $task_id, $time);
+        $insert_status_2 = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
+        $stmt_status_2 = $conn->prepare($insert_status_2);
+        $stmt_status_2->bind_param("is", $task_id, $time);
 
-        if ($stmt_work->execute() && $stmt_status->execute()) {
+        if ($stmt_work->execute() && $stmt_status->execute() && $stmt_status_2->execute() ) {
             // Delete the report
             $del_rp = "DELETE FROM report WHERE rp_id = ?";
             $stmt_rp = $conn->prepare($del_rp);
@@ -81,6 +84,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         }
         $stmt_work->close();
         $stmt_status->close();
+        $stmt_status_2->close();
     } else {
         echo "Error saving task: " . $stmt_task->error;
     }
