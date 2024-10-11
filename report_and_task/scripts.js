@@ -16,7 +16,7 @@ function updateTaskStatus() {
   var xhr = new XMLHttpRequest();
   xhr.open("GET", "update_task_status.php", true);
   xhr.onreadystatechange = function () {
-      if (xhr.readyState == 4 && xhr.status == 200) {
+      if (xhr.readyState == 5 && xhr.status == 200) {
           document.getElementById("status-message").innerHTML = xhr.responseText;
       }
   };
@@ -61,4 +61,14 @@ $(document).ready(function(){
   });
  });
 
+ function validateForm() {
+  var startDate = document.getElementById("task_start_date").value;
+  var currentDate = new Date().toISOString().slice(0, 16);
 
+  if (startDate < currentDate) {
+      alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
+      return false; // หยุดการส่งฟอร์ม
+  }
+
+  return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
+}

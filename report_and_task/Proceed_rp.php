@@ -136,44 +136,58 @@ if (isset($_GET['logout'])) {
                                 
 
                                 <!-- Tools Used Section -->
-<h6 class="card-title">Tools Used</h6>
-<div id="input-container" class="mb-3">
-    <div class="input-group mb-2">
-        <!-- ใช้ select dropdown สำหรับเลือกเครื่องมือ -->
-        <select name="tools[]" class="form-select">
-            <option value="">เลือกเครื่องมือ</option>
-            <?php 
-            // ดึงข้อมูลเครื่องมือจากตาราง tools
-            $sql_tools = "SELECT tool_name FROM tools";
-            $result_tools = $conn->query($sql_tools);
+                                <h6 class="card-title">Tools Used</h6>
+                                <div id="input-container" class="mb-3">
+                                    <div class="input-group mb-2">
+                                        <!-- ใช้ select dropdown สำหรับเลือกเครื่องมือ -->
+                                        <select name="tools[]" class="form-select">
+                                            <option value="">เลือกเครื่องมือ</option>
+                                            <?php 
+                                            // ดึงข้อมูลเครื่องมือจากตาราง tools
+                                            $sql_tools = "SELECT tool_name FROM tools";
+                                            $result_tools = $conn->query($sql_tools);
 
-            while ($tool = $result_tools->fetch_assoc()) { ?>
-                <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
-            <?php } ?>
-        </select>
+                                            while ($tool = $result_tools->fetch_assoc()) { ?>
+                                                <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
+                                            <?php } ?>
+                                        </select>
 
-        <!-- ฟิลด์สำหรับใส่จำนวน -->
-        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
+                                        <!-- ฟิลด์สำหรับใส่จำนวน -->
+                                        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
 
-        <!-- ปุ่มลบ -->
-        <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
-            <i class="fas fa-trash-alt"></i>
-        </button>
-    </div>                                 
-</div>
+                                        <!-- ปุ่มลบ -->
+                                        <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>                                 
+                                </div>
 
-<!-- ปุ่มเพิ่มเครื่องมือ -->
-<button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
+                                <!-- ปุ่มเพิ่มเครื่องมือ -->
+                                <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
 
+                                <!-- ฟิลด์สำหรับเลือกวันที่และเวลาเริ่มงาน (24 ชม.) -->
+                                <div class="mb-3">
+                                    <label for="task_start_date" class="form-label">วันที่และเวลาเริ่มงาน:</label>
+                                    <input type="datetime-local" class="form-control" id="task_start_date" name="task_start_date" required>
+                                </div>
 
                                 <h6 class="card-title">Assign Engineer</h6>
-                                <div class="mb-3 box3">
-                                    <select class="boxrole" name="engineer_id" id="engineer" required>
-                                        <?php foreach ($engineers as $engineer): ?>
-                                            <option value="<?php echo htmlspecialchars($engineer['id']); ?>"><?php echo htmlspecialchars($engineer['first_name'] . ' ' . $engineer['last_name']); ?></option>
-                                        <?php endforeach; ?>]
-                                    </select>
-                                </div>
+                                    <div class="mb-3 box3">
+                                        <select class="boxrole" name="engineer_id" id="engineer" onchange="fetchEngineerData(this.value)" required>
+                                            <option value="">เลือกช่าง</option>
+                                            <?php foreach ($engineers as $engineer): ?>
+                                                <option value="<?php echo htmlspecialchars($engineer['id']); ?>"><?php echo htmlspecialchars($engineer['first_name'] . ' ' . $engineer['last_name']); ?></option>
+                                            <?php endforeach; ?>
+                                        </select>
+                                    </div>
+
+                                    <div id="engineer_info" class="mb-3">
+                                        <h6 class="card-title">Engineer Information</h6>
+                                        <p id="engineer_name" class="textinfo"></p>
+                                        <p id="engineer_phone" class="textinfo"></p>
+                                        <p id="engineer_email" class="textinfo"></p>
+                                        <img id="engineer_image" src="" alt="Engineer Image" style="max-width: 100px; display: none;">
+                                    </div>
                                 
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-end">
                                     <input class="btn btn-primary create" type="submit" name="edit" value="Create Task">
@@ -277,3 +291,45 @@ if (isset($_GET['logout'])) {
 </script>
 
 <script src="scripts.js"></script>
+<script>
+    function fetchEngineerData(engineer_id) {
+        if (engineer_id) {
+            // ส่ง request ไปยังไฟล์ PHP เพื่อดึงข้อมูลของช่าง
+            fetch('get_mainten_info.php?engineer_id=' + engineer_id)
+                .then(response => response.json())
+                .then(data => {
+                    if (data) {
+                        document.getElementById('engineer_name').textContent = 'Name: ' + data.first_name + ' ' + data.last_name;
+                        document.getElementById('engineer_phone').textContent = 'Phone: ' + data.phone;
+                        document.getElementById('engineer_email').textContent = 'Email: ' + data.email;
+
+                        // แสดงรูปภาพถ้ามี
+                        if (data.user_img) {
+                            document.getElementById('engineer_image').src = 'data:image/jpeg;base64,' + data.user_img;
+                            document.getElementById('engineer_image').style.display = 'block';
+                        } else {
+                            document.getElementById('engineer_image').style.display = 'none';
+                        }
+                    } else {
+                        alert('Engineer data not found');
+                    }
+                })
+                .catch(error => console.error('Error fetching engineer data:', error));
+        }
+    }
+
+    function validateForm() {
+    var startDate = document.getElementById("task_start_date").value;
+    var currentDate = new Date();
+
+    // แปลงวันที่เริ่มงานเป็นรูปแบบ Date
+    var selectedDate = new Date(startDate);
+
+    if (selectedDate < currentDate) {
+        alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
+        return false; // หยุดการส่งฟอร์ม
+    }
+
+    return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
+}
+</script>

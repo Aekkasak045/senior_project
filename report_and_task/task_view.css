@@ -241,6 +241,11 @@
     color: #fff;
 }
 
+.circle.onstep {
+    background-color: #4e00f8;
+    color: #fff;
+}
+
 /* Line connecting the circles */
 .line {
     display: flex;

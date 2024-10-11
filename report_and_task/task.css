@@ -330,6 +330,12 @@ td, th{
     background-color: #28a745; /* สีของขั้นตอนที่เสร็จสิ้น */
 }
 
+/* สีน้ำเงินสำหรับขั้นตอนปัจจุบัน */
+.circle.onstep {
+    background-color: blue;
+    color: white;
+}
+
 /* Line connecting the circles */
 .line {
     flex-grow: 1;

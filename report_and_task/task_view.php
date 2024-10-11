@@ -7,7 +7,7 @@ include("update_task_status.php");
 $task_id = $_GET["tk_id"];
 
 // SQL Query เพื่อดึงข้อมูลทั้งหมด
-$sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id, task.user_id, task.user, task.mainten_id, task.org_name, task.building_name, task.lift_id, task.tools,
+$sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id, task.user_id, task.user, task.mainten_id, task.org_name, task.building_name, task.lift_id, task.tools,task_start_date,
         reporter.username AS reporter_username, reporter.first_name AS reporter_first_name, reporter.last_name AS reporter_last_name, reporter.email AS reporter_email, reporter.phone AS reporter_phone, reporter.role AS reporter_role, reporter.user_img AS reporter_user_img,
         mainten.username AS mainten_username, mainten.first_name AS mainten_first_name, mainten.last_name AS mainten_last_name, mainten.email AS mainten_email, mainten.phone AS mainten_phone, mainten.role AS mainten_role, mainten.user_img AS mainten_user_img,
         organizations.org_name,
@@ -106,17 +106,22 @@ $stmt_work->close();
                                 <div class="line" id="line1"></div>
                                 <div class="step">
                                     <div class="circle" id="step2">2</div>
-                                    <div class="step-label" id="label2">waitting</div>
+                                    <div class="step-label" id="label2">preparing</div>
                                 </div>
                                 <div class="line" id="line2"></div>
                                 <div class="step">
                                     <div class="circle" id="step3">3</div>
-                                    <div class="step-label" id="label3">working</div>
+                                    <div class="step-label" id="label3">prepared</div>
                                 </div>
                                 <div class="line" id="line3"></div>
                                 <div class="step">
                                     <div class="circle" id="step4">4</div>
-                                    <div class="step-label" id="label4">complete</div>
+                                    <div class="step-label" id="label4">working</div>
+                                </div>
+                                <div class="line" id="line4"></div>
+                                <div class="step">
+                                    <div class="circle" id="step5">5</div>
+                                    <div class="step-label" id="label5">complete</div>
                                 </div>
                             </div>
                         </div>
@@ -126,7 +131,8 @@ $stmt_work->close();
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">รายละเอียดงาน</h5>
-                                        <?php echo $row["tk_data"]; ?>                                   
+                                        วันที่และเวลาเริ่มงาน: <?php echo date("d/m/Y H:i", strtotime($row["task_start_date"])); ?>      
+                                        <br>รายละเอียดงาน:<?php echo $row["tk_data"]; ?>                                   
                                     </div>
                                 </div>
                             </div>
@@ -265,21 +271,26 @@ $stmt_work->close();
 </body>
 
 <script>
-    // Get the actual status from the PHP variable
-    let tk_status = <?php echo $row['tk_status']; ?>;
 
-    // Update progress bar based on the status
-    for (let i = 1; i <= 4; i++) {
-        if (i <= tk_status) {
-            document.getElementById('step' + i).classList.add('active');
-            document.getElementById('label' + i).classList.remove('inactive');
-            if (i < tk_status) {
-                document.getElementById('line' + i).classList.add('active');
-            }
-        } else {
-            document.getElementById('label' + i).classList.add('inactive');
+let tk_status = <?php echo $row['tk_status']; ?>;
+
+// Update progress bar based on the status
+for (let i = 1; i <= 6; i++) {
+    if (i < tk_status || tk_status == 5) {
+        // กรณีที่ tk_status มากกว่าขั้นตอนที่ i (สีเขียว - สำเร็จแล้ว)
+        document.getElementById('step' + i).classList.add('active');
+        document.getElementById('label' + i).classList.remove('inactive');
+        if (i < tk_status && tk_status == 5) {
+            document.getElementById('line' + i).classList.add('active');
         }
+    } else if (i == tk_status && tk_status <= 5 ) {
+        document.getElementById('step' + i).classList.add('onstep');
+        document.getElementById('label' + i).classList.remove('inactive');
+    } else {
+        // กรณีที่ tk_status ยังไม่ถึงขั้นตอนนั้น
+        document.getElementById('label' + i).classList.add('inactive');
     }
+}
 </script>
 <!-- Pop-up container -->
 <div id="imageModal" class="modal" style="display:none;" >

@@ -95,7 +95,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             <div class="mb-3">
                 <label for="status" class="form-label">สถานะ</label>
                 <select class="form-select" id="status" name="status" required>
-                    <option value="waiting">รอดำเนินการ</option>
+                    <option value="assign">มอบหมาย</option>
+                    <option value="preparing">กำลังเตรียมอุปกรณ์</option>
+                    <option value="prepared">เตรียมอุปกรณ์เสร็จสิ้น</option>
                     <option value="working">กำลังดำเนินการ</option>
                     <option value="finish">เสร็จสิ้น</option>
                 </select>

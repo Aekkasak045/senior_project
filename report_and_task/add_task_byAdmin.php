@@ -33,6 +33,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $tools = isset($_POST['tools']) ? $_POST['tools'] : [];
     $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $time = date("Y-m-d H:i:s");
+    $task_start_date = $_POST['task_start_date']; 
 
     // จัดการ tools และ quantities เป็น JSON
     $tools_data = [];
@@ -43,10 +44,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
     $tools_json = json_encode($tools_data);
 
-    $sql = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools, tk_status) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1)";
+    $sql = "INSERT INTO task (tk_data, rp_id, user_id, user, mainten_id, org_name, building_name, lift_id, tools, tk_status,task_start_date) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 1,?)";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("siisissss", $task_detail, $rp_id, $user_id, $username, $mainten_id, $org_name, $building_name, $lift_name, $tools_json);
+$stmt->bind_param("siisisssss", $task_detail, $rp_id, $user_id, $username, $mainten_id, $org_name, $building_name, $lift_name, $tools_json,$task_start_date);
 
 if ($stmt->execute()) {
     // ดึง task_id ของงานที่เพิ่งถูกสร้างขึ้น
@@ -279,6 +280,11 @@ if (isset($_GET['org_id'])) {
     <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
 </div>
 
+<!-- ฟิลด์สำหรับเลือกวันที่และเวลาเริ่มงาน (24 ชม.) -->
+                                <div class="mb-3">
+                                    <label for="task_start_date" class="form-label">วันที่และเวลาเริ่มงาน:</label>
+                                    <input type="datetime-local" class="form-control" id="task_start_date" name="task_start_date" required>
+                                </div>
                     <div class="button_create">
                         <button type="submit" class="btn btn-primary create">Create</button></div>
                     </div>
@@ -451,6 +457,20 @@ enableRemoveButtons();
         return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
     }
 
+    function validateForm() {
+        var startDate = document.getElementById("task_start_date").value;
+        var currentDate = new Date();
+
+        // แปลงวันที่เริ่มงานเป็นรูปแบบ Date
+        var selectedDate = new Date(startDate);
+
+        if (selectedDate < currentDate) {
+            alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
+            return false; // หยุดการส่งฟอร์ม
+        }
+
+        return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
+    }
 
     </script>
     <!-- --------------------------------------- -->

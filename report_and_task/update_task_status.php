@@ -20,38 +20,32 @@ if ($result_task_ids->num_rows > 0) {
         if ($result_status->num_rows > 0) {
             $status_row = $result_status->fetch_assoc();
             $status = $status_row['status'];
+            
+            // กำหนดค่าใหม่ตาม status
             if ($status == "preparing") {
                 $new_status = 2;
-                $new_work_status = 2 ;
-            }elseif ($status == "working") {
+            } elseif ($status == "prepared") {
                 $new_status = 3;
-                $new_work_status = 3 ;
             } elseif ($status == "working") {
                 $new_status = 4;
-                $new_work_status = 4 ;
             } elseif ($status == "finish") {
-                $new_status == 5;
-                $new_work_status = 6 ;
+                $new_status = 5;
             } else {
-                continue; 
+                continue; // ถ้า status ไม่อยู่ในเงื่อนไขข้ามไป
             }
 
+            // อัปเดต tk_status ในตาราง task
             $update_task = "UPDATE task SET tk_status = ? WHERE tk_id = ?";
             $stmt_update = $conn->prepare($update_task);
             $stmt_update->bind_param("ii", $new_status, $tk_id);
             $stmt_update->execute();
             $stmt_update->close();
-
-            $update_work = "UPDATE work SET wk_status = ? WHERE tk_id = ?";
-            $stmt_update_work = $conn->prepare($update_work);
-            $stmt_update_work->bind_param("ii", $new_work_status, $tk_id);
-            $stmt_update_work->execute();
-            $stmt_update_work->close();
         }
 
         $stmt->close();
     }
 }
 
+// ปิดการเชื่อมต่อฐานข้อมูล
 // $conn->close();
 ?>
