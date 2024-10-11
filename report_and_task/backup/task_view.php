@@ -81,8 +81,6 @@ $stmt_work->close();
     <link rel="stylesheet" href="task_view.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Lift RMS</title>
-    
-
 </head>
 
 <body class="background1">
@@ -141,53 +139,26 @@ $stmt_work->close();
                         </div>
                         <!-- Timeline -->
                         <div class="status_box">
-    <ul class="timeline">
-        <?php
-        // จัดกลุ่มสถานะโดยใช้ array เพื่อเก็บสถานะต่างๆ
-        $status_groups = [
-            'finish' => 'เสร็จสิ้น',
-            'working' => 'กำลังปฏิบัติ',
-            'prepared' => 'เตรียมอุปกรณ์เสร็จสิน',
-            'preparing' => 'กำลังเตรียมอุปกรณ์',
-            'assign' => 'มอบหมาย',
-        ];
+                            <ul class="timeline">
+                                <?php foreach ($task_statuses as $index => $status): ?>
+                                    <li class="timeline-item">
+                                        <div class="timeline-left">
+                                            <span class="time"><?php echo date("d/m/y", strtotime($status['time'])); ?></span>
+                                        </div>
+                                        <div class="timeline-divider"></div>
+                                        <div class="timeline-right">
+                                            <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
 
-        // วนลูปแสดงกลุ่มสถานะ
-        foreach ($status_groups as $status_key => $status_label) {
-            // หาสถานะที่ตรงกับ key ของกลุ่มนี้
-            $has_items = false; // เช็คว่ามีรายการในกลุ่มหรือไม่
-
-            foreach ($task_statuses as $status) {
-                if ($status['status'] == $status_key) {
-                    if (!$has_items) {
-                        // แสดงหัวข้อหลักของกลุ่มเมื่อเจอรายการที่ตรงกับสถานะกลุ่มนี้
-                        echo '<h4 class="status-group">' . $status_label . '</h4>';
-                        $has_items = true;
-                    }
-                    ?>
-                    <li class="timeline-item">
-                        <div class="timeline-left">
-                            <span class="time"><?php echo date("d/m/y H:i", strtotime($status['time'])); ?></span>
+                                        <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
+                                        <?php if (!empty($work_images[$status['tk_status_id']])): ?>
+                                            <br>
+                                            <a href="#" class="view-image" data-image="data:image/jpeg;base64,<?php echo $work_images[$status['tk_status_id']]; ?>">ดูรูปภาพ</a>
+                                        <?php endif; ?>
+                                        </div>
+                                    </li>
+                                <?php endforeach ; ?>
+                            </ul>
                         </div>
-                        <div class="timeline-divider"></div>
-                        <div class="timeline-right">
-                            <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
-
-                            <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
-                            <?php if (!empty($work_images[$status['tk_status_id']])): ?>
-                                <br>
-                                <a href="#" class="view-image" data-image="data:image/jpeg;base64,<?php echo $work_images[$status['tk_status_id']]; ?>">ดูรูปภาพ</a>
-                            <?php endif; ?>
-                        </div>
-                    </li>
-                    <?php
-                }
-            }
-        }
-        ?>
-    </ul>
-</div>
-
 
                     </div>
 
