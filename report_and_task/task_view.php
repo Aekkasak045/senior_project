@@ -215,20 +215,46 @@ $stmt_work->close();
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">เครื่องมือที่ใช้</h5>
-                                <ul class="text_tools">
-                                    <?php
-                                    $tools = json_decode($row['tools'], true);
-                                    if (is_array($tools)) {
-                                        foreach ($tools as $tool) {
-                                            if (isset($tool['tool']) && isset($tool['quantity'])) {
-                                                echo '<li class="tools">' . htmlspecialchars($tool['tool']) . ' (จำนวน: ' . htmlspecialchars($tool['quantity']) . ')</li>';
+                                <!-- เพิ่ม div ที่ห่อหุ้มส่วนที่จะแสดงเครื่องมือ -->
+                                <div class="tools-container" style="max-height: 200px; overflow-y: auto;">
+                                    <ul class="text_tools">
+                                        <?php
+                                        $tools = json_decode($row['tools'], true);
+                                        $total_cost = 0; // ตัวแปรสำหรับเก็บมูลค่ารวม
+                                        if (is_array($tools)) {
+                                            foreach ($tools as $tool) {
+                                                if (isset($tool['tool']) && isset($tool['quantity'])) {
+                                                    // ดึงข้อมูล cost จากตาราง tools
+                                                    $tool_name = $tool['tool'];
+                                                    $quantity = $tool['quantity'];
+                                                    $sql_tool_cost = "SELECT cost FROM tools WHERE tool_name = ?";
+                                                    $stmt_tool_cost = $conn->prepare($sql_tool_cost);
+                                                    $stmt_tool_cost->bind_param("s", $tool_name);
+                                                    $stmt_tool_cost->execute();
+                                                    $result_tool_cost = $stmt_tool_cost->get_result();
+                                                    $tool_cost = $result_tool_cost->fetch_assoc()['cost'];
+
+                                                    // คำนวณมูลค่าของเครื่องมือแต่ละชิ้น
+                                                    $item_total_cost = $tool_cost * $quantity;
+                                                    $total_cost += $item_total_cost;
+
+                                                    // แสดงผลเครื่องมือพร้อมจำนวนและ cost โดยแยกบรรทัดใหม่
+                                                    echo '<li class="tools">' 
+                                                        . htmlspecialchars($tool['tool']) . '<br>' 
+                                                        . 'จำนวน: ' . htmlspecialchars($tool['quantity']) . '<br>' 
+                                                        . 'ราคา: ' . htmlspecialchars($tool_cost) . ' บาท<br>' 
+                                                        . 'มูลค่ารวม: ' . $item_total_cost . ' บาท'
+                                                        . '</li><br>';
+                                                }
                                             }
+                                            // แสดงผลมูลค่ารวมของเครื่องมือทั้งหมด
+                                            echo '<p>มูลค่ารวมของเครื่องมือทั้งหมด: ' . $total_cost . ' บาท</p>';
+                                        } else {
+                                            echo '<li>ไม่มีเครื่องมือ</li>';
                                         }
-                                    } else {
-                                        echo '<li>ไม่มีเครื่องมือ</li>';
-                                    }
-                                    ?>
-                                </ul>
+                                        ?>
+                                    </ul>
+                                </div>
                             </div>
                         </div>
                     </div>
