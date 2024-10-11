@@ -154,37 +154,41 @@ if (isset($_GET['logout'])) {
     </div>
 </div>
 
+<!-- Form for Adding Tools -->
 <div class="modal fade" id="addToolModal" tabindex="-1" aria-labelledby="addToolModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="addToolModalLabel">Add Tools</h5>
+                <h5 class="modal-title" id="addToolModalLabel">เพิ่มเครื่องมือ</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="addToolForm" method="POST" action="">
-
-                    <!-- ฟิลด์เพิ่มเครื่องมือแบบหลายรายการ -->
                     <div id="toolFields">
-                        <div class="mb-3">
-                            <label for="tool_name[]" class="form-label">Tool Name:</label>
-                            <input type="text" class="form-control" name="tool_name[]" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="tool_cost[]" class="form-label">Cost:</label>
-                            <input type="number" class="form-control" name="tool_cost[]" required>
+                        <div class="toolField">
+                            <div class="mb-3">
+                                <label for="tool_name[]" class="form-label">ชื่อเครื่องมือ:</label>
+                                <input type="text" class="form-control" name="tool_name[]" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="tool_cost[]" class="form-label">ราคา:</label>
+                                <input type="number" class="form-control" name="tool_cost[]" required>
+                            </div>
+                            <!-- ปุ่มลบฟิลด์ -->
+                            <button type="button" class="btn btn-danger removeField" disabled>ลบ</button>
                         </div>
                     </div>
 
-                    <!-- ปุ่มเพิ่มฟิลด์ -->
-                    <button type="button" class="btn btn-secondary" onclick="addToolField()">Add More Tools</button>
+                    <!-- ปุ่มเพิ่มฟิลด์เครื่องมือ -->
+                    <button type="button" class="btn btn-secondary" onclick="addToolField()">เพิ่มเครื่องมือ</button>
 
-                    <button type="submit" name="save_tools" class="btn btn-primary mt-3">Save Tools</button>
+                    <button type="submit" name="save_tools" class="btn btn-primary mt-3">บันทึกเครื่องมือ</button>
                 </form>
             </div>
         </div>
     </div>
 </div>
+
 
 </body>
 <script src="scripts.js"></script>
@@ -195,21 +199,58 @@ if (isset($_GET['logout'])) {
             document.getElementById('tool_cost').value = tool_cost;
         }
 
-        // ฟังก์ชันเพิ่มฟิลด์เครื่องมือ
+    // ฟังก์ชันเพิ่มฟิลด์เครื่องมือใหม่
     function addToolField() {
         const toolFields = document.getElementById('toolFields');
-        const newField = `
+        const newField = document.createElement('div');
+        newField.classList.add('toolField');
+        newField.innerHTML = `
             <div class="mb-3">
-                <label for="tool_name[]" class="form-label">Tool Name:</label>
+                <label for="tool_name[]" class="form-label">ชื่อเครื่องมือ:</label>
                 <input type="text" class="form-control" name="tool_name[]" required>
             </div>
             <div class="mb-3">
-                <label for="tool_cost[]" class="form-label">Cost:</label>
+                <label for="tool_cost[]" class="form-label">ราคา:</label>
                 <input type="number" class="form-control" name="tool_cost[]" required>
             </div>
+            <button type="button" class="btn btn-danger removeField">ลบ</button>
         `;
-        toolFields.insertAdjacentHTML('beforeend', newField);
+
+        // เพิ่มฟิลด์ใหม่เข้าไปใน DOM
+        toolFields.appendChild(newField);
+
+        // ตรวจสอบจำนวนฟิลด์ และเปิดใช้งานปุ่มลบ
+        updateRemoveButtons();
+
+        // เพิ่ม event listener ให้ปุ่มลบที่เพิ่มขึ้นใหม่
+        newField.querySelector('.removeField').addEventListener('click', function() {
+            newField.remove(); // ลบฟิลด์ออกจาก DOM
+            updateRemoveButtons(); // อัปเดตปุ่มลบหลังจากลบ
+        });
     }
+
+    // ฟังก์ชันสำหรับอัปเดตสถานะปุ่มลบ
+    function updateRemoveButtons() {
+        const removeButtons = document.querySelectorAll('.removeField');
+        const toolFields = document.querySelectorAll('.toolField');
+
+        // ถ้ามีมากกว่า 1 ฟิลด์ ให้เปิดใช้งานปุ่มลบ ถ้ามีแค่ 1 ปิดการใช้งานปุ่มลบ
+        removeButtons.forEach(button => {
+            if (toolFields.length > 1) {
+                button.disabled = false;
+            } else {
+                button.disabled = true;
+            }
+        });
+    }
+
+    // เพิ่ม event listener ให้กับปุ่มลบของฟิลด์เริ่มต้น
+    document.querySelectorAll('.removeField').forEach(button => {
+        button.addEventListener('click', function() {
+            this.parentElement.remove(); // ลบฟิลด์ออกจาก DOM
+            updateRemoveButtons(); // อัปเดตปุ่มลบหลังจากลบ
+        });
+    });
 </script>
 </html>
 
