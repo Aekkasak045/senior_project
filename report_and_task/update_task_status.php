@@ -20,7 +20,6 @@ if ($result_task_ids->num_rows > 0) {
         if ($result_status->num_rows > 0) {
             $status_row = $result_status->fetch_assoc();
             $status = $status_row['status'];
-
             if ($status == "preparing") {
                 $new_status = 2;
                 $new_work_status = 2 ;

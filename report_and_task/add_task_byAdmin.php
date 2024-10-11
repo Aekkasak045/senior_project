@@ -88,6 +88,9 @@ $stmt->close();
     
 }
 
+// ดึงข้อมูลจากตาราง tools
+$sql_tools = "SELECT tool_id, tool_name FROM tools";
+$tools_result = $conn->query($sql_tools);
 
 // การดึงข้อมูล Building และ Lift จะถูกจัดการผ่าน AJAX
 if (isset($_GET['org_id'])) {
@@ -254,20 +257,30 @@ if (isset($_GET['org_id'])) {
                             <p id="mainten_email" class="data_body_text"></p> 
                         </div>
 
-                        <!-- เครื่องมือที่ใช้ -->
-                        <div class="mb-3">
-                            <label for="tools" class="form_text">เครื่องมือที่ใช้ : </label>
-                            <div id="input-container" class="mb-3">
-                                <div class="input-group mb-2">
-                                    <input type="text" name="tools[]" class="form-control" placeholder="Tool name" >
-                                    <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1" >
-                                    <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
-                                        <i class="fas fa-trash-alt"></i>
-                                    </button>
-                                </div>                                 
-                            </div>
-                            <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
-                        </div>
+                        <!-- ส่วนเครื่องมือที่ใช้ -->
+<div class="mb-3">
+    <label for="tools" class="form_text">เครื่องมือที่ใช้ : </label>
+    <div id="input-container" class="mb-3">
+        <div class="input-group mb-2">
+            <!-- สร้าง select dropdown เพื่อให้เลือกเครื่องมือจากตาราง tools -->
+            <select name="tools[]" class="form-select">
+                <option value="">เลือกเครื่องมือ</option>
+                <?php while ($tool = $tools_result->fetch_assoc()) { ?>
+                    <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
+                <?php } ?>
+            </select>
+
+            <!-- ฟิลด์สำหรับใส่จำนวนเครื่องมือ -->
+            <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
+
+            <!-- ปุ่มลบ -->
+            <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
+                <i class="fas fa-trash-alt"></i>
+            </button>
+        </div>
+    </div>
+    <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
+</div>
 
                     <div class="button_create">
                         <button type="submit" class="btn btn-primary create">Create</button></div>
@@ -342,74 +355,86 @@ if (isset($_GET['org_id'])) {
             });
     }
 }
+// เก็บตัวเลือกเครื่องมือเป็น JavaScript array
+var toolOptions = `
+    <option value="">เลือกเครื่องมือ</option>
+    <?php 
+        $tools_result = $conn->query($sql_tools); // เรียก query ใหม่เพื่อให้ใช้งานได้ใน JavaScript
+        while ($tool = $tools_result->fetch_assoc()) { ?>
+        <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
+    <?php } ?>
+`;
+
 function addToolInput() {
-        var inputContainer = document.getElementById("input-container");
+    var inputContainer = document.getElementById("input-container");
 
-        // สร้าง div ใหม่สำหรับ input group ใหม่
-        var newInputGroup = document.createElement("div");
-        newInputGroup.classList.add("input-group", "mb-2");
+    // สร้าง div ใหม่สำหรับ input group ใหม่
+    var newInputGroup = document.createElement("div");
+    newInputGroup.classList.add("input-group", "mb-2");
 
-        // สร้าง input สำหรับชื่อเครื่องมือ
-        var newToolInput = document.createElement("input");
-        newToolInput.setAttribute("type", "text");
-        newToolInput.setAttribute("name", "tools[]");
-        newToolInput.setAttribute("class", "form-control");
-        newToolInput.setAttribute("placeholder", "Tool name");
+    // สร้าง select dropdown สำหรับเลือกเครื่องมือ
+    var newToolSelect = document.createElement("select");
+    newToolSelect.setAttribute("name", "tools[]");
+    newToolSelect.classList.add("form-select");
 
-        // สร้าง input สำหรับจำนวน
-        var newQuantityInput = document.createElement("input");
-        newQuantityInput.setAttribute("type", "number");
-        newQuantityInput.setAttribute("name", "quantities[]");
-        newQuantityInput.setAttribute("class", "form-control");
-        newQuantityInput.setAttribute("placeholder", "Quantity");
-        newQuantityInput.setAttribute("min", "1");
+    // ใส่ตัวเลือกเครื่องมือจาก JavaScript array
+    newToolSelect.innerHTML = toolOptions;
 
-        // สร้างปุ่มลบเป็นไอคอน
-        var removeButton = document.createElement("button");
-        removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn", "btn-danger");
-        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>'; // ไอคอนถังขยะ
-        removeButton.onclick = function() {
-            removeToolInput(removeButton);
-        };
+    // สร้าง input สำหรับจำนวน
+    var newQuantityInput = document.createElement("input");
+    newQuantityInput.setAttribute("type", "number");
+    newQuantityInput.setAttribute("name", "quantities[]");
+    newQuantityInput.setAttribute("class", "form-control");
+    newQuantityInput.setAttribute("placeholder", "Quantity");
+    newQuantityInput.setAttribute("min", "1");
 
-        // เพิ่ม input ที่สร้างใหม่และปุ่มลบเข้าใน div
-        newInputGroup.appendChild(newToolInput);
-        newInputGroup.appendChild(newQuantityInput);
-        newInputGroup.appendChild(removeButton);
+    // สร้างปุ่มลบ
+    var removeButton = document.createElement("button");
+    removeButton.setAttribute("type", "button");
+    removeButton.classList.add("btn", "btn-danger");
+    removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    removeButton.onclick = function() {
+        removeToolInput(removeButton);
+    };
 
-        // เพิ่ม input group ใหม่ลงใน container
-        inputContainer.appendChild(newInputGroup);
+    // เพิ่ม select dropdown และ input สำหรับจำนวนเข้าใน div
+    newInputGroup.appendChild(newToolSelect);
+    newInputGroup.appendChild(newQuantityInput);
+    newInputGroup.appendChild(removeButton);
 
-        // เปิดปุ่มลบของทุก input group
-        enableRemoveButtons();
-    }
+    // เพิ่ม input group ใหม่ลงใน container
+    inputContainer.appendChild(newInputGroup);
 
-    function removeToolInput(button) {
-        // ลบ input group ที่ปุ่มลบนั้นอยู่
-        button.parentElement.remove();
-
-        // ตรวจสอบจำนวน input group
-        enableRemoveButtons();
-    }
-
-    function enableRemoveButtons() {
-        // ตรวจสอบจำนวนของ input group
-        var inputGroups = document.querySelectorAll("#input-container .input-group");
-        
-        // ถ้ามีมากกว่า 1 input group ให้เปิดการใช้งานปุ่มลบ
-        inputGroups.forEach(function(group) {
-            var removeButton = group.querySelector("button");
-            if (inputGroups.length > 1) {
-                removeButton.disabled = false;
-            } else {
-                removeButton.disabled = true;
-            }
-        });
-    }
-
-    // เรียกใช้ฟังก์ชันนี้เมื่อเริ่มต้นเพื่อปิดปุ่มลบถ้ามี input group เดียว
+    // เปิดปุ่มลบของทุก input group
     enableRemoveButtons();
+}
+
+function removeToolInput(button) {
+    // ลบ input group ที่ปุ่มลบนั้นอยู่
+    button.parentElement.remove();
+
+    // ตรวจสอบจำนวน input group
+    enableRemoveButtons();
+}
+
+function enableRemoveButtons() {
+    // ตรวจสอบจำนวนของ input group
+    var inputGroups = document.querySelectorAll("#input-container .input-group");
+
+    // ถ้ามีมากกว่า 1 input group ให้เปิดการใช้งานปุ่มลบ
+    inputGroups.forEach(function(group) {
+        var removeButton = group.querySelector("button");
+        if (inputGroups.length > 1) {
+            removeButton.disabled = false;
+        } else {
+            removeButton.disabled = true;
+        }
+    });
+}
+
+// เรียกใช้ฟังก์ชันนี้เมื่อเริ่มต้นเพื่อปิดปุ่มลบถ้ามี input group เดียว
+enableRemoveButtons();
+
 
 
     function validateForm() {

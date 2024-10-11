@@ -4,8 +4,10 @@
         if ($row["tk_status"] == 1)
             return "<td>มอบหมาย</td>";
         elseif ($row["tk_status"] == 2)
-            return "<td>รอดำเนินการ</td>";
+            return "<td>กำลังเตรียมอุปกรณ์</td>";
         elseif ($row["tk_status"] == 3)
+            return "<td>เตรียมอุปกรณ์เสร็จสิ้น</td>";
+        elseif ($row["tk_status"] == 4)
             return "<td>กำลังดำเนินการ</td>";
         else
             return "<td>ดำเนินการเสร็จสิ้น</td>";
