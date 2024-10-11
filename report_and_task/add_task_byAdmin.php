@@ -67,9 +67,6 @@ if ($stmt->execute()) {
         die('Prepare failed: ' . $conn->error);
     }
     $stmt_status->bind_param("is", $task_id, $time);
-    $insert_status_2 = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'รอดำเนินการ')";
-    $stmt_status_2 = $conn->prepare($insert_status_2);
-    $stmt_status_2->bind_param("is", $task_id, $time);
 
     if ($stmt_work->execute() && $stmt_status->execute()&& $stmt_status_2->execute() ) {
         echo "<script>alert('สร้างงานเสร็จสิ้น!'); window.location.href = 'task_list.php';</script>";
