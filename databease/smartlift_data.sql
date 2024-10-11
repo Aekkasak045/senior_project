@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 11, 2024 at 04:42 PM
+-- Generation Time: Oct 11, 2024 at 04:44 PM
 -- Server version: 10.4.28-MariaDB
 -- PHP Version: 8.0.28
 
@@ -21,60 +21,6 @@ SET time_zone = "+00:00";
 -- Database: `smartlift`
 --
 
--- --------------------------------------------------------
-
---
--- Table structure for table `app_calls`
---
-
-CREATE TABLE `app_calls` (
-  `id` int(11) NOT NULL,
-  `lift_id` int(11) NOT NULL,
-  `floor_no` varchar(3) NOT NULL DEFAULT '1',
-  `direction` char(1) NOT NULL DEFAULT 'U',
-  `client_id` varchar(30) NOT NULL,
-  `is_processed` enum('N','Y') NOT NULL DEFAULT 'N',
-  `created_user_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_user_id` int(11) NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `app_calls1`
---
-
-CREATE TABLE `app_calls1` (
-  `id` int(11) NOT NULL,
-  `lift_id` int(11) NOT NULL,
-  `floor_no` varchar(3) NOT NULL DEFAULT '1',
-  `direction` char(1) NOT NULL DEFAULT 'U',
-  `client_id` varchar(30) NOT NULL,
-  `is_processed` enum('N','Y') NOT NULL DEFAULT 'N',
-  `created_user_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_user_id` int(11) NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `building`
---
-
-CREATE TABLE `building` (
-  `id` int(11) NOT NULL,
-  `org_id` int(11) NOT NULL,
-  `building_name` varchar(255) NOT NULL,
-  `created_user_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `update_user_id` int(11) NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Dumping data for table `building`
 --
@@ -84,31 +30,6 @@ INSERT INTO `building` (`id`, `org_id`, `building_name`, `created_user_id`, `cre
 (2, 2, 'อาคาร 1 เทคนิคสกล', 1, '2023-10-07 15:21:12', 1, '2023-10-07 15:21:12'),
 (3, 3, 'อาคารเย็นศิระ', 1, '2023-10-07 15:21:35', 1, '2023-10-07 15:21:35'),
 (4, 1, 'อาคาร 1', 1, '2023-10-10 20:01:06', 1, '2023-10-10 20:01:06');
-
--- --------------------------------------------------------
-
---
--- Table structure for table `lifts`
---
-
-CREATE TABLE `lifts` (
-  `id` int(11) NOT NULL,
-  `org_id` int(11) NOT NULL,
-  `building_id` int(11) DEFAULT NULL,
-  `lift_name` varchar(100) NOT NULL,
-  `max_level` int(11) NOT NULL,
-  `mac_address` varchar(30) NOT NULL,
-  `floor_name` varchar(100) NOT NULL,
-  `description` text NOT NULL,
-  `lift_state` char(12) NOT NULL DEFAULT '000000000000',
-  `up_status` char(8) NOT NULL DEFAULT '00000000',
-  `down_status` char(8) NOT NULL DEFAULT '00000000',
-  `car_status` char(8) NOT NULL DEFAULT '00000000',
-  `created_user_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_user_id` int(11) NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `lifts`
@@ -125,22 +46,6 @@ INSERT INTO `lifts` (`id`, `org_id`, `building_id`, `lift_name`, `max_level`, `m
 (8, 1, 4, 'CSC01', 4, 'DEADBEEF08ED', '1,2,3,4', 'Building 1', '000000000000', '00000000', '00000000', '00000000', 1, '2023-09-24 17:34:19', 1, '2023-09-24 17:34:19'),
 (22, 18, NULL, 'TEST', 5, 'DEADBEEF09ED', '1,2,3,4,5', '', '000000000000', '00000000', '00000000', '00000000', 1, '2024-05-27 12:35:25', 1, '2024-05-27 12:35:25');
 
--- --------------------------------------------------------
-
---
--- Table structure for table `organizations`
---
-
-CREATE TABLE `organizations` (
-  `id` int(11) NOT NULL,
-  `org_name` varchar(100) NOT NULL,
-  `description` text NOT NULL,
-  `created_user_id` int(11) NOT NULL,
-  `created_at` datetime NOT NULL,
-  `updated_user_id` int(11) NOT NULL,
-  `updated_at` datetime NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 --
 -- Dumping data for table `organizations`
 --
@@ -150,50 +55,6 @@ INSERT INTO `organizations` (`id`, `org_name`, `description`, `created_user_id`,
 (2, 'SNKTC', '\r\nวิทยาลัยเทคนิคสกลนคร', 1, '2023-02-13 12:30:16', 1, '2023-02-13 12:30:16'),
 (3, 'PSU', 'มหาวิทยาลัยสงขลานครินทร์', 1, '2023-06-01 14:10:06', 1, '2023-06-01 14:10:06'),
 (18, 'TEST', '', 1, '2024-02-18 15:55:15', 1, '2024-02-18 15:55:15');
-
---
--- Indexes for dumped tables
---
-
---
--- Indexes for table `building`
---
-ALTER TABLE `building`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `lifts`
---
-ALTER TABLE `lifts`
-  ADD PRIMARY KEY (`id`);
-
---
--- Indexes for table `organizations`
---
-ALTER TABLE `organizations`
-  ADD PRIMARY KEY (`id`);
-
---
--- AUTO_INCREMENT for dumped tables
---
-
---
--- AUTO_INCREMENT for table `building`
---
-ALTER TABLE `building`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
-
---
--- AUTO_INCREMENT for table `lifts`
---
-ALTER TABLE `lifts`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-
---
--- AUTO_INCREMENT for table `organizations`
---
-ALTER TABLE `organizations`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
