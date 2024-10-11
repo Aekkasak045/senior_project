@@ -62,7 +62,7 @@ if ($stmt->execute()) {
     $stmt_work->bind_param("is", $task_id, $task_detail);
     
     // Insert ข้อมูลลงในตาราง task_status
-    $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'waiting', ?, 'มอบหมาย')";
+    $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, 'มอบหมาย')";
     $stmt_status = $conn->prepare($insert_status);
     if (!$stmt_status) {
         die('Prepare failed: ' . $conn->error);
