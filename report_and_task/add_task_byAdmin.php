@@ -68,7 +68,7 @@ if ($stmt->execute()) {
     }
     $stmt_status->bind_param("is", $task_id, $time);
 
-    if ($stmt_work->execute() && $stmt_status->execute()&& $stmt_status_2->execute() ) {
+    if ($stmt_work->execute() && $stmt_status->execute()) {
         echo "<script>alert('สร้างงานเสร็จสิ้น!'); window.location.href = 'task_list.php';</script>";
     } else {
         echo "Error saving work or task status: " . $stmt_work->error . " / " . $stmt_status->error;
