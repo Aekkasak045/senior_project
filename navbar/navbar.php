@@ -54,6 +54,7 @@
                             <a href="../user_info/user_information.php">USER INFO</a>
                             <a href="../report_and_task/report_list.php">REPORT</a>
                             <a href="../report_and_task/task_list.php">TASK</a>
+                            <a href="../tools/tools_list.php">Tools</a>
                         </div>
                     </div>
                 </ul>
@@ -107,6 +108,7 @@
                             <a href="../user_info/user_information.php">USER INFO</a>
                             <a href="../report_and_task/report_list.php">REPORT</a>
                             <a href="../report_and_task/task_list.php">TASK</a>
+                            <a href="../tools/tools_list.php">Tools</a>
                     </div>
             </div>
             <div class="menu-logout">
