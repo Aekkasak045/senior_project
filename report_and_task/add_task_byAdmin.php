@@ -15,9 +15,9 @@ $result_latest_report = $conn->query($sql_latest_report);
 // ดึงค่า rp_id ที่มากที่สุด
 if ($result_latest_report->num_rows > 0) {
     $latest_report = $result_latest_report->fetch_assoc()['latest_rp_id'];
-    echo "rp_id ที่มากที่สุดคือ: " . $latest_report;
+    
 } else {
-    echo "ไม่พบข้อมูล rp_id ในทั้งสองตาราง";
+    echo "ไม่พบข้อมูล Report ID ในทั้งสองตาราง";
 }
 
 // ดึงข้อมูล Organization
@@ -160,7 +160,7 @@ if (isset($_GET['org_id'])) {
                         <div class="box0">
                         <label for="rp_id" class="form_text">Report ID : </label>
                         <div class="mb-3 box3">
-                            <input type="text" class="boxrole" id="rp_id" name="rp_id" value="<?php echo $latest_report+1; ?>" >
+                            <input type="text" class="boxrole" id="rp_id" name="rp_id" value="<?php echo $latest_report+1; ?>" readonly>
                         </div>
                         </div>
 
