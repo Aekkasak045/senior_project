@@ -34,6 +34,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $time = date("Y-m-d H:i:s");
     $task_start_date = $_POST['task_start_date']; 
+    $formatted_task_start_date = date("d/m/Y H:i", strtotime($task_start_date));
+    $assign = 'ได้หมอบหมายงาน และวันเวลาที่ต้องเข้าไปดำเนินการคือ '.$formatted_task_start_date;
 
     // จัดการ tools และ quantities เป็น JSON
     $tools_data = [];
@@ -53,23 +55,15 @@ if ($stmt->execute()) {
     // ดึง task_id ของงานที่เพิ่งถูกสร้างขึ้น
     $task_id = $stmt->insert_id; 
 
-    // Insert ข้อมูลลงในตาราง work
-    $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail) VALUES ('Assigned', ?, ?)";
-    $stmt_work = $conn->prepare($insert_work);
-    if (!$stmt_work) {
-        die('Prepare failed: ' . $conn->error);
-    }
-    $stmt_work->bind_param("is", $task_id, $task_detail);
-    
     // Insert ข้อมูลลงในตาราง task_status
-    $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, 'มอบหมาย')";
+    $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, ?)";
     $stmt_status = $conn->prepare($insert_status);
     if (!$stmt_status) {
         die('Prepare failed: ' . $conn->error);
     }
-    $stmt_status->bind_param("is", $task_id, $time);
+    $stmt_status->bind_param("iss", $task_id, $time,$assign);
 
-    if ($stmt_work->execute() && $stmt_status->execute()) {
+    if ($stmt_status->execute()) {
         echo "<script>alert('สร้างงานเสร็จสิ้น!'); window.location.href = 'task_list.php';</script>";
     } else {
         echo "Error saving work or task status: " . $stmt_work->error . " / " . $stmt_status->error;

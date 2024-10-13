@@ -20,6 +20,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $work_detail = $_POST['detail'];
     $time = date("Y-m-d H:i:s");
     $task_start_date = $_POST['task_start_date']; 
+    $formatted_task_start_date = date("d/m/Y H:i", strtotime($task_start_date));
+    $assign = 'ได้หมอบหมายงาน และวันเวลาที่ต้องเข้าไปดำเนินการคือ '.$formatted_task_start_date;
 
     // Combine tools and quantities into an array of objects
     $tools_data = [];
@@ -46,23 +48,15 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     if ($stmt_task->execute()) {
         $task_id = $stmt_task->insert_id; // Get the new task's ID
 
-        // Insert into work table
-        $insert_work = "INSERT INTO work (wk_status, tk_id, wk_detail) VALUES ('Assigned', ?, ?)";
-        $stmt_work = $conn->prepare($insert_work);
-        if (!$stmt_work) {
-            die('Prepare failed: ' . $conn->error);
-        }
-        $stmt_work->bind_param("is", $task_id, $work_detail);
-
         // Insert into task_status table
-        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, 'มอบหมาย')";
+        $insert_status = "INSERT INTO task_status (tk_id, status, time, detail) VALUES (?, 'assign', ?, ?)";
         $stmt_status = $conn->prepare($insert_status);
         if (!$stmt_status) {
             die('Prepare failed: ' . $conn->error);
         }
-        $stmt_status->bind_param("is", $task_id, $time);
+        $stmt_status->bind_param("iss", $task_id, $time,$assign);
 
-        if ($stmt_work->execute() && $stmt_status->execute() ) {
+        if ( $stmt_status->execute() ) {
             // Delete the report
             $del_rp = "DELETE FROM report WHERE rp_id = ?";
             $stmt_rp = $conn->prepare($del_rp);
