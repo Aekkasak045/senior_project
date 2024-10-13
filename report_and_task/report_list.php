@@ -120,7 +120,7 @@ if (isset($_GET['logout'])) {
                     <div class="box-row">
                         <tbody id="showdata">
                             <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
-                                <tr class="table-lift" onclick="">
+                                <tr class="table-lift">
                                     <td><?php print ($row["rp_id"]); ?></td>
                                     <td><?php print ($row["date_rp"]); ?></td>
                                     <td><?php print ($row["first_name"]); ?></td>

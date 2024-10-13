@@ -48,13 +48,13 @@ if (isset($_GET['logout'])) {
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Task information</p>
+                <p class="User_information">Tools</p>
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
-                <button class="btn btn-primary addtask" data-bs-toggle="modal" data-bs-target="#addToolModal">Add Tool</button>
+                <button class="addtask" data-bs-toggle="modal" data-bs-target="#addToolModal"><i class="fa-solid fa-plus fa-xl pluse"></i> Add Tool</button>
 
                     <div class="search">
-                        <input class="search-input" type="text" name="search" id="search_task">
+                        <input class="search-input" type="text" name="search" id="search_tool">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <button onclick="openPop()" class="text-popup"><i class="fa-solid fa-filter"></i></button>
@@ -62,28 +62,31 @@ if (isset($_GET['logout'])) {
                             <p class="filter">Filter</p>
                             <form action="" method="POST">
                                 <div class="status-filter-box">
+                                    <label class="status-font">Tools : &nbsp;</label>
+                                        <input class="idt" type="text" id="tools" name="tools" placeholder="Tools">
+                                    <br>
+                                    <br>
                                     <label class="status-font">ID : &nbsp;</label>
                                         <input class="idm" type="number" id="number" name="id_min" placeholder="Min ID">
                                         To
                                         <input class="idm" type="number" id="number" name="id_max" placeholder="Max ID">
                                     <br>
                                     <br>
-                                    <label class="status-font">Option ID : </label>
+                                    <label class="status-font">Price : &nbsp;</label>
+                                        <input class="idp" type="number" id="number" name="p_min" placeholder="Min Price">
+                                        To
+                                        <input class="idp" type="number" id="number" name="p_max" placeholder="Max Price">
+                                    <br>
+                                    <br>
+                                    <label class="status-font">Option : </label>
                                     <div class="idc">
-                                        <input type="radio" name="id" value="Lowest_to_Highest"> Lowest to Highest
+                                        <input type="radio" name="option" value="ID_L"> ID Lowest to Highest
                                         <br>
-                                        <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
-                                        </div>
-                                    <label class="status-font">Status : </label>
-                                    <div class="status-filter">
-                                        <input type="radio" name="status" value="1"> มอบหมาย
+                                        <input type="radio" name="option" value="ID_H"> ID Highest to Lowest
                                         <br>
-                                        <input type="radio" name="status" value="2"> รอดำเนินการ
+                                        <input type="radio" name="option" value="P_L"> Price Highest to Lowest
                                         <br>
-                                        <input type="radio" name="status" value="3"> กำลังดำเนินการ
-                                        <br>
-                                        <input type="radio" name="status" value="4"> ดำเนินการเสร็จสิ้น
-                                        <br>
+                                        <input type="radio" name="option" value="P_H"> Price Highest to Lowest
                                     </div>
                                 </div>
                                 <br>
@@ -93,7 +96,7 @@ if (isset($_GET['logout'])) {
                         </div>
                         <?php if(isset($_POST['used_filter']))
                 {   
-                    $sql = filter_task();
+                    $sql = filter_tools();
                     $rs = mysqli_query($conn, $sql);
                 }                    
                 ?>
@@ -106,7 +109,7 @@ if (isset($_GET['logout'])) {
                         <tr class="table-lift">
                             <th class="row-1 row-ID">ID</th>
                             <th class="row-2 row-Name">Name</th>
-                            <th class="row-3 row-Name">Cost</th>
+                            <th class="row-3 row-Cost">Cost</th>
                             <th class="row-9 row-Action">Action</th>
                             
                         </tr>
@@ -114,12 +117,12 @@ if (isset($_GET['logout'])) {
                     <tbody id="showdata">
                         <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
                             <tr class="table-lift">
-                                <td><?php echo htmlspecialchars($row['tool_id']); ?></td>
+                                <td class="parent-container1"><?php echo htmlspecialchars($row['tool_id']); ?></td>
                                 <td><?php echo htmlspecialchars($row['tool_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['cost']); ?></td>
                                 <td class="parent-container">
-                                    <a href="#" class="btn btn-success" onclick="editTool('<?php echo $row['tool_id']; ?>', '<?php echo $row['tool_name']; ?>', '<?php echo $row['cost']; ?>')" data-bs-toggle="modal" data-bs-target="#editModal">แก้ไข</a>
-                                    <a href="?delete_tool_id=<?php echo htmlspecialchars($row["tool_id"]); ?>" class="btn btn-danger">ลบ</a>
+                                    <a href="#" class="btn btn-success editTool" onclick="editTool('<?php echo $row['tool_id']; ?>', '<?php echo $row['tool_name']; ?>', '<?php echo $row['cost']; ?>')" data-bs-toggle="modal" data-bs-target="#editModal">แก้ไข</a>
+                                    <a href="?delete_tool_id=<?php echo htmlspecialchars($row["tool_id"]); ?>" class="btn btn-danger editTool">ลบ</a>
                                 </td>
                             </tr>
                         <?php } ?>
@@ -134,20 +137,31 @@ if (isset($_GET['logout'])) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="editModalLabel">แก้ไขเครื่องมือ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editToolForm" method="POST" action="">
                     <input type="hidden" name="tool_id" id="tool_id">
-                    <div class="mb-3">
-                        <label for="tool_name" class="form-label">ชื่อเครื่องมือ:</label>
-                        <input type="text" class="form-control" id="tool_name" name="tool_name" required>
+                    <div class="tool_name">
+                        <div class="mb-3 name0">
+                            <label class="form-label name_cost">ชื่อเครื่องมือ:</label>
+                        </div>
+                        <div class="mb-3 name0">
+                            <label class="form-label name_cost">ราคา:</label>
+                        </div>
                     </div>
-                    <div class="mb-3">
-                        <label for="tool_cost" class="form-label">ราคา:</label>
-                        <input type="number" class="form-control" id="tool_cost" name="tool_cost" required>
+                    <div class="tool">
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="tool_name" name="tool_name" required>
+                        </div>
+                        <div class="mb-3">
+                            <input type="number" class="form-control" id="tool_cost" name="tool_cost" required>
+                        </div>
                     </div>
-                    <button type="submit" name="update_tool" class="btn btn-primary">บันทึกการเปลี่ยนแปลง</button>
+                    <br>
+                    <div class="save">
+                        <button type="submit" name="update_tool" class="btn savetool">บันทึกการเปลี่ยนแปลง</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -160,29 +174,36 @@ if (isset($_GET['logout'])) {
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title" id="addToolModalLabel">เพิ่มเครื่องมือ</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
-            <div class="modal-body">
+            <!-- <div class="modal-body"> -->
                 <form id="addToolForm" method="POST" action="">
                     <div id="toolFields">
-                        <div class="toolField">
+                        <div class="tool_name">
+                            <div class="mb-3 name">
+                                <label class="form-label name_cost">ชื่อเครื่องมือ:</label>
+                            </div>
+                            <div class="mb-3 name">
+                                <label class="form-label name_cost">ราคา:</label>
+                            </div>
+                        </div>
+                        <div class="toolField tool">
                             <div class="mb-3">
-                                <label for="tool_name[]" class="form-label">ชื่อเครื่องมือ:</label>
                                 <input type="text" class="form-control" name="tool_name[]" required>
                             </div>
                             <div class="mb-3">
-                                <label for="tool_cost[]" class="form-label">ราคา:</label>
                                 <input type="number" class="form-control" name="tool_cost[]" required>
                             </div>
                             <!-- ปุ่มลบฟิลด์ -->
-                            <button type="button" class="btn btn-danger removeField" disabled>ลบ</button>
+                            <button type="button" class="btn btn-danger removeField" disabled><i class="fas fa-trash-alt"></i></button>
                         </div>
                     </div>
 
                     <!-- ปุ่มเพิ่มฟิลด์เครื่องมือ -->
-                    <button type="button" class="btn btn-secondary" onclick="addToolField()">เพิ่มเครื่องมือ</button>
-
-                    <button type="submit" name="save_tools" class="btn btn-primary mt-3">บันทึกเครื่องมือ</button>
+                    <button type="button" class="btn addtool" onclick="addToolField()">Add Tools</button>
+                    <div class="save">
+                    <button type="submit" name="save_tools" class="btn savetool">Save Tools</button>
+                    </div>
                 </form>
             </div>
         </div>
@@ -203,18 +224,17 @@ if (isset($_GET['logout'])) {
     function addToolField() {
         const toolFields = document.getElementById('toolFields');
         const newField = document.createElement('div');
-        newField.classList.add('toolField');
+        newField.classList.add('toolField','tool');
         newField.innerHTML = `
             <div class="mb-3">
-                <label for="tool_name[]" class="form-label">ชื่อเครื่องมือ:</label>
                 <input type="text" class="form-control" name="tool_name[]" required>
             </div>
             <div class="mb-3">
-                <label for="tool_cost[]" class="form-label">ราคา:</label>
                 <input type="number" class="form-control" name="tool_cost[]" required>
             </div>
-            <button type="button" class="btn btn-danger removeField">ลบ</button>
+                <button type="button" class="btn btn-danger removeField" disabled><i class="fas fa-trash-alt"></i></button>
         `;
+
 
         // เพิ่มฟิลด์ใหม่เข้าไปใน DOM
         toolFields.appendChild(newField);
@@ -316,4 +336,3 @@ if (isset($_POST['update_tool'])) {
     $stmt->close();
 }
 ?>
-

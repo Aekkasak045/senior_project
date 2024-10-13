@@ -83,7 +83,7 @@ if (isset($_GET['logout'])) {
                 <h5 class="mb-0">Create Task: <?php echo htmlspecialchars($row["rp_id"]); ?></h5>
             </div>
             <div class="card-body">
-            <form action="save_task.php" method="post" onsubmit="return validateForm()">
+            <form action="save_task.php" method="post" onsubmit="return validateForm() && validate()">
                 <div class="row">
                     <!-- User Information -->
                     <div class="col-md-6 mb-4">
@@ -122,17 +122,22 @@ if (isset($_GET['logout'])) {
                                     </div>
                                 </div>
                             </div>
+                            <div class="card mb-3">
+                                <div class="card-body ">
+                                <h6 class="card-title">Details</h6>
+                                    <div class="mb-3">
+                                        <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
+                                    </div>
+                                    </div>
+                                    </div>
                     </div>
 
                     <!-- Task Details -->
                     <div class="col-md-6 mb-4">
                         <div class="card mb-3">
                             <div class="card-body">
-                            <form action="save_task.php" method="post"></form>
-                                <h6 class="card-title">Details</h6>
-                                <div class="mb-3">
-                                    <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
-                                </div>
+                            <!-- <form action="save_task.php" method="post"></form> -->
+                                
                                 
 
                                 <!-- Tools Used Section -->
@@ -166,9 +171,11 @@ if (isset($_GET['logout'])) {
                                 <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
 
                                 <!-- ฟิลด์สำหรับเลือกวันที่และเวลาเริ่มงาน (24 ชม.) -->
-                                <div class="mb-3">
-                                    <label for="task_start_date" class="form-label">วันที่และเวลาเริ่มงาน:</label>
-                                    <input type="datetime-local" class="form-control" id="task_start_date" name="task_start_date" required>
+                                <div class="box0">
+                                    <label for="task_start_date" class="form-label">วันเวลาเริ่มงาน:</label>
+                                    <div class="mb-3 box3">
+                                    <input type="datetime-local" class="boxrole" id="task_start_date" name="task_start_date" required>
+                                    </div>
                                 </div>
 
                                 <h6 class="card-title">Assign Engineer</h6>
@@ -213,94 +220,98 @@ if (isset($_GET['logout'])) {
 
 <script>
     function addToolInput() {
-        var inputContainer = document.getElementById("input-container");
+    var inputContainer = document.getElementById("input-container");
 
-        // สร้าง div ใหม่สำหรับ input group ใหม่
-        var newInputGroup = document.createElement("div");
-        newInputGroup.classList.add("input-group", "mb-2", "toolField");
+    // สร้าง div ใหม่สำหรับ input group ใหม่
+    var newInputGroup = document.createElement("div");
+    newInputGroup.classList.add("input-group", "mb-2");
 
-        // สร้าง select dropdown สำหรับเลือกเครื่องมือ
-        var newToolSelect = document.createElement("select");
-        newToolSelect.setAttribute("name", "tools[]");
-        newToolSelect.classList.add("form-select");
+    // สร้าง select dropdown สำหรับเลือกเครื่องมือ
+    var newToolSelect = document.createElement("select");
+    newToolSelect.setAttribute("name", "tools[]");
+    newToolSelect.classList.add("form-select");
 
-        // เพิ่มตัวเลือก "เลือกเครื่องมือ"
-        var defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "เลือกเครื่องมือ";
-        newToolSelect.appendChild(defaultOption);
+    // เพิ่มตัวเลือก "เลือกเครื่องมือ"
+    var defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "เลือกเครื่องมือ";
+    newToolSelect.appendChild(defaultOption);
 
-        // เพิ่มตัวเลือกเครื่องมือจาก PHP (ทำผ่าน JavaScript)
-        <?php 
-        // ดึงข้อมูลเครื่องมือจากฐานข้อมูลและสร้างตัวเลือกใน dropdown
-        $sql_tools = "SELECT tool_name FROM tools";
-        $result_tools = $conn->query($sql_tools);
-        while ($tool = $result_tools->fetch_assoc()) { ?>
-            var option = document.createElement("option");
-            option.value = "<?php echo $tool['tool_name']; ?>";
-            option.textContent = "<?php echo $tool['tool_name']; ?>";
-            newToolSelect.appendChild(option);
-        <?php } ?>
+    // เพิ่มตัวเลือกเครื่องมือจาก PHP (ทำผ่าน JavaScript)
+    <?php 
+    // ดึงข้อมูลเครื่องมือจากฐานข้อมูลและสร้างตัวเลือกใน dropdown
+    $sql_tools = "SELECT tool_name FROM tools";
+    $result_tools = $conn->query($sql_tools);
+    while ($tool = $result_tools->fetch_assoc()) { ?>
+        var option = document.createElement("option");
+        option.value = "<?php echo $tool['tool_name']; ?>";
+        option.textContent = "<?php echo $tool['tool_name']; ?>";
+        newToolSelect.appendChild(option);
+    <?php } ?>
 
-        // สร้าง input สำหรับจำนวน
-        var newQuantityInput = document.createElement("input");
-        newQuantityInput.setAttribute("type", "number");
-        newQuantityInput.setAttribute("name", "quantities[]");
-        newQuantityInput.setAttribute("class", "form-control");
-        newQuantityInput.setAttribute("placeholder", "Quantity");
-        newQuantityInput.setAttribute("min", "1");
+    // สร้าง input สำหรับจำนวน
+    var newQuantityInput = document.createElement("input");
+    newQuantityInput.setAttribute("type", "number");
+    newQuantityInput.setAttribute("name", "quantities[]");
+    newQuantityInput.setAttribute("class", "form-control");
+    newQuantityInput.setAttribute("placeholder", "Quantity");
+    newQuantityInput.setAttribute("min", "1");
 
-        // สร้างปุ่มลบ
-        var removeButton = document.createElement("button");
-        removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn", "btn-danger", "removeField");
-        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        removeButton.onclick = function() {
-            removeToolInput(removeButton);
-        };
+    // สร้างปุ่มลบ
+    var removeButton = document.createElement("button");
+    removeButton.setAttribute("type", "button");
+    removeButton.classList.add("btn", "btn-danger");
+    removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    removeButton.onclick = function() {
+        removeToolInput(removeButton);
+    };
 
-        // เพิ่ม select dropdown และ input สำหรับจำนวนเข้าใน div
-        newInputGroup.appendChild(newToolSelect);
-        newInputGroup.appendChild(newQuantityInput);
-        newInputGroup.appendChild(removeButton);
+    // เพิ่ม select dropdown และ input สำหรับจำนวนเข้าใน div
+    newInputGroup.appendChild(newToolSelect);
+    newInputGroup.appendChild(newQuantityInput);
+    newInputGroup.appendChild(removeButton);
 
-        // เพิ่ม input group ใหม่ลงใน container
-        inputContainer.appendChild(newInputGroup);
+    // เพิ่ม input group ใหม่ลงใน container
+    inputContainer.appendChild(newInputGroup);
 
-        // อัปเดตสถานะปุ่มลบ
-        updateRemoveButtons();
+    // เปิดปุ่มลบของทุก input group
+    enableRemoveButtons();
+}
+function removeToolInput(button) {
+    var inputContainer = document.getElementById("input-container");
+
+    // ตรวจสอบจำนวน input-group ที่มีอยู่
+    var inputGroups = inputContainer.getElementsByClassName("input-group");
+
+    if (inputGroups.length > 1) {
+        // ลบ input-group ที่เชื่อมโยงกับปุ่มนี้
+        button.parentElement.remove();
     }
 
-    function removeToolInput(button) {
-        var inputContainer = document.getElementById("input-container");
-        if (inputContainer.children.length > 1) {
-            button.parentElement.remove();
-            updateRemoveButtons();
+    // หลังจากลบแล้ว ตรวจสอบอีกครั้งว่าถ้าเหลือ 1 input group ให้ปิดปุ่มลบ
+    enableRemoveButtons();
+}
+
+function enableRemoveButtons() {
+    var inputContainer = document.getElementById("input-container");
+    var inputGroups = inputContainer.getElementsByClassName("input-group");
+
+    // เปิดใช้งานปุ่มลบเมื่อมีมากกว่า 1 input-group
+    for (var i = 0; i < inputGroups.length; i++) {
+        var removeButton = inputGroups[i].querySelector("button");
+        if (inputGroups.length > 1) {
+            removeButton.disabled = false;
+        } else {
+            removeButton.disabled = true;
         }
     }
+}
 
-    // ฟังก์ชันสำหรับอัปเดตสถานะปุ่มลบ
-    function updateRemoveButtons() {
-        var removeButtons = document.querySelectorAll('.removeField');
-        var toolFields = document.querySelectorAll('.toolField');
+// เรียกใช้ฟังก์ชัน enableRemoveButtons เมื่อเริ่มต้น
+enableRemoveButtons();
 
-        // ถ้ามีมากกว่า 1 ฟิลด์ ให้เปิดใช้งานปุ่มลบ ถ้ามีแค่ 1 ปิดการใช้งานปุ่มลบ
-        removeButtons.forEach(button => {
-            if (toolFields.length >0) {
-                button.disabled = false;
-            } else {
-                button.disabled = true;
-            }
-        });
-    }
-
-    // เรียกใช้เพื่ออัปเดตสถานะปุ่มลบเมื่อโหลดหน้า
-    updateRemoveButtons();
-
-
-
-    function validateForm() {
-        var tools = document.querySelectorAll("input[name='tools[]']");
+    function validate() {
+        var tools = document.querySelectorAll("select[name='tools[]']");
         var quantities = document.querySelectorAll("input[name='quantities[]']");
         
         for (var i = 0; i < tools.length; i++) {

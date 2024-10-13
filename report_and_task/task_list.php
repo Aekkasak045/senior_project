@@ -83,11 +83,13 @@ if (isset($_GET['logout'])) {
                                     <div class="status-filter">
                                         <input type="radio" name="status" value="1"> มอบหมาย
                                         <br>
-                                        <input type="radio" name="status" value="2"> รอดำเนินการ
+                                        <input type="radio" name="status" value="2"> กำลังเตรียมอุปกรณ์
                                         <br>
-                                        <input type="radio" name="status" value="3"> กำลังดำเนินการ
+                                        <input type="radio" name="status" value="3"> เตรียมอุปกรณ์เสร็จสิ้น
                                         <br>
-                                        <input type="radio" name="status" value="4"> ดำเนินการเสร็จสิ้น
+                                        <input type="radio" name="status" value="4"> กำลังดำเนินการ
+                                        <br>
+                                        <input type="radio" name="status" value="5"> ดำเนินการเสร็จสิ้น
                                         <br>
                                     </div>
                                 </div>

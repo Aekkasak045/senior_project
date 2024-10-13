@@ -32,11 +32,11 @@ updateTaskStatus();
 //live search สำหรับหน้า tool
 $(document).ready(function(){
   $('#search_tool').on("keyup", function(){
-    var search_report = $(this).val();
+    var search_tool = $(this).val();
     $.ajax({
       method:'POST',
       url:'tool_search.php',
-      data:{search:search_report},
+      data:{search:search_tool},
       success:function(response)
       {
            $("#showdata").html(response);

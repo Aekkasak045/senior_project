@@ -19,9 +19,10 @@ $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
         building_name LIKE '%$keyword%' OR
         lift_id LIKE '%$keyword%'
         OR IF('มอบหมาย' LIKE '%$keyword%',tk_status=1,tk_status=8)
-        OR IF('รอดำเนินการ' LIKE '%$keyword%',tk_status=2,tk_status=8)
-        OR IF('กำลังดำเนินการ' LIKE '%$keyword%',tk_status=3,tk_status=8)
-        OR IF('ดำเนินการเสร็จสิ้น' LIKE '%$keyword%',tk_status=4,tk_status=8)
+        OR IF('กำลังเตรียมอุปกรณ์' LIKE '%$keyword%',tk_status=2,tk_status=8)
+        OR IF('เตรียมอุปกรณ์เสร็จสิ้น' LIKE '%$keyword%',tk_status=3,tk_status=8)
+        OR IF('กำลังดำเนินการ' LIKE '%$keyword%',tk_status=4,tk_status=8)
+        OR IF('ดำเนินการเสร็จสิ้น' LIKE '%$keyword%',tk_status=5,tk_status=8)
         ORDER BY task.tk_id DESC";
 $rs = mysqli_query($conn, $sql);
 $data = '';

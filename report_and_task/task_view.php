@@ -251,7 +251,7 @@ $stmt_work->close();
                             <div class="card-body">
                                 <h5 class="card-title">เครื่องมือที่ใช้</h5>
                                 <!-- เพิ่ม div ที่ห่อหุ้มส่วนที่จะแสดงเครื่องมือ -->
-                                <div class="tools-container" style="max-height: 200px; overflow-y: auto;">
+                                <div class="tools-container sec1" style="max-height: 200px; overflow-y: auto;">
                                     <ul class="text_tools">
                                         <?php
                                         $tools = json_decode($row['tools'], true);

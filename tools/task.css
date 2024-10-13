@@ -156,17 +156,30 @@ td, th{
   text-overflow: ellipsis;
 }
 .row-ID{
-    width: 22px;
-}
-.row-Username {
-    width: 75px;
+    text-align: center;
+    width: 30px;
 }
 .row-Name {
-    width: 75px;
+    text-align: center;
+    width: 120px;
+}
+.row-Cost {
+    text-align: center;
+    width: 40px;
 }
 .row-Action{
     text-align: center;
+    width: 75px;
+}
+.parent-container{
+    text-align: center;
+}.parent-container1{
+    text-align: center;
+}
+.editTool{
     width: 60px;
+    margin: 0;
+    padding: 2px;
 }
 
 
@@ -204,7 +217,19 @@ td, th{
     color: #1A405C;
 }
 .idm {
-    width: 90px;
+    max-width: 89px;
+    color: #000000;
+    border-radius: 5px;
+    border: 2px solid #466e8c;
+}
+.idp {
+    max-width: 79px;
+    color: #000000;
+    border-radius: 5px;
+    border: 2px solid #466e8c;
+}
+.idt {
+    max-width: 180px;
     color: #000000;
     border-radius: 5px;
     border: 2px solid #466e8c;
@@ -368,6 +393,7 @@ td, th{
     padding: 4px 15px;
     margin: 0 2px;
     font-size: 13px;
+    background-color: transparent;
 }
 .addtask:hover{
     color: #1A405C;
@@ -375,6 +401,79 @@ td, th{
     border-radius: 5px;
 }
 
+.modal-content{
+    padding: 0 20px;
+}
+.tool_name{
+    width: 100%;
+    padding: 0 0;
+    margin: 0 0;
+    display: flex;
+    flex-direction: row;
+}
+.name{
+    width: 45%;
+    margin-top: 10px;
+    height: 10px;
+}
+.name0{
+    width: 50%;
+    margin-top: 10px;
+    height: 10px;
+}
+.tool{
+    width: 100%;
+    padding: 0 0;
+    margin: 0 0;
+    display: flex;
+    flex-direction: row;
+}
+.removeField{
+    height: 100%;
+}
+.addtool{
+    color: #ffffff;
+    background-color: #1A405C;
+    padding: 1px;
+    font-size: 13px;
+    margin-top: -20px;
+    border: 0;
+}
+.addtool:hover{
+    color: #1A405C;
+    background-color: #fff;
+}
+.save{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 10px;
+}
+.savetool{
+    color: #1A405C;
+    background-color: #fff;
+    padding: 2px 10px;
+    font-size: 15px;
+    margin-top: -20px;
+    border: 0;
+}
+.savetool:hover{
+    color: #1A405C;
+    background-color: #ffdd00;
+}
+.name_cost{
+    color: #fff;
+}
+.btn-close-white {
+    filter: invert(1);
+}
+.modal-title{
+    color: #fff;
+}
+.modal-dialog{
+    background-color: #1A405C;
+    border: 1px solid #fff;
+}
 
 /* ########################################################################### */
 /* ################################## ย่อจอ ################################## */
@@ -389,7 +488,7 @@ td, th{
     }
 }
 
-@media (max-width: 855px) {/*ทำตารางให้เป็นบล็อก*/
+@media (max-width: 524px) {/*ทำตารางให้เป็นบล็อก*/
     td:first-child{
         padding-top: 15px;
     }
@@ -412,25 +511,10 @@ td, th{
         content: "ID : ";
     }
     td:nth-of-type(2)::before {
-        content: "Status : ";
+        content: "Name : ";
     }
     td:nth-of-type(3)::before {
-        content: "Task Detail : ";  
-    }
-    td:nth-of-type(4)::before {
-        content: "Engineer : ";
-    }
-    td:nth-of-type(5)::before {
-        content: "Organization : ";
-    }
-    td:nth-of-type(6)::before {
-        content: "building : ";
-    }
-    td:nth-of-type(7)::before {
-        content: "Lift : ";
-    }
-    td:nth-of-type(8)::before {
-        content: "Tools : ";
+        content: "Cost : ";  
     }
     /* ปุ่ม proceed */
     .button-style{
@@ -442,20 +526,30 @@ td, th{
         justify-content: center;
         align-items: center;
     }
+    .parent-container1 {
+        display: flex;
+        justify-content: start;
+    }
 }
 
 @media(max-width: 570px){/* สำหรับ filter */
     .idm {
-        max-width: 65px;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap; 
+        max-width: 70px;
+        color: #000000;
+        border-radius: 5px;
+        border: 2px solid #466e8c;
     }
-    .bd{
-        max-width: 80px;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
+    .idp {
+        max-width: 60px;
+        color: #000000;
+        border-radius: 5px;
+        border: 2px solid #466e8c;
+    }
+    .idt {
+        max-width: 142px;
+        color: #000000;
+        border-radius: 5px;
+        border: 2px solid #466e8c;
     }
 }
 

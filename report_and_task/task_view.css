@@ -7,7 +7,6 @@
     box-sizing: border-box;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     border: 0;
-    font-size: 13px;
 }
 
 
@@ -37,6 +36,7 @@
     padding-left: 15px;
     padding-right: 15px;
     margin-bottom: 15px;
+    font-size: 13px;
 }
 .box-outer2{
     width: 100%;
@@ -192,10 +192,10 @@
 }
 
 .status-group {
-    font-size: 18px;
+    font-size: 17px;
     font-weight: bold;
     margin-bottom: 10px;
-    color: #2c3e50;
+    color: #1A405C;
 }
 
 /* ปรับการแสดงผลเมื่อเลื่อน */
@@ -223,6 +223,7 @@
 .timeline-left {
     flex: 1; 
     text-align: left; 
+    line-height: 1.5;
 }
 
 
@@ -248,7 +249,7 @@
 
 .timeline-item .time {
     font-weight: bold;
-    font-size: 1rem;
+    font-size: 13px;
 }
 
 .timeline-item .detail {
