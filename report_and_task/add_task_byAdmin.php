@@ -2,10 +2,23 @@
 <?php
 require("inc_db.php"); // เรียกใช้ไฟล์ฐานข้อมูล
 
-// ฟังก์ชันดึง Report ID ล่าสุด
-$sql_latest_report = "SELECT rp_id FROM task ORDER BY rp_id DESC LIMIT 1";
+// ดึง rp_id ที่มากที่สุดจากตาราง task และ report
+$sql_latest_report = "
+    SELECT GREATEST(
+        (SELECT IFNULL(MAX(rp_id), 0) FROM task),
+        (SELECT IFNULL(MAX(rp_id), 0) FROM report)
+    ) AS latest_rp_id";
+
+// รันคำสั่ง SQL
 $result_latest_report = $conn->query($sql_latest_report);
-$latest_report = $result_latest_report->fetch_assoc()['rp_id'];
+
+// ดึงค่า rp_id ที่มากที่สุด
+if ($result_latest_report->num_rows > 0) {
+    $latest_report = $result_latest_report->fetch_assoc()['latest_rp_id'];
+    echo "rp_id ที่มากที่สุดคือ: " . $latest_report;
+} else {
+    echo "ไม่พบข้อมูล rp_id ในทั้งสองตาราง";
+}
 
 // ดึงข้อมูล Organization
 $sql_org = "SELECT id as org_id, org_name FROM organizations";
