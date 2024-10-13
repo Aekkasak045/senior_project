@@ -102,27 +102,27 @@ $stmt_work->close();
                         <div class="pro_bar">
                             <div class="progress-container">
                                 <div class="step">
-                                    <div class="circle" id="step1">1</div>
+                                    <div class="circle" id="step1">&#10003;</div>
                                     <div class="step-label" id="label1">assign</div>
                                 </div>
                                 <div class="line" id="line1"></div>
                                 <div class="step">
-                                    <div class="circle" id="step2">2</div>
+                                    <div class="circle" id="step2">&#10003;</div>
                                     <div class="step-label" id="label2">preparing</div>
                                 </div>
                                 <div class="line" id="line2"></div>
                                 <div class="step">
-                                    <div class="circle" id="step3">3</div>
+                                    <div class="circle" id="step3">&#10003;</div>
                                     <div class="step-label" id="label3">prepared</div>
                                 </div>
                                 <div class="line" id="line3"></div>
                                 <div class="step">
-                                    <div class="circle" id="step4">4</div>
+                                    <div class="circle" id="step4">&#10003;</div>
                                     <div class="step-label" id="label4">working</div>
                                 </div>
                                 <div class="line" id="line4"></div>
                                 <div class="step">
-                                    <div class="circle" id="step5">5</div>
+                                    <div class="circle" id="step5">&#10003;</div>
                                     <div class="step-label" id="label5">complete</div>
                                 </div>
                             </div>

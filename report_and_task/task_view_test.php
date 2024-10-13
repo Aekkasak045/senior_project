@@ -102,7 +102,7 @@ $stmt_work->close();
                         <div class="pro_bar">
                             <div class="progress-container">
                                 <div class="step">
-                                    <div class="circle" id="step1">1</div>
+                                    <div class="circle" id="step1">11</div>
                                     <div class="step-label" id="label1">assign</div>
                                 </div>
                                 <div class="line" id="line1"></div>
