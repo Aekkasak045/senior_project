@@ -12,6 +12,9 @@ if (isset($_POST['updatedata'])) {
     $bd = $_POST['bd'];
     $role = $_POST['role'];
 
+        // เข้ารหัสรหัสผ่าน (ถ้ามีการอัปเดต)
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+
     // Handle Image Upload
     $imageData = null;
     if (isset($_FILES['user_img']) && $_FILES['user_img']['error'] === UPLOAD_ERR_OK) {
@@ -22,12 +25,12 @@ if (isset($_POST['updatedata'])) {
     if ($imageData) {
         // If an image is uploaded, include it in the update
         $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=?, user_img=? WHERE id=?");
-        $stmt->bind_param('sssssssbsi', $username, $password, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
+        $stmt->bind_param('sssssssbsi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
         $stmt->send_long_data(8, $imageData); // Send the image data to the statement
     } else {
         // If no image is uploaded, do not update the user_img field
         $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=? WHERE id=?");
-        $stmt->bind_param('ssssssssi', $username, $password, $first_name, $last_name, $email, $phone, $bd, $role, $id);
+        $stmt->bind_param('ssssssssi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $id);
     }
 
     if ($stmt->execute()) {

@@ -46,7 +46,7 @@ if (isset($_GET['logout'])) {
 
     <!-- ####################################################################### -->
 
-<!-- EDIT POP UP FORM (Bootstrap MODAL) -->
+
 <!-- EDIT POP UP FORM (Bootstrap MODAL) -->
 <div class="modal fade" id="editmodal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -99,7 +99,7 @@ if (isset($_GET['logout'])) {
                         <label>Birthday</label>
                     </div>
                     <div class="form-group form__group box3">
-                        <select name="role" id="role" class="boxrole" required>
+                        <select name="role" id="role" class="boxrole" >
                             <option value="admin">Admin</option>
                             <option value="mainten">Mainten</option>
                             <option value="user">User</option>
