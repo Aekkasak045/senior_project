@@ -280,21 +280,37 @@ if (isset($_GET['logout'])) {
 
 <?php
 
+
 // จัดการข้อมูลการเพิ่มเครื่องมือ
 if (isset($_POST['save_tools'])) {
     $tool_names = $_POST['tool_name'];
     $tool_costs = $_POST['tool_cost'];
 
     // เตรียมการ insert ข้อมูลหลายรายการพร้อมกัน
-    $stmt = $conn->prepare("INSERT INTO tools (tool_name, cost) VALUES (?, ?)");
     foreach ($tool_names as $index => $tool_name) {
         $tool_cost = $tool_costs[$index];
-        $stmt->bind_param("sd", $tool_name, $tool_cost);
-        $stmt->execute();
-    }
-    $stmt->close();
 
-    echo "<script>alert('Tools added successfully!'); window.location.href='tools_list.php';</script>";
+        // ตรวจสอบว่ามีชื่อเครื่องมือซ้ำหรือไม่
+        $check_sql = "SELECT * FROM tools WHERE tool_name = ?";
+        $stmt_check = $conn->prepare($check_sql);
+        $stmt_check->bind_param("s", $tool_name);
+        $stmt_check->execute();
+        $result = $stmt_check->get_result();
+
+        if ($result->num_rows > 0) {
+            // ถ้าพบชื่อซ้ำ
+            echo "<script>alert('มีชื่อเครื่องมือ $tool_name ในระบบแล้ว!'); window.location.href='tools_list.php';</script>";
+        } else {
+            // ถ้าไม่พบชื่อซ้ำ ทำการเพิ่มเครื่องมือ
+            $stmt_insert = $conn->prepare("INSERT INTO tools (tool_name, cost) VALUES (?, ?)");
+            $stmt_insert->bind_param("sd", $tool_name, $tool_cost);
+            $stmt_insert->execute();
+        }
+
+        $stmt_check->close();
+    }
+
+    echo "<script>alert('เพิ่มเครื่องมือสำเร็จ!'); window.location.href='tools_list.php';</script>";
 }
 
 if (isset($_GET['delete_tool_id'])) {
