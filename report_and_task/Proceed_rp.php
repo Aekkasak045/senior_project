@@ -22,7 +22,8 @@ if ($result->num_rows > 0) {
 // ดึงข้อมูลจากตาราง tools
 $sql_tools = "SELECT tool_id, tool_name FROM tools";
 $tools_result = $conn->query($sql_tools); 
-// Fetch report details
+
+// ดึงข้อมูลจากตาราง  report 
 $sql = "SELECT report.rp_id, report.detail, report.date_rp, report.user_id,
         users.username, users.first_name, users.last_name, users.email, users.phone, users.role,users.user_img,
         organizations.org_name, building.building_name, lifts.lift_name 
@@ -125,6 +126,7 @@ if (isset($_GET['logout'])) {
                             <div class="card mb-3">
                                 <div class="card-body ">
                                 <h6 class="card-title">Details</h6>
+                                    รายงานนี้ส่งเข้ามาในวันที่: <?php echo date("d/m/Y H:i", strtotime($row["date_rp"])); ?>
                                     <div class="mb-3">
                                         <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
                                     </div>
@@ -137,9 +139,6 @@ if (isset($_GET['logout'])) {
                         <div class="card mb-3">
                             <div class="card-body">
                             <!-- <form action="save_task.php" method="post"></form> -->
-                                
-                                
-
                                 <!-- Tools Used Section -->
                                 <h6 class="card-title">Tools Used</h6>
                                 <div id="input-container" class="mb-3">
