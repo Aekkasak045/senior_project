@@ -82,7 +82,7 @@ if (isset($_GET['logout'])) {
                                         <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
                                         </div>
                                     <br>
-                                    <label class="role-font">Birthday : 
+                                    <label class="role-font">Date : 
                                     <br>
                                         <input class="bd" type="date" name="bd_min">
                                         To

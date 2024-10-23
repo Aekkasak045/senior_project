@@ -20,7 +20,26 @@ if (isset($_GET['id'])) {
 
             echo 'TaskID: '.htmlspecialchars($task['tk_id']). '<br>';
             echo 'Task: ' . htmlspecialchars($task['tk_data']). '<br>' ;
-            echo ' Status: ' . htmlspecialchars($task['tk_status']);
+            echo 'Status: ';
+            switch ($task['tk_status']) {
+                case 1:
+                    echo 'มอบหมาย';
+                    break;
+                case 2:
+                    echo 'กำลังเตรียมอุปกรณ์';
+                    break;
+                case 3:
+                    echo 'เตรียมอุปกรณ์เสร็จสิ้น';
+                    break;
+                case 4:
+                    echo 'กำลังดำเนินการ';
+                    break;
+                case 5:
+                    echo 'ดำเนินการเสร็จสิ้น';
+                    break;
+                default:
+                    echo 'สถานะไม่ทราบ';
+            }
             // echo 'TaskID: '.htmlspecialchars($task['tk_id']).'Task: ' . htmlspecialchars($task['tk_data']) . ' Status: ' . htmlspecialchars($task['tk_status']);
             echo '</div>';
             echo '</li>';
