@@ -54,10 +54,15 @@ if (isset($_GET['logout'])) {
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Task information</p>
+                <p class="User_information">
+                    Task information
+                </p>
+                
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
+                <button class="Results" onclick="openResultsPopup()"><i class="fa-sharp-duotone fa-solid fa-chart-pie"></i>Results</button>
                 <a href="add_task_byAdmin.php" class="addtask"><i class="fa-solid fa-plus fa-xl pluse"></i> Add Task </a>
+                
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_task">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -133,18 +138,18 @@ if (isset($_GET['logout'])) {
                                 <td><?php echo htmlspecialchars($row['building_name']); ?></td>
                                 <td><?php echo htmlspecialchars($row['lift_id']); ?></td>
                                 <td>
-                                    <?php
+                                <?php
                                     $tools = json_decode($row['tools'], true);
                                     if (is_array($tools)) {
-                                        $toolsList = [];
-                                        foreach ($tools as $tool) {
-                                            // Assuming each $tool is an associative array with 'tool' and 'quantity' keys
+                                        $toolsList = array_map(function($tool) {
                                             if (isset($tool['tool']) && isset($tool['quantity'])) {
-                                                $toolsList[] = htmlspecialchars($tool['tool']) . ' (x' . htmlspecialchars($tool['quantity']) . ')';
+                                                return htmlspecialchars($tool['tool']) . ' (x' . htmlspecialchars($tool['quantity']) . ')';
                                             }
-                                        }
-                                        // Display all tools, each followed by its quantity
-                                        echo implode(", ", $toolsList);
+                                            return null;
+                                        }, $tools);
+                                        
+                                        // Display all tools, separated by comma
+                                        echo implode(", ", array_filter($toolsList));
                                     } else {
                                         echo 'No tools';
                                     }
@@ -158,6 +163,31 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
+        <div id="resultsPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeResultsPopup()">&times;</span>
+            <h2 class="popup-header">ปัญหาที่เกิดขึ้นกับลิฟต์ในแต่ละปี</h2>
+            <!-- ฟอร์มสำหรับเลือกปีและลิฟต์ -->
+            <div class="filter-section">
+                <label for="yearSelect">ปี:</label>
+                <select id="yearSelect">
+                    <option value="">เลือกปี</option>
+                </select>
+
+                <label for="liftSelect">ลิฟต์:</label>
+                <select id="liftSelect">
+                    <option value="">เลือกลิฟต์</option>
+                </select>
+                <button class="btn btn-primary" onclick="loadChartData()">กรองข้อมูล</button>
+            </div>
+            <div class="chatbox" >
+            <canvas id="taskChart" width="50" height="50"></canvas>
+            </div>
+        </div>
+</div>
 </body>
 <script src="scripts.js"></script>
+<!-- ใส่ Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script srv="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 </html>

@@ -128,7 +128,7 @@ if (isset($_GET['logout'])) {
                                 <h6 class="card-title">Details</h6>
                                     รายงานนี้ส่งเข้ามาในวันที่: <?php echo date("d/m/Y H:i", strtotime($row["date_rp"])); ?>
                                     <div class="mb-3">
-                                        <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details" readonly><?php echo htmlspecialchars($row["detail"]); ?></textarea>
+                                        <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details" ><?php echo htmlspecialchars($row["detail"]); ?></textarea>
                                     </div>
                                     </div>
                                     </div>
