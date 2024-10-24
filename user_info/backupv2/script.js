@@ -39,3 +39,22 @@
           });
         });
        });
+
+
+       function updateTaskStatus() {
+        // ใช้ AJAX เพื่อเรียกไฟล์ PHP
+        var xhr = new XMLHttpRequest();
+        xhr.open("GET", "update_task_status.php", true);
+        xhr.onreadystatechange = function () {
+            if (xhr.readyState == 4 && xhr.status == 200) {
+                document.getElementById("status-message").innerHTML = xhr.responseText;
+            }
+        };
+        xhr.send();
+    }
+    
+    // เรียกใช้ฟังก์ชัน updateTaskStatus ทุก 10 วินาที (10000 มิลลิวินาที)
+    setInterval(updateTaskStatus, 10000);
+    
+    // เรียกใช้ครั้งแรกทันทีเมื่อโหลดหน้าเว็บ
+    updateTaskStatus();

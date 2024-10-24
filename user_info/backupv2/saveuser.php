@@ -1,46 +1,47 @@
 <?php
-// require ("inc_db.php");;
+require("inc_db.php");
 
-$connection = mysqli_connect("localhost","root","kuse@fse2018");
-$db = mysqli_select_db($connection, 'smartlift');
+if (isset($_POST['updatedata'])) {
+    $id = $_POST['id'];
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    $first_name = $_POST['first_name'];
+    $last_name = $_POST['last_name'];
+    $email = $_POST['email'];
+    $phone = $_POST['phone'];
+    $bd = $_POST['bd'];
+    $role = $_POST['role'];
 
-// $id=$_POST["id"];
-// $username=$_POST["username"];
-// $fname=$_POST["first_name"];
-// $lname=$_POST["last_name"];
-// $email=$_POST["email"];
-// $phone=$_POST["phone"];
-// $bd =$_POST["bd"];
-// $role=$_POST["role"];
+        // เข้ารหัสรหัสผ่าน (ถ้ามีการอัปเดต)
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-// echo "id:$id first_name:$fname last_name:$lname email:$email phone:$phone role:$role";
-// $sql="UPDATE users set first_name='$fname',last_name='$lname',email='$email',phone='$phone',role='$role' WHERE id=$id";
-// $conn->query($sql);
-// header( "location: User.php" );
-
-if(isset($_POST['updatedata']))
-    {   
-        $id=$_POST["id"];
-        $username=$_POST["username"];
-        $password=$_POST["password"];
-        $fname=$_POST["first_name"];
-        $lname=$_POST["last_name"];
-        $email=$_POST["email"];
-        $phone=$_POST["phone"];
-        $bd =$_POST["bd"];
-        $role=$_POST["role"];
-
-        $query = "UPDATE users set username='$username', password='$password',first_name='$fname',last_name='$lname',email='$email',phone='$phone',bd='$bd', role='$role' WHERE id=$id ";
-        $query_run = mysqli_query($connection, $query);
-
-        if($query_run)
-        {
-            echo '<script> alert("Data Updated"); </script>';
-            header("Location:user_information.php");
-        }
-        else
-        {
-            echo '<script> alert("Data Not Updated"); </script>';
-        }
+    // Handle Image Upload
+    $imageData = null;
+    if (isset($_FILES['user_img']) && $_FILES['user_img']['error'] === UPLOAD_ERR_OK) {
+        $imageData = file_get_contents($_FILES['user_img']['tmp_name']);
     }
+
+    // Update Query
+    if ($imageData) {
+        // If an image is uploaded, include it in the update
+        $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=?, user_img=? WHERE id=?");
+        $stmt->bind_param('sssssssbsi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
+        $stmt->send_long_data(8, $imageData); // Send the image data to the statement
+    } else {
+        // If no image is uploaded, do not update the user_img field
+        $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=? WHERE id=?");
+        $stmt->bind_param('ssssssssi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $id);
+    }
+
+    if ($stmt->execute()) {
+        echo '<script>alert("User Updated Successfully!");</script>';
+    } else {
+        echo '<script>alert("Failed to Update User!");</script>';
+    }
+
+    $stmt->close();
+    $conn->close();
+    
+    header("Location: user_information.php"); // Redirect to the user information page after update
+}
 ?>

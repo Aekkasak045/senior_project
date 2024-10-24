@@ -12,9 +12,6 @@ if (isset($_POST['updatedata'])) {
     $bd = $_POST['bd'];
     $role = $_POST['role'];
 
-        // เข้ารหัสรหัสผ่าน (ถ้ามีการอัปเดต)
-        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
-
     // Handle Image Upload
     $imageData = null;
     if (isset($_FILES['user_img']) && $_FILES['user_img']['error'] === UPLOAD_ERR_OK) {
@@ -22,15 +19,31 @@ if (isset($_POST['updatedata'])) {
     }
 
     // Update Query
-    if ($imageData) {
-        // If an image is uploaded, include it in the update
-        $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=?, user_img=? WHERE id=?");
-        $stmt->bind_param('sssssssbsi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
-        $stmt->send_long_data(8, $imageData); // Send the image data to the statement
+    if (!empty($password)) {
+        // If password is provided, hash it and include in the query
+        $hashed_password = password_hash($password, PASSWORD_DEFAULT);
+        if ($imageData) {
+            // If image is uploaded and password is updated
+            $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=?, user_img=? WHERE id=?");
+            $stmt->bind_param('ssssssssbi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
+            $stmt->send_long_data(8, $imageData);
+        } else {
+            // If no image is uploaded but password is updated
+            $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=? WHERE id=?");
+            $stmt->bind_param('ssssssssi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $id);
+        }
     } else {
-        // If no image is uploaded, do not update the user_img field
-        $stmt = $conn->prepare("UPDATE users SET username=?, password=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=? WHERE id=?");
-        $stmt->bind_param('ssssssssi', $username, $hashed_password, $first_name, $last_name, $email, $phone, $bd, $role, $id);
+        // If no password is provided, do not update password
+        if ($imageData) {
+            // If image is uploaded but password is not updated
+            $stmt = $conn->prepare("UPDATE users SET username=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=?, user_img=? WHERE id=?");
+            $stmt->bind_param('ssssssssi', $username, $first_name, $last_name, $email, $phone, $bd, $role, $imageData, $id);
+            $stmt->send_long_data(7, $imageData);
+        } else {
+            // If no image is uploaded and no password is updated
+            $stmt = $conn->prepare("UPDATE users SET username=?, first_name=?, last_name=?, email=?, phone=?, bd=?, role=? WHERE id=?");
+            $stmt->bind_param('sssssssi', $username, $first_name, $last_name, $email, $phone, $bd, $role, $id);
+        }
     }
 
     if ($stmt->execute()) {
@@ -41,7 +54,7 @@ if (isset($_POST['updatedata'])) {
 
     $stmt->close();
     $conn->close();
-    
+
     header("Location: user_information.php"); // Redirect to the user information page after update
 }
 ?>
