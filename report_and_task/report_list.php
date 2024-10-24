@@ -11,6 +11,9 @@ INNER JOIN building ON organizations.id = building.id
 INNER JOIN lifts ON report.lift_id = lifts.id 
 ORDER BY rp_id DESC;";
 $rs = mysqli_query($conn, $sql);
+
+$sql_problem = "SELECT pb_id, pb_name FROM problem";
+$rs_problem = mysqli_query($conn, $sql_problem);
 ?>
 
 <!-- ####################################################################### -->
@@ -58,8 +61,12 @@ if (isset($_GET['logout'])) {
         <div class="box-outer2">
             <section class="header_Table">
                 <p class="User_information">Report information</p>  
+
+                
+
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
+                <button onclick="openProblemPopup()" class="problemlistbt"><i class="fa-solid fa-list"></i> Problem List</button>
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_report">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -137,9 +144,51 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
+    <!-- Popup สำหรับแสดงรายการปัญหา -->
+    <div id="problemPopup" class="popup">
+        <div class="popup-content">
+            <span class="close" onclick="closeProblemPopup()">&times;</span>
+            <h2 class="popup-header">Problem List</h2>
+            <!-- ฟอร์มสำหรับเพิ่มปัญหาใหม่ -->
+            <form id="addProblemForm" method="POST">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="new_problem" id="new_problem" placeholder="Enter new problem" required>
+                    <button class="btn btn-success" type="button" id="addProblemBtn">+</button>
+                </div>
+            </form>
+            <ul class="list-group mb-3">
+                <?php while ($row_problem = mysqli_fetch_assoc($rs_problem)) { ?>
+                    <li class="list-group-item"><?php echo $row_problem['pb_name']; ?></li>
+                <?php } ?>
+            </ul>
+
+            
+        </div>
+    </div>
 </body>
 <script src="scripts.js"></script>
+
 </html>
+
+<?php
+if (isset($_POST['add_problem'])) {
+    $new_problem = mysqli_real_escape_string($conn, $_POST['new_problem']);
+
+    // ตรวจสอบว่าปัญหานั้นมีอยู่แล้วหรือไม่
+    $check_problem = "SELECT * FROM problem WHERE pb_name = '$new_problem'";
+    $result_check = mysqli_query($conn, $check_problem);
+
+    if (mysqli_num_rows($result_check) == 0) {
+        // เพิ่มรายการปัญหาใหม่
+        $sql_add_problem = "INSERT INTO problem (pb_name) VALUES ('$new_problem')";
+        mysqli_query($conn, $sql_add_problem);
+        echo "<script>alert('New problem added successfully');</script>";
+        echo "<script>window.location.reload();</script>";
+    } else {
+       
+    }
+}
+?>
 
 
 

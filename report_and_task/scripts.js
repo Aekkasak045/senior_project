@@ -72,3 +72,41 @@ if (startDate < currentDate) {
 
 return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
 }
+
+function openProblemPopup() {
+  document.getElementById("problemPopup").style.display = "block";
+}
+
+function closeProblemPopup() {
+  document.getElementById("problemPopup").style.display = "none";
+}
+
+
+$(document).ready(function () {
+  $("#addProblemBtn").click(function (e) {
+      e.preventDefault(); // ป้องกันการส่งฟอร์มแบบดั้งเดิม
+
+      var new_problem = $("#new_problem").val(); // รับค่าจากฟิลด์ป้อนข้อมูล
+
+      if (new_problem !== "") {
+          $.ajax({
+              url: "add_problem.php", // ไฟล์ PHP ที่ใช้ในการบันทึกข้อมูล
+              type: "POST",
+              data: {
+                  new_problem: new_problem
+              },
+              success: function (response) {
+                  alert("New problem added successfully");
+                  // อัปเดตรายการปัญหาทันทีโดยไม่ต้องโหลดหน้าใหม่
+                  $("#problemList").append('<li class="list-group-item">' + new_problem + '</li>');
+                  $("#new_problem").val(""); // ล้างฟิลด์ป้อนข้อมูลหลังบันทึก
+              },
+              error: function () {
+                  alert("Error occurred while adding problem.");
+              }
+          });
+      } else {
+          alert("Please enter a problem name.");
+      }
+  });
+});
