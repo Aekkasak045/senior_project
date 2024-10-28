@@ -173,7 +173,6 @@ if (isset($_GET['logout'])) {
                 <select id="yearSelect">
                     <option value="">เลือกปี</option>
                 </select>
-
                 <label for="liftSelect">ลิฟต์:</label>
                 <select id="liftSelect">
                     <option value="">เลือกลิฟต์</option>
@@ -183,6 +182,7 @@ if (isset($_GET['logout'])) {
             <div class="chatbox" >
             <canvas id="taskChart" width="50" height="50"></canvas>
             </div>
+            
         </div>
 </div>
 </body>
