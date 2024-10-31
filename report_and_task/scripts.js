@@ -273,5 +273,7 @@ function loadFilters() {
           console.error("Error fetching filters: " + error);
       }
   });
+  
 }
+
 
