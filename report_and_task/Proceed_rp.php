@@ -21,7 +21,7 @@ if ($result->num_rows > 0) {
 }
 // ดึงข้อมูลจากตาราง tools
 $sql_tools = "SELECT tool_id, tool_name FROM tools";
-$tools_result = $conn->query($sql_tools);
+$tools_result = $conn->query($sql_tools); 
 
 // ดึงข้อมูลจากตาราง  report 
 $sql = "SELECT report.rp_id, report.detail, report.date_rp, report.user_id,
@@ -77,16 +77,17 @@ if (isset($_GET['logout'])) {
 <body class="background1">
     <!-- Navbar -->
     <?php require('../navbar/navbar.php'); ?>
+
     <div class="container box-outer1">
         <div class="card box-outer2">
             <div class="text-white">
                 <h5 class="mb-0">Create Task: <?php echo htmlspecialchars($row["rp_id"]); ?></h5>
             </div>
             <div class="card-body">
-                <form action="save_task.php" method="post" onsubmit="return validateForm() && validate()">
-                    <div class="row">
-                        <!-- User Information -->
-                        <div class="col-md-6 mb-4">
+            <form action="save_task.php" method="post" onsubmit="return validateForm() && validate()">
+                <div class="row">
+                    <!-- User Information -->
+                    <div class="col-md-6 mb-4">
                             <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row["rp_id"]); ?>">
                             <input type="hidden" name="user_id" value="<?php echo htmlspecialchars($row["user_id"]); ?>">
                             <input type="hidden" name="username" value="<?php echo htmlspecialchars($row["username"]); ?>">
@@ -102,7 +103,7 @@ if (isset($_GET['logout'])) {
                                         </div>
                                     <?php endif; ?>
                                     <p class="textinfo"><strong>Username:</strong> <?php echo htmlspecialchars($row["username"]); ?></p>
-                                    <p class="textinfo"><strong>Name:</strong> <?php echo htmlspecialchars($row["first_name"]) . ' ' . htmlspecialchars($row["last_name"]); ?></p>
+                                    <p class="textinfo"><strong >Name:</strong> <?php echo htmlspecialchars($row["first_name"]) . ' ' . htmlspecialchars($row["last_name"]); ?></p>
                                     <p class="textinfo"><strong>Phone:</strong> <?php echo htmlspecialchars($row["phone"]); ?></p>
                                     <p class="textinfo"><strong>Email:</strong> <?php echo htmlspecialchars($row["email"]); ?></p>
                                 </div>
@@ -111,9 +112,9 @@ if (isset($_GET['logout'])) {
                                 <div class="card-body ">
                                     <h6 class="card-title">Location</h6>
                                     <div class="body_location">
-                                        <div class="img_location">
-                                            <img src="img/building.png" class="img_fluid_location" alt="location-icon">
-                                        </div>
+                                    <div class="img_location">
+                                        <img src="img/building.png" class="img_fluid_location" alt="location-icon">
+                                    </div>
                                         <div class="card-body" style="padding: 0;">
                                             <p class="textinfo"><strong>Organization:</strong> <?php echo htmlspecialchars($row["org_name"]); ?></p>
                                             <p class="textinfo"><strong>Building:</strong> <?php echo htmlspecialchars($row["building_name"]); ?></p>
@@ -124,52 +125,59 @@ if (isset($_GET['logout'])) {
                             </div>
                             <div class="card mb-3">
                                 <div class="card-body ">
-                                    <h6 class="card-title">Details</h6>
+                                <h6 class="card-title">Details</h6>
                                     รายงานนี้ส่งเข้ามาในวันที่: <?php echo date("d/m/Y H:i", strtotime($row["date_rp"])); ?>
                                     <div class="mb-3">
-                                        <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details"><?php echo htmlspecialchars($row["detail"]); ?></textarea>
+                                        <textarea name="detail" class="form-control card_color2" rows="4" placeholder="Enter details" ><?php echo htmlspecialchars($row["detail"]); ?></textarea>
+                                    </div>
+                                    </div>
+                                    </div>
+                    </div>
+
+                    <!-- Task Details -->
+                    <div class="col-md-6 mb-4">
+                        <div class="card mb-3">
+                            <div class="card-body">
+                            <!-- <form action="save_task.php" method="post"></form> -->
+                                <!-- Tools Used Section -->
+                                <h6 class="card-title">Tools Used</h6>
+                                <div id="input-container" class="mb-3">
+                                    <div class="input-group mb-2">
+                                        <!-- ใช้ select dropdown สำหรับเลือกเครื่องมือ -->
+                                        <select name="tools[]" class="form-select">
+                                            <option value="">เลือกเครื่องมือ</option>
+                                            <?php 
+                                            // ดึงข้อมูลเครื่องมือจากตาราง tools
+                                            $sql_tools = "SELECT tool_name FROM tools";
+                                            $result_tools = $conn->query($sql_tools);
+
+                                            while ($tool = $result_tools->fetch_assoc()) { ?>
+                                                <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
+                                            <?php } ?>
+                                        </select>
+
+                                        <!-- ฟิลด์สำหรับใส่จำนวน -->
+                                        <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
+
+                                        <!-- ปุ่มลบ -->
+                                        <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>                                 
+                                </div>
+
+                                <!-- ปุ่มเพิ่มเครื่องมือ -->
+                                <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
+
+                                <!-- ฟิลด์สำหรับเลือกวันที่และเวลาเริ่มงาน (24 ชม.) -->
+                                <div class="box0">
+                                    <label for="task_start_date" class="form-label">วันเวลาเริ่มงาน:</label>
+                                    <div class="mb-3 box3">
+                                    <input type="datetime-local" class="boxrole" id="task_start_date" name="task_start_date" required>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                        <!-- Task Details -->
-                        <div class="col-md-6 mb-4">
-                            <div class="card mb-3">
-                                <div class="card-body">
-                                    <!-- <form action="save_task.php" method="post"></form> -->
-                                    <!-- Tools Used Section -->
-                                    <h6 class="card-title">Tools Used</h6>
-                                    <div id="input-container" class="mb-3">
-                                        <div class="input-group mb-2">
-                                            <!-- ใช้ select dropdown สำหรับเลือกเครื่องมือ -->
-                                            <select name="tools[]" class="form-select">
-                                                <option value="">เลือกเครื่องมือ</option>
-                                                <?php
-                                                // ดึงข้อมูลเครื่องมือจากตาราง tools
-                                                $sql_tools = "SELECT tool_name FROM tools";
-                                                $result_tools = $conn->query($sql_tools);
-                                                while ($tool = $result_tools->fetch_assoc()) { ?>
-                                                    <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
-                                                <?php } ?>
-                                            </select>
-                                            <!-- ฟิลด์สำหรับใส่จำนวน -->
-                                            <input type="number" name="quantities[]" class="form-control" placeholder="Quantity" min="1">
-                                            <!-- ปุ่มลบ -->
-                                            <button class="btn btn-danger" type="button" onclick="removeToolInput(this)" disabled>
-                                                <i class="fas fa-trash-alt"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                    <!-- ปุ่มเพิ่มเครื่องมือ -->
-                                    <button class="btn btn-sm btn-secondary mb-3 add_tool" type="button" onclick="addToolInput()">Add Tool</button>
-                                    <!-- ฟิลด์สำหรับเลือกวันที่และเวลาเริ่มงาน (24 ชม.) -->
-                                    <div class="box0">
-                                        <label for="task_start_date" class="form-label">วันเวลาเริ่มงาน:</label>
-                                        <div class="mb-3 box3">
-                                            <input type="datetime-local" class="boxrole" id="task_start_date" name="task_start_date" required>
-                                        </div>
-                                    </div>
-                                    <h6 class="card-title">Assign Engineer</h6>
+
+                                <h6 class="card-title">Assign Engineer</h6>
                                     <div class="mb-3 box3">
                                         <select class="boxrole" name="engineer_id" id="engineer" onchange="fetchEngineerData(this.value)" required>
                                             <option value="">เลือกช่าง</option>
@@ -178,6 +186,7 @@ if (isset($_GET['logout'])) {
                                             <?php endforeach; ?>
                                         </select>
                                     </div>
+
                                     <div id="engineer_info" class="mb-3">
                                         <h6 class="card-title">Engineer Information</h6>
                                         <p id="engineer_name" class="textinfo"></p>
@@ -185,15 +194,17 @@ if (isset($_GET['logout'])) {
                                         <p id="engineer_email" class="textinfo"></p>
                                         <img id="engineer_image" src="" alt="Engineer Image" style="max-width: 100px; display: none;">
                                     </div>
-                                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-                                        <input class="btn btn-primary create" type="submit" name="edit" value="Create Task">
-                                    </div>
+                                
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                                    <input class="btn btn-primary create" type="submit" name="edit" value="Create Task">
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- Close the form -->
+                </div>
+                <!-- Close the form -->
                 </form>
+                
                 <!-- Delete Report Button -->
                 <form action="delete_report.php" method="post" onsubmit="return confirm('Are you sure you want to delete this report?');" class="text-center mt-3 delete_task">
                     <input type="hidden" name="rp_id" value="<?php echo htmlspecialchars($row['rp_id']); ?>">
@@ -208,88 +219,104 @@ if (isset($_GET['logout'])) {
 
 <script>
     function addToolInput() {
-        var inputContainer = document.getElementById("input-container");
-        // สร้าง div ใหม่สำหรับ input group ใหม่
-        var newInputGroup = document.createElement("div");
-        newInputGroup.classList.add("input-group", "mb-2");
-        // สร้าง select dropdown สำหรับเลือกเครื่องมือ
-        var newToolSelect = document.createElement("select");
-        newToolSelect.setAttribute("name", "tools[]");
-        newToolSelect.classList.add("form-select");
-        // เพิ่มตัวเลือก "เลือกเครื่องมือ"
-        var defaultOption = document.createElement("option");
-        defaultOption.value = "";
-        defaultOption.textContent = "เลือกเครื่องมือ";
-        newToolSelect.appendChild(defaultOption);
-        // เพิ่มตัวเลือกเครื่องมือจาก PHP (ทำผ่าน JavaScript)
-        <?php
-        // ดึงข้อมูลเครื่องมือจากฐานข้อมูลและสร้างตัวเลือกใน dropdown
-        $sql_tools = "SELECT tool_name FROM tools";
-        $result_tools = $conn->query($sql_tools);
-        while ($tool = $result_tools->fetch_assoc()) { ?>
-            var option = document.createElement("option");
-            option.value = "<?php echo $tool['tool_name']; ?>";
-            option.textContent = "<?php echo $tool['tool_name']; ?>";
-            newToolSelect.appendChild(option);
-        <?php } ?>
-        // สร้าง input สำหรับจำนวน
-        var newQuantityInput = document.createElement("input");
-        newQuantityInput.setAttribute("type", "number");
-        newQuantityInput.setAttribute("name", "quantities[]");
-        newQuantityInput.setAttribute("class", "form-control");
-        newQuantityInput.setAttribute("placeholder", "Quantity");
-        newQuantityInput.setAttribute("min", "1");
-        // สร้างปุ่มลบ
-        var removeButton = document.createElement("button");
-        removeButton.setAttribute("type", "button");
-        removeButton.classList.add("btn", "btn-danger");
-        removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
-        removeButton.onclick = function() {
-            removeToolInput(removeButton);
-        };
-        // เพิ่ม select dropdown และ input สำหรับจำนวนเข้าใน div
-        newInputGroup.appendChild(newToolSelect);
-        newInputGroup.appendChild(newQuantityInput);
-        newInputGroup.appendChild(removeButton);
-        // เพิ่ม input group ใหม่ลงใน container
-        inputContainer.appendChild(newInputGroup);
-        // เปิดปุ่มลบของทุก input group
-        enableRemoveButtons();
-    }
+    var inputContainer = document.getElementById("input-container");
 
-    function removeToolInput(button) {
-        var inputContainer = document.getElementById("input-container");
-        // ตรวจสอบจำนวน input-group ที่มีอยู่
-        var inputGroups = inputContainer.getElementsByClassName("input-group");
-        if (inputGroups.length > 1) {
-            // ลบ input-group ที่เชื่อมโยงกับปุ่มนี้
-            button.parentElement.remove();
-        }
-        // หลังจากลบแล้ว ตรวจสอบอีกครั้งว่าถ้าเหลือ 1 input group ให้ปิดปุ่มลบ
-        enableRemoveButtons();
-    }
-    function enableRemoveButtons() {
-        var inputContainer = document.getElementById("input-container");
-        var inputGroups = inputContainer.getElementsByClassName("input-group");
-        // เปิดใช้งานปุ่มลบเมื่อมีมากกว่า 1 input-group
-        for (var i = 0; i < inputGroups.length; i++) {
-            var removeButton = inputGroups[i].querySelector("button");
-            if (inputGroups.length > 1) {
-                removeButton.disabled = false;
-            } else {
-                removeButton.disabled = true;
-            }
-        }
-    }
+    // สร้าง div ใหม่สำหรับ input group ใหม่
+    var newInputGroup = document.createElement("div");
+    newInputGroup.classList.add("input-group", "mb-2");
 
-    // เรียกใช้ฟังก์ชัน enableRemoveButtons เมื่อเริ่มต้น
+    // สร้าง select dropdown สำหรับเลือกเครื่องมือ
+    var newToolSelect = document.createElement("select");
+    newToolSelect.setAttribute("name", "tools[]");
+    newToolSelect.classList.add("form-select");
+
+    // เพิ่มตัวเลือก "เลือกเครื่องมือ"
+    var defaultOption = document.createElement("option");
+    defaultOption.value = "";
+    defaultOption.textContent = "เลือกเครื่องมือ";
+    newToolSelect.appendChild(defaultOption);
+
+    // เพิ่มตัวเลือกเครื่องมือจาก PHP (ทำผ่าน JavaScript)
+    <?php 
+    // ดึงข้อมูลเครื่องมือจากฐานข้อมูลและสร้างตัวเลือกใน dropdown
+    $sql_tools = "SELECT tool_name FROM tools";
+    $result_tools = $conn->query($sql_tools);
+    while ($tool = $result_tools->fetch_assoc()) { ?>
+        var option = document.createElement("option");
+        option.value = "<?php echo $tool['tool_name']; ?>";
+        option.textContent = "<?php echo $tool['tool_name']; ?>";
+        newToolSelect.appendChild(option);
+    <?php } ?>
+
+    // สร้าง input สำหรับจำนวน
+    var newQuantityInput = document.createElement("input");
+    newQuantityInput.setAttribute("type", "number");
+    newQuantityInput.setAttribute("name", "quantities[]");
+    newQuantityInput.setAttribute("class", "form-control");
+    newQuantityInput.setAttribute("placeholder", "Quantity");
+    newQuantityInput.setAttribute("min", "1");
+
+    // สร้างปุ่มลบ
+    var removeButton = document.createElement("button");
+    removeButton.setAttribute("type", "button");
+    removeButton.classList.add("btn", "btn-danger");
+    removeButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+    removeButton.onclick = function() {
+        removeToolInput(removeButton);
+    };
+
+    // เพิ่ม select dropdown และ input สำหรับจำนวนเข้าใน div
+    newInputGroup.appendChild(newToolSelect);
+    newInputGroup.appendChild(newQuantityInput);
+    newInputGroup.appendChild(removeButton);
+
+    // เพิ่ม input group ใหม่ลงใน container
+    inputContainer.appendChild(newInputGroup);
+
+    // เปิดปุ่มลบของทุก input group
     enableRemoveButtons();
+}
+function removeToolInput(button) {
+    var inputContainer = document.getElementById("input-container");
+
+    // ตรวจสอบจำนวน input-group ที่มีอยู่
+    var inputGroups = inputContainer.getElementsByClassName("input-group");
+
+    if (inputGroups.length > 1) {
+        // ลบ input-group ที่เชื่อมโยงกับปุ่มนี้
+        button.parentElement.remove();
+    }
+
+    // หลังจากลบแล้ว ตรวจสอบอีกครั้งว่าถ้าเหลือ 1 input group ให้ปิดปุ่มลบ
+    enableRemoveButtons();
+}
+
+function enableRemoveButtons() {
+    var inputContainer = document.getElementById("input-container");
+    var inputGroups = inputContainer.getElementsByClassName("input-group");
+
+    // เปิดใช้งานปุ่มลบเมื่อมีมากกว่า 1 input-group
+    for (var i = 0; i < inputGroups.length; i++) {
+        var removeButton = inputGroups[i].querySelector("button");
+        if (inputGroups.length > 1) {
+            removeButton.disabled = false;
+        } else {
+            removeButton.disabled = true;
+        }
+    }
+}
+
+// เรียกใช้ฟังก์ชัน enableRemoveButtons เมื่อเริ่มต้น
+enableRemoveButtons();
+
     function validate() {
         var tools = document.querySelectorAll("select[name='tools[]']");
         var quantities = document.querySelectorAll("input[name='quantities[]']");
+        
         for (var i = 0; i < tools.length; i++) {
             var tool = tools[i].value.trim();
             var quantity = quantities[i].value.trim();
+
             // ตรวจสอบว่าช่อง tool หรือ quantity ว่างหรือไม่
             if ((tool !== "" && quantity === "") || (tool === "" && quantity !== "")) {
                 alert("Please fill out both Tool name and Quantity for all inputs.");
@@ -299,6 +326,7 @@ if (isset($_GET['logout'])) {
         return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
     }
 </script>
+
 <script src="scripts.js"></script>
 <script>
     function fetchEngineerData(engineer_id) {
@@ -311,6 +339,7 @@ if (isset($_GET['logout'])) {
                         document.getElementById('engineer_name').textContent = 'Name: ' + data.first_name + ' ' + data.last_name;
                         document.getElementById('engineer_phone').textContent = 'Phone: ' + data.phone;
                         document.getElementById('engineer_email').textContent = 'Email: ' + data.email;
+
                         // แสดงรูปภาพถ้ามี
                         if (data.user_img) {
                             document.getElementById('engineer_image').src = 'data:image/jpeg;base64,' + data.user_img;
@@ -327,16 +356,17 @@ if (isset($_GET['logout'])) {
     }
 
     function validateForm() {
-        var startDate = document.getElementById("task_start_date").value;
-        var currentDate = new Date();
+    var startDate = document.getElementById("task_start_date").value;
+    var currentDate = new Date();
 
-        // แปลงวันที่เริ่มงานเป็นรูปแบบ Date
-        var selectedDate = new Date(startDate);
+    // แปลงวันที่เริ่มงานเป็นรูปแบบ Date
+    var selectedDate = new Date(startDate);
 
-        if (selectedDate < currentDate) {
-            alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
-            return false; // หยุดการส่งฟอร์ม
-        }
-        return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
+    if (selectedDate < currentDate) {
+        alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
+        return false; // หยุดการส่งฟอร์ม
     }
+
+    return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
+}
 </script>

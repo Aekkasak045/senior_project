@@ -9,7 +9,7 @@ if ($result_task_ids->num_rows > 0) {
     // วนลูปผ่าน tk_id แต่ละอัน
     while ($row = $result_task_ids->fetch_assoc()) {
         $tk_id = $row['tk_id'];
-
+        
         // ตรวจสอบค่า status ล่าสุดจากตาราง task_status โดยอ้างอิงจาก tk_id
         $sql_status = "SELECT status FROM task_status WHERE tk_id = ? ORDER BY tk_status_id DESC LIMIT 1";
         $stmt = $conn->prepare($sql_status);
@@ -20,7 +20,7 @@ if ($result_task_ids->num_rows > 0) {
         if ($result_status->num_rows > 0) {
             $status_row = $result_status->fetch_assoc();
             $status = $status_row['status'];
-
+            
             // กำหนดค่าใหม่ตาม status
             if ($status == "preparing") {
                 $new_status = 2;
@@ -33,6 +33,7 @@ if ($result_task_ids->num_rows > 0) {
             } else {
                 continue; // ถ้า status ไม่อยู่ในเงื่อนไขข้ามไป
             }
+
             // อัปเดต tk_status ในตาราง task
             $update_task = "UPDATE task SET tk_status = ? WHERE tk_id = ?";
             $stmt_update = $conn->prepare($update_task);
@@ -47,3 +48,4 @@ if ($result_task_ids->num_rows > 0) {
 
 // ปิดการเชื่อมต่อฐานข้อมูล
 // $conn->close();
+?>

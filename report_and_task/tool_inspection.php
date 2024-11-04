@@ -22,6 +22,7 @@ $rs = mysqli_query($conn, $sql);
 <body class="background1">
     <!-- Navbar -->
     <?php require('../navbar/navbar.php'); ?>
+
     <div class="container mt-4">
         <h2 class="mb-4">Tool Inspection</h2>
         <div class="table-responsive">

@@ -11,17 +11,6 @@ $sql = "SELECT task.tk_id, task.tk_status, task.tk_data, task.rp_id,
         INNER JOIN users ON task.mainten_id = users.id
         ORDER BY task.tk_id DESC";
 $rs = mysqli_query($conn, $sql);
-
-
-// ดึงข้อมูล Organization
-$sql_org = "SELECT id as org_id, org_name FROM organizations";
-$org_result = $conn->query($sql_org);
-// ดึงข้อมูล building
-$sql_building = "SELECT id as building_id, building_name FROM building";
-$building_result = $conn->query($sql_building);
-// ดึงข้อมูล lift
-$sql_lift = "SELECT id as lift_id, lift_name FROM lifts";
-$lift_result = $conn->query($sql_lift);
 ?>
 
 <!-- ####################################################################### -->
@@ -71,7 +60,7 @@ if (isset($_GET['logout'])) {
                 
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
-                <a onclick="openResultsPopup()" class="addtask"><i class="fa-sharp-duotone fa-solid fa-chart-pie" id="results"></i> Results </a>
+                <button class="Results" onclick="openResultsPopup()"><i class="fa-sharp-duotone fa-solid fa-chart-pie"></i>Results</button>
                 <a href="add_task_byAdmin.php" class="addtask"><i class="fa-solid fa-plus fa-xl pluse"></i> Add Task </a>
                 
                     <div class="search">
@@ -95,49 +84,6 @@ if (isset($_GET['logout'])) {
                                         <br>
                                         <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
                                         </div>
-
-                        <label class="status-font">Position : </label>
-        <br>
-        <div class="row_position">
-            <input type="radio" name="position" value="organizations" onclick="showOptions('organizations')"> Organizations
-            <div id="organizations-options" style="display: none;">
-                <select class="boxrole" id="org_name" name="org_name">
-                    <option value="">เลือก</option>
-                    <?php while ($org = $org_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $org['org_name']; ?>">
-                            <?php echo $org['org_id'] . " - " . $org['org_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <div class="row_position">
-            <input type="radio" name="position" value="building" onclick="showOptions('building')"> Building
-            <div id="building-options" style="display: none;">
-                <select class="boxrole" id="building_name" name="building_name">
-                    <option value="">เลือก</option>
-                    <?php while ($building = $building_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $building['building_name']; ?>">
-                            <?php echo $building['building_id'] . " - " . $building['building_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <div class="row_position">
-            <input type="radio" name="position" value="lifts" onclick="showOptions('lifts')"> Lifts
-            <div id="lifts-options" style="display: none;">
-                <select class="boxrole" id="lift_name" name="lift_name">
-                    <option value="">เลือก</option>
-                    <?php while ($lift = $lift_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $lift['lift_name']; ?>">
-                            <?php echo $lift['lift_id'] . " - " . $lift['lift_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-
                                     <label class="status-font">Status : </label>
                                     <div class="status-filter">
                                         <input type="radio" name="status" value="1"> มอบหมาย
@@ -170,7 +116,6 @@ if (isset($_GET['logout'])) {
                 <table class="table1" id="table-data">
                     <thead>
                         <tr class="table-lift">
-                            <th class="row-1 row-status"></th>
                             <th class="row-1 row-ID">ID</th>
                             <th class="row-2 row-Name">Status</th>
                             <th class="row-3 row-Name">Task Detail</th>
@@ -185,7 +130,6 @@ if (isset($_GET['logout'])) {
                     <tbody id="showdata">
                         <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
                             <tr class="table-lift">
-                                <?php echo status($row) ?>
                                 <td><?php echo htmlspecialchars($row['tk_id']); ?></td>
                                 <?php echo show_task_status($row); ?>
                                 <td><?php echo htmlspecialchars($row['tk_data']); ?></td>
@@ -229,37 +173,20 @@ if (isset($_GET['logout'])) {
                 <select id="yearSelect">
                     <option value="">เลือกปี</option>
                 </select>
-
                 <label for="liftSelect">ลิฟต์:</label>
                 <select id="liftSelect">
                     <option value="">เลือกลิฟต์</option>
                 </select>
-                <button class="btn btn-primary Results" onclick="loadChartData()">กรองข้อมูล</button>
+                <button class="btn btn-primary" onclick="loadChartData()">กรองข้อมูล</button>
             </div>
             <div class="chatbox" >
             <canvas id="taskChart" width="50" height="50"></canvas>
             </div>
+            
+            
         </div>
-        
 </div>
 </body>
-<script>
-function showOptions(option) {
-    // ซ่อนตัวเลือกทั้งหมดก่อน
-    document.getElementById("organizations-options").style.display = "none";
-    document.getElementById("building-options").style.display = "none";
-    document.getElementById("lifts-options").style.display = "none";
-
-    // แสดงตัวเลือกที่เลือกเท่านั้น
-    if (option === "organizations") {
-        document.getElementById("organizations-options").style.display = "block";
-    } else if (option === "building") {
-        document.getElementById("building-options").style.display = "block";
-    } else if (option === "lifts") {
-        document.getElementById("lifts-options").style.display = "block";
-    }
-}
-</script>
 <script src="scripts.js"></script>
 <!-- ใส่ Chart.js -->
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

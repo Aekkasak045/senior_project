@@ -1,6 +1,6 @@
 <?php
-include("inc_db.php");
-include("user_function.php");
+include ("inc_db.php");
+include ("user_function.php");
 
 
 $keyword = $_POST['search'];
@@ -40,15 +40,16 @@ while ($row = mysqli_fetch_assoc($rs)) {
     $toolsOutput = !empty($toolsList) ? implode(", ", $toolsList) : 'No tools';
 
     $data .= "<tr class=\"table-lift\" onclick=\"\">"
-        . "<td>" . $row["tk_id"] . "</td>"
-        . show_task_status($row)
-        . "<td>" . $row["tk_data"] . "</td>"
-        . "<td>" . $row["engineer_first_name"] . " " . $row["engineer_last_name"] . "</td>"
-        . "<td>" . $row["org_name"] . "</td>"
-        . "<td>" . $row["building_name"] . "</td>"
-        . "<td>" . $row["lift_id"] . "</td>"
-        . "<td>" . $toolsOutput . "</td>"
-        . "<td class=\"parent-container\"><a id=\"edit-lift\" href=\"task_view.php?tk_id=" . $row["tk_id"] . "\" class=\"btn btn-success button-style\"> View </a></td>"
-        . "</tr>";
+                . "<td>" . $row["tk_id"] . "</td>"
+                . show_task_status($row) 
+                . "<td>" . $row["tk_data"] . "</td>"
+                . "<td>" . $row["engineer_first_name"] . " " . $row["engineer_last_name"] . "</td>"
+                . "<td>" . $row["org_name"] . "</td>"
+                . "<td>" . $row["building_name"] . "</td>"
+                . "<td>" . $row["lift_id"] . "</td>"
+                . "<td>" . $toolsOutput . "</td>"
+                . "<td class=\"parent-container\"><a id=\"edit-lift\" href=\"task_view.php?tk_id=" . $row["tk_id"] . "\" class=\"btn btn-success button-style\"> View </a></td>"
+             . "</tr>";
 }
 echo $data;
+?>

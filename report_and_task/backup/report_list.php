@@ -3,28 +3,12 @@ require ("inc_db.php");
 include ("user_function.php");
 include("update_task_status.php");
 
-$sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,building.building_name,lifts.lift_name 
-FROM report 
+$sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,lifts.lift_name FROM report 
 INNER JOIN users ON report.user_id = users.id 
-INNER JOIN organizations ON report.org_id = organizations.id 
-INNER JOIN building ON organizations.id = building.id 
-INNER JOIN lifts ON report.lift_id = lifts.id 
+INNER JOIN organizations ON report.org_id = organizations.id
+INNER JOIN lifts ON report.lift_id = lifts.id
 ORDER BY rp_id DESC;";
 $rs = mysqli_query($conn, $sql);
-
-$sql_problem = "SELECT pb_id, pb_name FROM problem";
-$rs_problem = mysqli_query($conn, $sql_problem);
-
-
-// ดึงข้อมูล Organization
-$sql_org = "SELECT id as org_id, org_name FROM organizations";
-$org_result = $conn->query($sql_org);
-// ดึงข้อมูล building
-$sql_building = "SELECT id as building_id, building_name FROM building";
-$building_result = $conn->query($sql_building);
-// ดึงข้อมูล lift
-$sql_lift = "SELECT id as lift_id, lift_name FROM lifts";
-$lift_result = $conn->query($sql_lift);
 ?>
 
 <!-- ####################################################################### -->
@@ -72,12 +56,8 @@ if (isset($_GET['logout'])) {
         <div class="box-outer2">
             <section class="header_Table">
                 <p class="User_information">Report information</p>  
-
-                
-
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
-                <button onclick="openProblemPopup()" class="problemlistbt"><i class="fa-solid fa-list"></i> Problem List</button>
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_report">
                         <i class="fa-solid fa-magnifying-glass"></i>
@@ -99,48 +79,8 @@ if (isset($_GET['logout'])) {
                                         <br>
                                         <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
                                         </div>
-                                    <label class="status-font">Position : </label>
-        <br>
-        <div class="row_position">
-            <input type="radio" name="position" value="organizations" onclick="showOptions('organizations')"> Organizations
-            <div id="organizations-options" style="display: none;">
-                <select class="boxrole" id="org_name" name="org_name">
-                    <option value="">เลือก</option>
-                    <?php while ($org = $org_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $org['org_name']; ?>">
-                            <?php echo $org['org_id'] . " - " . $org['org_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <div class="row_position">
-            <input type="radio" name="position" value="building" onclick="showOptions('building')"> Building
-            <div id="building-options" style="display: none;">
-                <select class="boxrole" id="building_name" name="building_name">
-                    <option value="">เลือก</option>
-                    <?php while ($building = $building_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $building['building_name']; ?>">
-                            <?php echo $building['building_id'] . " - " . $building['building_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-        <div class="row_position">
-            <input type="radio" name="position" value="lifts" onclick="showOptions('lifts')"> Lifts
-            <div id="lifts-options" style="display: none;">
-                <select class="boxrole" id="lift_name" name="lift_name">
-                    <option value="">เลือก</option>
-                    <?php while ($lift = $lift_result->fetch_assoc()) { ?>
-                        <option value="<?php echo $lift['lift_name']; ?>">
-                            <?php echo $lift['lift_id'] . " - " . $lift['lift_name']; ?>
-                        </option>
-                    <?php } ?>
-                </select>
-            </div>
-        </div>
-                                    <label class="role-font">Date : 
+                                    <br>
+                                    <label class="role-font">Birthday : 
                                     <br>
                                         <input class="bd" type="date" name="bd_min">
                                         To
@@ -169,7 +109,6 @@ if (isset($_GET['logout'])) {
                             <th class="row-2 row-Date">Date</th>
                             <th class="row-3 row-Username">User</th>
                             <th class="row-4 row-Organization">Organization</th>
-                            <th class="row-4 row-building">Building</th>
                             <th class="row-5 row-Lift">Lift</th>
                             <th class="row-6 row-Detail">Detail</th>
                             <th class="row-7 row-Action">Action</th>
@@ -178,12 +117,11 @@ if (isset($_GET['logout'])) {
                     <div class="box-row">
                         <tbody id="showdata">
                             <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
-                                <tr class="table-lift">
+                                <tr class="table-lift" onclick="">
                                     <td><?php print ($row["rp_id"]); ?></td>
                                     <td><?php print ($row["date_rp"]); ?></td>
                                     <td><?php print ($row["first_name"]); ?></td>
                                     <td><?php print ($row["org_name"]); ?></td>
-                                    <td><?php print ($row["building_name"]); ?></td>
                                     <td><?php print ($row["lift_name"]); ?></td>
                                     <td><?php print ($row["detail"]); ?></td>
                                     <td class="parent-container"><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print ($row["rp_id"]); ?>" class="btn btn-success button-style"> Proceed </a></td>
@@ -195,67 +133,9 @@ if (isset($_GET['logout'])) {
             </div>
         </div>
     </div>
-    <!-- Popup สำหรับแสดงรายการปัญหา -->
-    <div id="problemPopup" class="popup">
-        <div class="popup-content">
-            <span class="close" onclick="closeProblemPopup()">&times;</span>
-            <h2 class="popup-header">Problem List</h2>
-            <!-- ฟอร์มสำหรับเพิ่มปัญหาใหม่ -->
-            <form id="addProblemForm" method="POST">
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" name="new_problem" id="new_problem" placeholder="Enter new problem" required>
-                    <button class="btn btn-success" type="button" id="addProblemBtn">+</button>
-                </div>
-            </form>
-            <ul class="list-group mb-3">
-                <?php while ($row_problem = mysqli_fetch_assoc($rs_problem)) { ?>
-                    <li class="list-group-item"><?php echo $row_problem['pb_name']; ?></li>
-                <?php } ?>
-            </ul>
-
-            
-        </div>
-    </div>
 </body>
 <script src="scripts.js"></script>
-<script>
-function showOptions(option) {
-    // ซ่อนตัวเลือกทั้งหมดก่อน
-    document.getElementById("organizations-options").style.display = "none";
-    document.getElementById("building-options").style.display = "none";
-    document.getElementById("lifts-options").style.display = "none";
-
-    // แสดงตัวเลือกที่เลือกเท่านั้น
-    if (option === "organizations") {
-        document.getElementById("organizations-options").style.display = "block";
-    } else if (option === "building") {
-        document.getElementById("building-options").style.display = "block";
-    } else if (option === "lifts") {
-        document.getElementById("lifts-options").style.display = "block";
-    }
-}
-</script>
 </html>
-
-<?php
-if (isset($_POST['add_problem'])) {
-    $new_problem = mysqli_real_escape_string($conn, $_POST['new_problem']);
-
-    // ตรวจสอบว่าปัญหานั้นมีอยู่แล้วหรือไม่
-    $check_problem = "SELECT * FROM problem WHERE pb_name = '$new_problem'";
-    $result_check = mysqli_query($conn, $check_problem);
-
-    if (mysqli_num_rows($result_check) == 0) {
-        // เพิ่มรายการปัญหาใหม่
-        $sql_add_problem = "INSERT INTO problem (pb_name) VALUES ('$new_problem')";
-        mysqli_query($conn, $sql_add_problem);
-        echo "<script>alert('New problem added successfully');</script>";
-        echo "<script>window.location.reload();</script>";
-    } else {
-       
-    }
-}
-?>
 
 
 
