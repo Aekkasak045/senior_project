@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['upload'])) {
 $imageData = null;
 if (isset($_GET['view_user_id'])) {
     $view_user_id = $_GET['view_user_id'];
-    
+
     $stmt = $conn->prepare("SELECT user_img FROM users WHERE id = ?");
     $stmt->bind_param('i', $view_user_id);
     $stmt->execute();
@@ -41,7 +41,7 @@ if (isset($_GET['view_user_id'])) {
     } else {
         echo '<div class="alert alert-info">No Image Found for User ID ' . htmlspecialchars($view_user_id) . '</div>';
     }
-    
+
     $stmt->close();
 }
 
@@ -50,6 +50,7 @@ $conn->close();
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -59,19 +60,24 @@ $conn->close();
         body {
             background-color: #f8f9fa;
         }
+
         .container {
             background-color: #ffffff;
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
         }
+
         .custom-file-input:hover {
             cursor: pointer;
         }
-        h2, h3 {
+
+        h2,
+        h3 {
             margin-top: 20px;
             color: #343a40;
         }
+
         .img-preview {
             max-width: 300px;
             border: 1px solid #ddd;
@@ -80,6 +86,7 @@ $conn->close();
         }
     </style>
 </head>
+
 <body>
     <div class="container mt-5">
         <h2 class="text-center">Upload User Image</h2>
@@ -114,4 +121,5 @@ $conn->close();
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

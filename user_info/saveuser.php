@@ -57,4 +57,3 @@ if (isset($_POST['updatedata'])) {
 
     header("Location: user_information.php"); // Redirect to the user information page after update
 }
-?>

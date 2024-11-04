@@ -1,6 +1,6 @@
 <?php
-require ("inc_db.php");
-include ("user_function.php");
+require("inc_db.php");
+include("user_function.php");
 include("update_task_status.php");
 
 $sql = "SELECT report.rp_id,report.detail,report.date_rp,users.first_name,organizations.org_name,building.building_name,lifts.lift_name 
@@ -14,6 +14,17 @@ $rs = mysqli_query($conn, $sql);
 
 $sql_problem = "SELECT pb_id, pb_name FROM problem";
 $rs_problem = mysqli_query($conn, $sql_problem);
+
+
+// ดึงข้อมูล Organization
+$sql_org = "SELECT id as org_id, org_name FROM organizations";
+$org_result = $conn->query($sql_org);
+// ดึงข้อมูล building
+$sql_building = "SELECT id as building_id, building_name FROM building";
+$building_result = $conn->query($sql_building);
+// ดึงข้อมูล lift
+$sql_lift = "SELECT id as lift_id, lift_name FROM lifts";
+$lift_result = $conn->query($sql_lift);
 ?>
 
 <!-- ####################################################################### -->
@@ -54,58 +65,93 @@ if (isset($_GET['logout'])) {
 
 <body class="background1">
     <!-- navbar -->
-    <?php require ('../navbar/navbar.php') ?>
-
-
+    <?php require('../navbar/navbar.php') ?>
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
-                <p class="User_information">Report information</p>  
-
-                
+                <p class="User_information">Report information</p>
 
                 <!-- ########################### Search & Filter ########################### -->
                 <div class="search_filter">
-                <button onclick="openProblemPopup()" class="problemlistbt"><i class="fa-solid fa-list"></i> Problem List</button>
+                    <button onclick="openProblemPopup()" class="problemlistbt"><i class="fa-solid fa-list"></i> Problem List</button>
                     <div class="search">
                         <input class="search-input" type="text" name="search" id="search_report">
                         <i class="fa-solid fa-magnifying-glass"></i>
                     </div>
                     <button onclick="openPop()" class="text-popup"><i class="fa-solid fa-filter"></i></button>
                     <div id="popupDialog">
-                            <p class="filter">Filter</p>
-                            <form action="" method="POST">
-                                <div class="role-filter-box">
-                                    <label class="role-font">ID : &nbsp;</label>
-                                        <input class="idm" type="number" id="number" name="id_min" placeholder="Min ID">
-                                        To
-                                        <input class="idm" type="number" id="number" name="id_max" placeholder="Max ID">
-                                    <br>
-                                    <br>
-                                    <label class="role-font">Option ID : </label>
-                                    <div class="idc">
-                                        <input type="radio" name="id" value="Lowest_to_Highest"> Lowest to Highest
-                                        <br>
-                                        <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
-                                        </div>
-                                    <br>
-                                    <label class="role-font">Date : 
-                                    <br>
-                                        <input class="bd" type="date" name="bd_min">
-                                        To
-                                        <input class="bd" type="date" name="bd_max">   
-                                </div>
+                        <p class="filter">Filter</p>
+                        <form action="" method="POST">
+                            <div class="role-filter-box">
+                                <label class="role-font">ID : &nbsp;</label>
+                                <input class="idm" type="number" id="number" name="id_min" placeholder="Min ID">
+                                To
+                                <input class="idm" type="number" id="number" name="id_max" placeholder="Max ID">
                                 <br>
+                                <br>
+                                <label class="role-font">Option ID : </label>
+                                <div class="idc">
+                                    <input type="radio" name="id" value="Lowest_to_Highest"> Lowest to Highest
+                                    <br>
+                                    <input type="radio" name="id" value="Highest_to_Lowest"> Highest to Lowest
+                                </div>
+                                <label class="status-font">Position : </label>
+                                <br>
+                                <div class="row_position">
+                                    <input type="radio" name="position" value="organizations" onclick="showOptions('organizations')"> Organizations
+                                    <div id="organizations-options" style="display: none;">
+                                        <select class="boxrole" id="org_name" name="org_name">
+                                            <option value="">เลือก</option>
+                                            <?php while ($org = $org_result->fetch_assoc()) { ?>
+                                                <option value="<?php echo $org['org_name']; ?>">
+                                                    <?php echo $org['org_id'] . " - " . $org['org_name']; ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row_position">
+                                    <input type="radio" name="position" value="building" onclick="showOptions('building')"> Building
+                                    <div id="building-options" style="display: none;">
+                                        <select class="boxrole" id="building_name" name="building_name">
+                                            <option value="">เลือก</option>
+                                            <?php while ($building = $building_result->fetch_assoc()) { ?>
+                                                <option value="<?php echo $building['building_name']; ?>">
+                                                    <?php echo $building['building_id'] . " - " . $building['building_name']; ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="row_position">
+                                    <input type="radio" name="position" value="lifts" onclick="showOptions('lifts')"> Lifts
+                                    <div id="lifts-options" style="display: none;">
+                                        <select class="boxrole" id="lift_name" name="lift_name">
+                                            <option value="">เลือก</option>
+                                            <?php while ($lift = $lift_result->fetch_assoc()) { ?>
+                                                <option value="<?php echo $lift['lift_name']; ?>">
+                                                    <?php echo $lift['lift_id'] . " - " . $lift['lift_name']; ?>
+                                                </option>
+                                            <?php } ?>
+                                        </select>
+                                    </div>
+                                </div>
+                                <label class="role-font">Date :
+                                    <br>
+                                    <input class="bd" type="date" name="bd_min">
+                                    To
+                                    <input class="bd" type="date" name="bd_max">
+                            </div>
+                            <br>
                             <button type="submit" name="used_filter" class="used-filter" id="filter_text">Used</button>
                             <label class="cencel-filter" onclick="openPop()">Close</label>
-                            </form>
-                        </div>
-                        <?php if(isset($_POST['used_filter']))
-                {   
-                    $sql = filter_report();
-                    $rs = mysqli_query($conn, $sql);
-                }                    
-                ?>
+                        </form>
+                    </div>
+                    <?php if (isset($_POST['used_filter'])) {
+                        $sql = filter_report();
+                        $rs = mysqli_query($conn, $sql);
+                    }
+                    ?>
                 </div>
                 <!-- ####################################################################### -->
             </section>
@@ -128,14 +174,14 @@ if (isset($_GET['logout'])) {
                         <tbody id="showdata">
                             <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
                                 <tr class="table-lift">
-                                    <td><?php print ($row["rp_id"]); ?></td>
-                                    <td><?php print ($row["date_rp"]); ?></td>
-                                    <td><?php print ($row["first_name"]); ?></td>
-                                    <td><?php print ($row["org_name"]); ?></td>
-                                    <td><?php print ($row["building_name"]); ?></td>
-                                    <td><?php print ($row["lift_name"]); ?></td>
-                                    <td><?php print ($row["detail"]); ?></td>
-                                    <td class="parent-container"><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print ($row["rp_id"]); ?>" class="btn btn-success button-style"> Proceed </a></td>
+                                    <td><?php print($row["rp_id"]); ?></td>
+                                    <td><?php print($row["date_rp"]); ?></td>
+                                    <td><?php print($row["first_name"]); ?></td>
+                                    <td><?php print($row["org_name"]); ?></td>
+                                    <td><?php print($row["building_name"]); ?></td>
+                                    <td><?php print($row["lift_name"]); ?></td>
+                                    <td><?php print($row["detail"]); ?></td>
+                                    <td class="parent-container"><a id="edit-lift" href="Proceed_rp.php?rp_id=<?php print($row["rp_id"]); ?>" class="btn btn-success button-style"> Proceed </a></td>
                                 </tr>
                             <?php } ?>
                         </tbody>
@@ -162,11 +208,28 @@ if (isset($_GET['logout'])) {
                 <?php } ?>
             </ul>
 
-            
+
         </div>
     </div>
 </body>
 <script src="scripts.js"></script>
+<script>
+    function showOptions(option) {
+        // ซ่อนตัวเลือกทั้งหมดก่อน
+        document.getElementById("organizations-options").style.display = "none";
+        document.getElementById("building-options").style.display = "none";
+        document.getElementById("lifts-options").style.display = "none";
+
+        // แสดงตัวเลือกที่เลือกเท่านั้น
+        if (option === "organizations") {
+            document.getElementById("organizations-options").style.display = "block";
+        } else if (option === "building") {
+            document.getElementById("building-options").style.display = "block";
+        } else if (option === "lifts") {
+            document.getElementById("lifts-options").style.display = "block";
+        }
+    }
+</script>
 
 </html>
 
@@ -185,10 +248,6 @@ if (isset($_POST['add_problem'])) {
         echo "<script>alert('New problem added successfully');</script>";
         echo "<script>window.location.reload();</script>";
     } else {
-       
     }
 }
 ?>
-
-
-

@@ -1,5 +1,5 @@
 <?php
-require ("inc_db.php");
+require("inc_db.php");
 $id = $_GET["id"];
 $sql = "SELECT * FROM users WHERE id=$id";
 $result = $conn->query($sql);
@@ -38,10 +38,10 @@ if (isset($_GET['logout'])) {
 
 <body class="background1">
     <!-- <?php
-    include ('../Manage1/summary/nav_bar.php');
-    ?> -->
+            include('../Manage1/summary/nav_bar.php');
+            ?> -->
     <?php
-    include ('../sidebar/sidebar.php'); ?>
+    include('../sidebar/sidebar.php'); ?>
     <div class="box-outer1">
         <div class="box-outer2">
             <section class="header_Table">
@@ -59,25 +59,25 @@ if (isset($_GET['logout'])) {
             <div class="sec1">
                 <div class="box1">
                     <form action="saveuser.php" method="post" class="editpage">
-                        <input type="hidden" name="id" value="<?php print ($row["id"]) ?>">
+                        <input type="hidden" name="id" value="<?php print($row["id"]) ?>">
                         Username:<input class="editbox" type="text" name="username"
-                            value="<?php print ($row["username"]); ?>"><br>
+                            value="<?php print($row["username"]); ?>"><br>
                         First Name:<input class="editbox" type="text" name="first_name"
-                            value="<?php print ($row["first_name"]); ?>"><br>
+                            value="<?php print($row["first_name"]); ?>"><br>
                         Last Name:<input class="editbox" type="text" name="last_name"
-                            value="<?php print ($row["last_name"]); ?>"><br>
+                            value="<?php print($row["last_name"]); ?>"><br>
                         Email:<input class="editbox" type="text" name="email"
-                            value="<?php print ($row["email"]); ?>"><br>
+                            value="<?php print($row["email"]); ?>"><br>
                         Phone Number:<input class="editbox" type="text" name="phone"
-                            value="<?php print ($row["phone"]); ?>"><br>
+                            value="<?php print($row["phone"]); ?>"><br>
                         Role:<select name="role" class="editbox">
                             <option class="editbox" value="admin" <?php if ($row["role"] == "admin")
-                                print ("selected"); ?>>Admin</option>
+                                                                        print("selected"); ?>>Admin</option>
                             <option class="editbox" value="mainten" <?php if ($row["role"] == "mainten")
-                                print ("selected"); ?>>Mainten
+                                                                        print("selected"); ?>>Mainten
                             </option>
                             <option class="editbox" value="user" <?php if ($row["role"] == "user")
-                                print ("selected"); ?>>User</option>
+                                                                        print("selected"); ?>>User</option>
                         </select><br>
                         <input type="submit" value="SUBMIT" class="submitbtn">
                     </form>

@@ -19,9 +19,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $quantities = isset($_POST['quantities']) ? $_POST['quantities'] : [];
     $work_detail = $_POST['detail'];
     $time = date("Y-m-d H:i:s");
-    $task_start_date = $_POST['task_start_date']; 
+    $task_start_date = $_POST['task_start_date'];
     $formatted_task_start_date = date("d/m/Y H:i", strtotime($task_start_date));
-    $assign = 'ได้หมอบหมายงาน และวันเวลาที่ต้องเข้าไปดำเนินการคือ '.$formatted_task_start_date;
+    $assign = 'ได้หมอบหมายงาน และวันเวลาที่ต้องเข้าไปดำเนินการคือ ' . $formatted_task_start_date;
 
     // Combine tools and quantities into an array of objects
     $tools_data = [];
@@ -54,9 +54,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         if (!$stmt_status) {
             die('Prepare failed: ' . $conn->error);
         }
-        $stmt_status->bind_param("iss", $task_id, $time,$assign);
+        $stmt_status->bind_param("iss", $task_id, $time, $assign);
 
-        if ( $stmt_status->execute() ) {
+        if ($stmt_status->execute()) {
             // Delete the report
             $del_rp = "DELETE FROM report WHERE rp_id = ?";
             $stmt_rp = $conn->prepare($del_rp);
@@ -83,4 +83,3 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     $stmt_task->close();
 }
-?>

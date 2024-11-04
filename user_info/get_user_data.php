@@ -17,4 +17,3 @@ if (isset($_GET['id'])) {
     echo json_encode($user);
     $stmt->close();
 }
-?>

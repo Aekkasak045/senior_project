@@ -109,6 +109,21 @@ th{
     table-layout: fixed;
     white-space: nowrap;
 }
+.td-status-1 {/*สีแถบเมื่อมี status มอบหมาย*/
+    background: linear-gradient(90deg,#ff0000 50%,transparent 50%);
+}
+.td-status-2 {/*สีแถบเมื่อมี status กำลังเตรียมอุปกรณ์*/
+    background: linear-gradient(90deg,#fff092 50%,transparent 50%);
+}
+.td-status-3 {/*สีแถบเมื่อมี status เตรียมอุปกรณ์เสร็จสิ้น*/
+    background: linear-gradient(90deg,#ffdd00 50%,transparent 50%);
+}
+.td-status-4 {/*สีแถบเมื่อมี status กำลังดำเนินการ*/
+    background: linear-gradient(90deg,#2b00ff 50%,transparent 50%);
+}
+.td-status-5 {/*สีแถบเมื่อมี status ดำเนินการเสร็จสิ้น*/
+    background: linear-gradient(90deg,#00ff2a 50%,transparent 50%);
+}
 .sec1{
     height: 90%;
     overflow-y: scroll;
@@ -154,6 +169,9 @@ td, th{
     white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+.row-status{
+    width: 10px;
 }
 .row-ID{
     width: 22px;
@@ -223,6 +241,14 @@ td, th{
 }
 .status-filter-box, .status-filter{
     font-size: 14px;
+}
+.row_position{
+    display: flex;
+    flex-direction: row;
+    width: 100% !important;
+}
+.boxrole{
+    width: 100px;
 }
 
 
@@ -397,7 +423,7 @@ td, th{
 
 @media (max-width: 855px) {/*ทำตารางให้เป็นบล็อก*/
     td:first-child{
-        padding-top: 15px;
+        padding-top: 5px;
     }
     td{/*ให้หัวข้อกับเนื้อหาในตารางแยกกัน*/
         display: block;
@@ -414,28 +440,28 @@ td, th{
         text-transform: capitalize;
         font-weight: bold;
     }
-    td:nth-of-type(1)::before {
+    td:nth-of-type(2)::before {
         content: "ID : ";
     }
-    td:nth-of-type(2)::before {
+    td:nth-of-type(3)::before {
         content: "Status : ";
     }
-    td:nth-of-type(3)::before {
+    td:nth-of-type(4)::before {
         content: "Task Detail : ";  
     }
-    td:nth-of-type(4)::before {
+    td:nth-of-type(5)::before {
         content: "Engineer : ";
     }
-    td:nth-of-type(5)::before {
+    td:nth-of-type(6)::before {
         content: "Organization : ";
     }
-    td:nth-of-type(6)::before {
+    td:nth-of-type(7)::before {
         content: "building : ";
     }
-    td:nth-of-type(7)::before {
+    td:nth-of-type(8)::before {
         content: "Lift : ";
     }
-    td:nth-of-type(8)::before {
+    td:nth-of-type(9)::before {
         content: "Tools : ";
     }
     /* ปุ่ม proceed */
@@ -450,31 +476,19 @@ td, th{
     }
 }
 
-@media(max-width: 570px){/* สำหรับ filter */
-    .idm {
-        max-width: 65px;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap; 
-    }
-    .bd{
-        max-width: 80px;
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-    }
-}
-
-@media(max-width: 700px){/* สำหรับ Topic */
+@media(max-width: 740px){/* สำหรับ Topic */
     .User_information {
         font-size: 19px;
     }
-    .addtask {
+    .addtask{
         font-size: 0;
-    }    
-    .addtask i {
+    }   
+    .addtask i{
         font-size: 1rem;
         padding: 10px 0px;
+    }
+    #results{
+        padding: 2px 0px;
     }
 }
 .popup {
@@ -518,13 +532,40 @@ td, th{
 .chatbox{
     height: 400px;
     width: 400px;
-
 }
 
 .Results{
-    color: #ffffff;
     padding: 4px 15px;
     margin: 0 2px;
-    font-size: 16px;
-    background-color: transparent;
+    font-size: 13px;
+}
+
+.popup-header{
+    font-size: clamp(1rem, 2vw, 2rem);
+}
+.filter-section{
+    font-size: 13px;
+}
+
+@media(max-width: 570px){/* สำหรับ filter */
+    .idm {
+        max-width: 65px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap; 
+    }
+    .bd{
+        max-width: 80px;
+        width: 100%;
+        overflow: hidden;
+        white-space: nowrap;
+    }
+    .User_information {
+        font-size: 0;
+        /* display: none; */
+    }
+    .User_information::before {
+        content: "Task";
+        font-size: 19px;
+    }
 }

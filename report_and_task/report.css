@@ -241,6 +241,14 @@ td, th{
 .role-filter-box, .role-filter{
     font-size: 14px;
 }
+.row_position{
+    display: flex;
+    flex-direction: row;
+    width: 100% !important;
+}
+.boxrole{
+    width: 100px !important;
+}
 
 
 /* ########################################################################### */

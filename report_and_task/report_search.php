@@ -1,6 +1,6 @@
 <?php
-include ("inc_db.php");
-include ("user_function.php");
+include("inc_db.php");
+include("user_function.php");
 
 
 $keyword = $_POST['search'];
@@ -24,15 +24,14 @@ $data = '';
 
 while ($row = mysqli_fetch_assoc($rs)) {
     $data .= "<tr class=\"table-lift\" onclick=\"\">"
-                . "<td>" . $row["rp_id"] . "</td>"
-                . "<td>" . $row["date_rp"] . "</td>"
-                . "<td>" . $row["first_name"] . "</td>"
-                . "<td>" . $row["org_name"] . "</td>"
-                . "<td>" . $row["building_name"] . "</td>"
-                . "<td>" . $row["lift_name"] . "</td>"
-                . "<td>" . $row["detail"] . "</td>"
-                . "<td class=\"parent-container\"><a id=\"edit-lift\" href=\"Proceed_rp.php?rp_id=" . $row["rp_id"] . "\" class=\"btn btn-success button-style\"> Proceed </a></td>"
-             . "</tr>";
+        . "<td>" . $row["rp_id"] . "</td>"
+        . "<td>" . $row["date_rp"] . "</td>"
+        . "<td>" . $row["first_name"] . "</td>"
+        . "<td>" . $row["org_name"] . "</td>"
+        . "<td>" . $row["building_name"] . "</td>"
+        . "<td>" . $row["lift_name"] . "</td>"
+        . "<td>" . $row["detail"] . "</td>"
+        . "<td class=\"parent-container\"><a id=\"edit-lift\" href=\"Proceed_rp.php?rp_id=" . $row["rp_id"] . "\" class=\"btn btn-success button-style\"> Proceed </a></td>"
+        . "</tr>";
 }
 echo $data;
-?>

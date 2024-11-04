@@ -69,7 +69,7 @@ $stmt_work->close();
 
 
 ?>
- 
+
 <!DOCTYPE html>
 <html>
 
@@ -81,7 +81,7 @@ $stmt_work->close();
     <link rel="stylesheet" href="task_view.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <title>Lift RMS</title>
-    
+
 
 </head>
 
@@ -127,126 +127,116 @@ $stmt_work->close();
                                 </div>
                             </div>
                         </div>
-
-                        <div >
+                        <div>
                             <div class="col-sm-12">
                                 <div class="card">
                                     <div class="card-body">
                                         <h5 class="card-title">รายละเอียดงาน</h5>
-                                        วันที่และเวลาเริ่มงาน: <?php echo date("d/m/Y H:i", strtotime($row["task_start_date"])); ?>      
-                                        <br>รายละเอียดงาน:<?php echo $row["tk_data"]; ?>                                   
+                                        วันที่และเวลาเริ่มงาน: <?php echo date("d/m/Y H:i", strtotime($row["task_start_date"])); ?>
+                                        <br>รายละเอียดงาน:<?php echo $row["tk_data"]; ?>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <!-- Timeline -->
                         <div class="status_box">
-    <ul class="timeline">
-        <?php
-        // จัดกลุ่มสถานะโดยใช้ array เพื่อเก็บสถานะต่างๆ
-        $status_groups = [
-            'finish' => 'เสร็จสิ้น',
-            'working' => 'กำลังปฏิบัติ',
-            'prepared' => 'เตรียมอุปกรณ์เสร็จสิน',
-            'preparing' => 'กำลังเตรียมอุปกรณ์',
-            'assign' => 'มอบหมาย',
-        ];
-
-        // วนลูปแสดงกลุ่มสถานะ
-        foreach ($status_groups as $status_key => $status_label) {
-            // หาสถานะที่ตรงกับ key ของกลุ่มนี้
-            $has_items = false; // เช็คว่ามีรายการในกลุ่มหรือไม่
-
-            foreach ($task_statuses as $status) {
-                if ($status['status'] == $status_key) {
-                    if (!$has_items) {
-                        // แสดงหัวข้อหลักของกลุ่มเมื่อเจอรายการที่ตรงกับสถานะกลุ่มนี้
-                        echo '<h4 class="status-group">' . $status_label . '</h4>';
-                        $has_items = true;
-                    }
-                    ?>
-                    <li class="timeline-item">
-                        <div class="timeline-left">
-                            <span class="time"><?php echo date("d/m/y H:i", strtotime($status['time'])); ?></span>
+                            <ul class="timeline">
+                                <?php
+                                // จัดกลุ่มสถานะโดยใช้ array เพื่อเก็บสถานะต่างๆ
+                                $status_groups = [
+                                    'finish' => 'เสร็จสิ้น',
+                                    'working' => 'กำลังปฏิบัติ',
+                                    'prepared' => 'เตรียมอุปกรณ์เสร็จสิน',
+                                    'preparing' => 'กำลังเตรียมอุปกรณ์',
+                                    'assign' => 'มอบหมาย',
+                                ];
+                                // วนลูปแสดงกลุ่มสถานะ
+                                foreach ($status_groups as $status_key => $status_label) {
+                                    // หาสถานะที่ตรงกับ key ของกลุ่มนี้
+                                    $has_items = false; // เช็คว่ามีรายการในกลุ่มหรือไม่
+                                    foreach ($task_statuses as $status) {
+                                        if ($status['status'] == $status_key) {
+                                            if (!$has_items) {
+                                                // แสดงหัวข้อหลักของกลุ่มเมื่อเจอรายการที่ตรงกับสถานะกลุ่มนี้
+                                                echo '<h4 class="status-group">' . $status_label . '</h4>';
+                                                $has_items = true;
+                                            }
+                                ?>
+                                            <li class="timeline-item">
+                                                <div class="timeline-left">
+                                                    <span class="time"><?php echo date("d/m/y H:i", strtotime($status['time'])); ?></span>
+                                                </div>
+                                                <div class="timeline-divider"></div>
+                                                <div class="timeline-right">
+                                                    <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
+                                                    <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
+                                                    <?php if (!empty($work_images[$status['tk_status_id']])): ?>
+                                                        <br>
+                                                        <a href="#" class="view-image" data-image="data:image/jpeg;base64,<?php echo $work_images[$status['tk_status_id']]; ?>">ดูรูปภาพ</a>
+                                                    <?php endif; ?>
+                                                </div>
+                                            </li>
+                                <?php
+                                        }
+                                    }
+                                }
+                                ?>
+                            </ul>
                         </div>
-                        <div class="timeline-divider"></div>
-                        <div class="timeline-right">
-                            <span class="detail"><?php echo htmlspecialchars($status['detail']); ?></span>
-
-                            <!-- เช็คว่ามีรูปภาพใน work หรือไม่ -->
-                            <?php if (!empty($work_images[$status['tk_status_id']])): ?>
-                                <br>
-                                <a href="#" class="view-image" data-image="data:image/jpeg;base64,<?php echo $work_images[$status['tk_status_id']]; ?>">ดูรูปภาพ</a>
-                            <?php endif; ?>
-                        </div>
-                    </li>
-                    <?php
-                }
-            }
-        }
-        ?>
-    </ul>
-</div>
-
-
                     </div>
-
                     <!-- ข้อมูลช่างและผู้ใช้งาน -->
                     <div class="col-sm-6">
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลช่างที่ปฏิบัติงาน</h5>
                                 <div class="img">
-                                <?php if (!empty($row["mainten_user_img"])): ?>
-                                    <div class="text-center mb-3">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["mainten_user_img"]); ?>" alt="Engineer Image" class="img-fluid" >
+                                    <?php if (!empty($row["mainten_user_img"])): ?>
+                                        <div class="text-center mb-3">
+                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row["mainten_user_img"]); ?>" alt="Engineer Image" class="img-fluid">
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="img_text">
+                                        Username: <?php echo $row["mainten_username"]; ?> <br>
+                                        Name: <?php echo $row["mainten_first_name"] . " " . $row["mainten_last_name"]; ?><br>
+                                        Phone Number: <?php echo $row["mainten_phone"]; ?> <br>
+                                        Email: <?php echo $row["mainten_email"]; ?> <br>
                                     </div>
-                                <?php endif; ?>
-                                <div class="img_text">
-                                Username: <?php echo $row["mainten_username"]; ?> <br>
-                                Name: <?php echo $row["mainten_first_name"] . " " . $row["mainten_last_name"]; ?><br>
-                                Phone Number: <?php echo $row["mainten_phone"]; ?> <br>
-                                Email: <?php echo $row["mainten_email"]; ?> <br>
-                                </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">ข้อมูลผู้ใช้งานที่แจ้ง</h5>
                                 <div class="img">
-                                <?php if (!empty($row["reporter_user_img"])): ?>
-                                    <div class="text-center mb-3">
-                                        <img src="data:image/jpeg;base64,<?php echo base64_encode($row["reporter_user_img"]); ?>" alt="Reporter Image" class="img-fluid">
+                                    <?php if (!empty($row["reporter_user_img"])): ?>
+                                        <div class="text-center mb-3">
+                                            <img src="data:image/jpeg;base64,<?php echo base64_encode($row["reporter_user_img"]); ?>" alt="Reporter Image" class="img-fluid">
+                                        </div>
+                                    <?php endif; ?>
+                                    <div class="img_text">
+                                        Username: <?php echo $row["reporter_username"]; ?> <br>
+                                        Name: <?php echo $row["reporter_first_name"] . " " . $row["reporter_last_name"]; ?><br>
+                                        Phone Number: <?php echo $row["reporter_phone"]; ?> <br>
+                                        Email: <?php echo $row["reporter_email"]; ?> <br>
                                     </div>
-                                <?php endif; ?>
-                                <div class="img_text">
-                                Username: <?php echo $row["reporter_username"]; ?> <br>
-                                Name: <?php echo $row["reporter_first_name"] . " " . $row["reporter_last_name"]; ?><br>
-                                Phone Number: <?php echo $row["reporter_phone"]; ?> <br>
-                                Email: <?php echo $row["reporter_email"]; ?> <br>
-                                </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">สถานที่</h5>
                                 <div class="img">
-                                <div class="img_location">
+                                    <div class="img_location">
                                         <img src="img/building.png" class="img-fluid" style="width:60px; height: 60px; border-radius: 50%; margin: 0 15px 0 15px;" alt="location-icon">
                                     </div>
-                                <div class="img_text">
-                                Organizations: <?php echo $row["org_name"]; ?> <br>
-                                Building: <?php echo $row["building_name"]; ?> <br>
-                                Lift: <?php echo $row["lift_name"]; ?> <br>
-                                </div>
+                                    <div class="img_text">
+                                        Organizations: <?php echo $row["org_name"]; ?> <br>
+                                        Building: <?php echo $row["building_name"]; ?> <br>
+                                        Lift: <?php echo $row["lift_name"]; ?> <br>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
                         <div class="card">
                             <div class="card-body">
                                 <h5 class="card-title">เครื่องมือที่ใช้</h5>
@@ -268,16 +258,14 @@ $stmt_work->close();
                                                     $stmt_tool_cost->execute();
                                                     $result_tool_cost = $stmt_tool_cost->get_result();
                                                     $tool_cost = $result_tool_cost->fetch_assoc()['cost'];
-
                                                     // คำนวณมูลค่าของเครื่องมือแต่ละชิ้น
                                                     $item_total_cost = $tool_cost * $quantity;
                                                     $total_cost += $item_total_cost;
-
                                                     // แสดงผลเครื่องมือพร้อมจำนวนและ cost โดยแยกบรรทัดใหม่
-                                                    echo '<li class="tools">' 
-                                                        . htmlspecialchars($tool['tool']) . '<br>' 
-                                                        . 'จำนวน: ' . htmlspecialchars($tool['quantity']) . '<br>' 
-                                                        . 'ราคา: ' . htmlspecialchars($tool_cost) . ' บาท<br>' 
+                                                    echo '<li class="tools">'
+                                                        . htmlspecialchars($tool['tool']) . '<br>'
+                                                        . 'จำนวน: ' . htmlspecialchars($tool['quantity']) . '<br>'
+                                                        . 'ราคา: ' . htmlspecialchars($tool_cost) . ' บาท<br>'
                                                         . 'มูลค่ารวม: ' . $item_total_cost . ' บาท'
                                                         . '</li><br>';
                                                 }
@@ -300,49 +288,47 @@ $stmt_work->close();
 </body>
 
 <script>
+    let tk_status = <?php echo $row['tk_status']; ?>;
 
-let tk_status = <?php echo $row['tk_status']; ?>;
-
-// Update progress bar based on the status
-for (let i = 1; i <= 6; i++) {
-    if (i < tk_status || tk_status == 5) {
-        // กรณีที่ tk_status มากกว่าขั้นตอนที่ i (สีเขียว - สำเร็จแล้ว)
-        document.getElementById('step' + i).classList.add('active');
-        document.getElementById('label' + i).classList.remove('inactive');
-        if (i < tk_status && tk_status == 5) {
-            document.getElementById('line' + i).classList.add('active');
+    // Update progress bar based on the status
+    for (let i = 1; i <= 6; i++) {
+        if (i < tk_status || tk_status == 5) {
+            // กรณีที่ tk_status มากกว่าขั้นตอนที่ i (สีเขียว - สำเร็จแล้ว)
+            document.getElementById('step' + i).classList.add('active');
+            document.getElementById('label' + i).classList.remove('inactive');
+            if (i < tk_status && tk_status == 5) {
+                document.getElementById('line' + i).classList.add('active');
+            }
+        } else if (i == tk_status && tk_status <= 5) {
+            document.getElementById('step' + i).classList.add('onstep');
+            document.getElementById('label' + i).classList.remove('inactive');
+        } else {
+            // กรณีที่ tk_status ยังไม่ถึงขั้นตอนนั้น
+            document.getElementById('label' + i).classList.add('inactive');
         }
-    } else if (i == tk_status && tk_status <= 5 ) {
-        document.getElementById('step' + i).classList.add('onstep');
-        document.getElementById('label' + i).classList.remove('inactive');
-    } else {
-        // กรณีที่ tk_status ยังไม่ถึงขั้นตอนนั้น
-        document.getElementById('label' + i).classList.add('inactive');
     }
-}
 </script>
 <!-- Pop-up container -->
-<div id="imageModal" class="modal" style="display:none;" >
+<div id="imageModal" class="modal" style="display:none;">
     <span class="close">&times;</span>
     <img class="modal-content" id="popupImage">
 </div>
 
 <script>
     // ฟังก์ชันสำหรับเปิดป๊อปอัพแสดงรูปภาพ
-document.querySelectorAll('.view-image').forEach(item => {
-    item.addEventListener('click', function(event) {
-        event.preventDefault();
-        var imgSrc = this.getAttribute('data-image');
-        document.getElementById('popupImage').src = imgSrc; // ใช้ Base64 image string
-        document.getElementById('imageModal').style.display = 'block';
+    document.querySelectorAll('.view-image').forEach(item => {
+        item.addEventListener('click', function(event) {
+            event.preventDefault();
+            var imgSrc = this.getAttribute('data-image');
+            document.getElementById('popupImage').src = imgSrc; // ใช้ Base64 image string
+            document.getElementById('imageModal').style.display = 'block';
+        });
     });
-});
 
-// ฟังก์ชันสำหรับปิดป๊อปอัพ
-document.querySelector('.close').onclick = function() {
-    document.getElementById('imageModal').style.display = 'none';
-}
-
+    // ฟังก์ชันสำหรับปิดป๊อปอัพ
+    document.querySelector('.close').onclick = function() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
 </script>
 
 </html>

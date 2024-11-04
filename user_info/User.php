@@ -1,5 +1,5 @@
 <?php
-require ("inc_db.php");
+require("inc_db.php");
 $sql = "SELECT * FROM users ORDER BY id ASC";
 $rs = mysqli_query($conn, $sql);
 // if ($rs->num_rows > 0)
@@ -35,10 +35,10 @@ if (isset($_GET['logout'])) {
 
 <body class="background1">
     <span>
-        
+
     </span>
     <?php
-    include ('../sidebar/sidebar.php'); ?>
+    include('../sidebar/sidebar.php'); ?>
 
     <!-- ####################################################################### -->
     <!-- EDIT POP UP FORM ( Bootstrap MODAL) -->
@@ -142,22 +142,22 @@ if (isset($_GET['logout'])) {
                     <div class="box-row">
                         <?php while ($row = mysqli_fetch_assoc($rs)) { ?>
                             <tr class="table-lift">
-                                <td><?php print ($row["id"]); ?></td>
-                                <td><?php print ($row["username"]); ?></td>
-                                <td><?php print ($row["password"]); ?></td>
-                                <td><?php print ($row["first_name"]); ?></td>
-                                <td><?php print ($row["last_name"]); ?></td>
-                                <td><?php print ($row["email"]); ?></td>
-                                <td><?php print ($row["phone"]); ?></td>
-                                <td><?php print ($row["bd"]); ?></td>
+                                <td><?php print($row["id"]); ?></td>
+                                <td><?php print($row["username"]); ?></td>
+                                <td><?php print($row["password"]); ?></td>
+                                <td><?php print($row["first_name"]); ?></td>
+                                <td><?php print($row["last_name"]); ?></td>
+                                <td><?php print($row["email"]); ?></td>
+                                <td><?php print($row["phone"]); ?></td>
+                                <td><?php print($row["bd"]); ?></td>
                                 <td><?php if ($row["role"] == "mainten")
-                                    print ("Mainten");
-                                elseif ($row["role"] == "admin")
-                                    print ("Admin");
-                                else
-                                    print ("User"); ?></td>
+                                        print("Mainten");
+                                    elseif ($row["role"] == "admin")
+                                        print("Admin");
+                                    else
+                                        print("User"); ?></td>
                                 <td>
-                                    <!-- <a id="edit" href="edit_user.php?id=<?php print ($row["id"]); ?>"
+                                    <!-- <a id="edit" href="edit_user.php?id=<?php print($row["id"]); ?>"
                                         class="editbtn">Edit</a> -->
                                     <button type="button" class="btn btn-success editbtn"> EDIT </button>
                                 </td>
@@ -178,15 +178,15 @@ if (isset($_GET['logout'])) {
 <script src="https://cdn.datatables.net/1.10.18/js/jquery. dataTables.min.js"></script>
 <script src="https://cdn.datatables.net/1.10.18/js/dataTables.bootstrap4.min.js"></script>
 <script>
-    $(document).ready(function () {
+    $(document).ready(function() {
 
-        $('.editbtn').on('click', function () {
+        $('.editbtn').on('click', function() {
 
             $('#editmodal').modal('show');
 
             $tr = $(this).closest('tr');
 
-            var data = $tr.children("td").map(function () {
+            var data = $tr.children("td").map(function() {
                 return $(this).text();
             }).get();
 
