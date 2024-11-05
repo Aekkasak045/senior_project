@@ -51,14 +51,14 @@ session_start();
 if (!isset($_SESSION['username'])) {
     $_SESSION['msg'] = "You must log in first";
     header('location:../login/login.php');
-    exit(); // Add exit to stop the script after redirect
+    exit(); 
 }
 
 if (isset($_GET['logout'])) {
     session_destroy();
     unset($_SESSION['username']);
     header('location:../login/login.php');
-    exit(); // Add exit to stop the script after redirect
+    exit(); 
 }
 ?>
 
@@ -150,7 +150,6 @@ if (isset($_GET['logout'])) {
                                             // ดึงข้อมูลเครื่องมือจากตาราง tools
                                             $sql_tools = "SELECT tool_name FROM tools";
                                             $result_tools = $conn->query($sql_tools);
-
                                             while ($tool = $result_tools->fetch_assoc()) { ?>
                                                 <option value="<?php echo $tool['tool_name']; ?>"><?php echo $tool['tool_name']; ?></option>
                                             <?php } ?>
@@ -361,12 +360,10 @@ enableRemoveButtons();
 
     // แปลงวันที่เริ่มงานเป็นรูปแบบ Date
     var selectedDate = new Date(startDate);
-
     if (selectedDate < currentDate) {
         alert("กรุณาเลือกวันที่และเวลาเริ่มงานที่ถูกต้อง");
         return false; // หยุดการส่งฟอร์ม
     }
-
     return true; // ส่งฟอร์มถ้าข้อมูลถูกต้อง
 }
 </script>
